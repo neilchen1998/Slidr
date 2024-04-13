@@ -1,20 +1,86 @@
 #define CATCH_CONFIG_MAIN
 
 #include <catch2/catch.hpp>
+#include <vector>    // std::vector
+#include <array>    // std::array
+#include <algorithm>    // std::ranges::equal
 
 #include "constants/constantslib.hpp"
 #include "node/nodelib.hpp"
 
+struct Tester : Node
+{
+    std::vector<int> GetLayout() const { return this-> layout; }
+
+    int GetPosX() const { return this->posX; }
+};
+
 TEST_CASE( "Node Initialization", "[main]" )
 {
-    Node n({1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6});
+    std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
+    Node n(layout);
 
-    struct Tester : Node
-    {
-        std::vector<int> GetLayout() const { return this-> layout; }
-
-        int GetPosX() const { return this->posX; }
-    };
-
+    // tests all its members upon initialization
+    REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetLayout(), layout) == true);
     REQUIRE (static_cast<const Tester&>(n).GetPosX() == 2);
+    REQUIRE (n.GetCurrentManhattanDistance() == 2);
+    REQUIRE (n.GetCurrentHashValue() == 3120681741471255429);
+}
+
+TEST_CASE( "Available Moves", "[main]" )
+{
+    // initializes all possible positions that the empty puzzle can be in
+    Node middle({1, 2, 3, 4, constants::EMPTY, 6, 7, 5, 8});
+    Node topLeft({constants::EMPTY, 2, 3, 4, 1, 6, 7, 5, 8});
+    Node topRight({1, 2, constants::EMPTY, 4, 3, 6, 7, 5, 8});
+    Node middleLeft({1, 2, 3, constants::EMPTY, 4, 6, 7, 5, 8});
+    Node middleRight({1, 2, 3, 4, 6, constants::EMPTY, 7, 5, 8});
+    Node bottomLeft({1, 2, 3, 4, 7, 6, constants::EMPTY, 5, 8});
+    Node bottomRight({1, 2, 3, 4, 8, 6, 7, 5, constants::EMPTY});
+    Node centerTop({1, constants::EMPTY, 3, 4, 2, 6, 7, 5, 8});
+    Node centerBottom({1, 2, 3, 4, 5, 6, 7, constants::EMPTY, 8});
+
+    // grabs the available moves and sorts it
+    auto movesMiddle = middle.AvailableMoves();
+    auto movesTopLeft = topLeft.AvailableMoves();
+    auto movesTopRight = topRight.AvailableMoves();
+    auto movesMiddleLeft = middleLeft.AvailableMoves();
+    auto movesMiddleRight = middleRight.AvailableMoves();
+    auto movesBottomLeft = bottomLeft.AvailableMoves();
+    auto movesBottomRight = bottomRight.AvailableMoves();
+    auto movesCenterTop = centerTop.AvailableMoves();
+    auto movesCenterBottom = centerBottom.AvailableMoves();
+
+    // sort the moves
+    std::ranges::sort(movesMiddle);
+    std::ranges::sort(movesTopLeft);
+    std::ranges::sort(movesTopRight);
+    std::ranges::sort(movesMiddleLeft);
+    std::ranges::sort(movesMiddleRight);
+    std::ranges::sort(movesBottomLeft);
+    std::ranges::sort(movesBottomRight);
+    std::ranges::sort(movesCenterTop);
+    std::ranges::sort(movesCenterBottom);
+
+    // grabs the true available moves and sorts it
+    constexpr std::array acutalMovesMiddle {constants::RIGHT, constants::UP, constants::LEFT, constants::DOWN};
+    constexpr std::array acutalMovesTopLeft {constants::RIGHT, constants::DOWN};
+    constexpr std::array acutalMovesTopRight {constants::LEFT, constants::DOWN};
+    constexpr std::array acutalMovesMiddleLeft {constants::RIGHT, constants::UP, constants::DOWN};
+    constexpr std::array acutalMovesMiddleRight {constants::UP, constants::LEFT, constants::DOWN};
+    constexpr std::array acutalMovesBottomLeft {constants::RIGHT, constants::UP};
+    constexpr std::array acutalMovesBottomRight {constants::UP, constants::LEFT};
+    constexpr std::array acutalMovesCenterTop {constants::RIGHT, constants::LEFT, constants::DOWN};
+    constexpr std::array acutalMovesCenterBottom {constants::RIGHT, constants::UP, constants::LEFT};
+
+    // asserts the available moves from all 9 positions
+    REQUIRE (std::ranges::equal(movesMiddle, acutalMovesMiddle));
+    REQUIRE (std::ranges::equal(movesTopLeft, acutalMovesTopLeft));
+    REQUIRE (std::ranges::equal(movesTopRight, acutalMovesTopRight));
+    REQUIRE (std::ranges::equal(movesMiddleLeft, acutalMovesMiddleLeft));
+    REQUIRE (std::ranges::equal(movesMiddleRight, acutalMovesMiddleRight));
+    REQUIRE (std::ranges::equal(movesBottomLeft, acutalMovesBottomLeft));
+    REQUIRE (std::ranges::equal(movesBottomRight, acutalMovesBottomRight));
+    REQUIRE (std::ranges::equal(movesCenterTop, acutalMovesCenterTop));
+    REQUIRE (std::ranges::equal(movesCenterBottom, acutalMovesCenterBottom));
 }
