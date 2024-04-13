@@ -8,6 +8,6 @@ add_executable(testlib testlib.cc)
 
 target_compile_features(testlib PRIVATE cxx_std_20)
 
-target_link_libraries(testlib PRIVATE Catch2::Catch2)
+target_link_libraries(testlib PRIVATE Catch2::Catch2 math_library)
 
 add_test(NAME testlibtest COMMAND testlib)
