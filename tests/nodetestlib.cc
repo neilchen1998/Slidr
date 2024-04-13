@@ -51,17 +51,6 @@ TEST_CASE( "Available Moves", "[main]" )
     auto movesCenterTop = centerTop.AvailableMoves();
     auto movesCenterBottom = centerBottom.AvailableMoves();
 
-    // sort the moves
-    std::ranges::sort(movesMiddle);
-    std::ranges::sort(movesTopLeft);
-    std::ranges::sort(movesTopRight);
-    std::ranges::sort(movesMiddleLeft);
-    std::ranges::sort(movesMiddleRight);
-    std::ranges::sort(movesBottomLeft);
-    std::ranges::sort(movesBottomRight);
-    std::ranges::sort(movesCenterTop);
-    std::ranges::sort(movesCenterBottom);
-
     // grabs the true available moves and sorts it
     constexpr std::array acutalMovesMiddle {constants::RIGHT, constants::UP, constants::LEFT, constants::DOWN};
     constexpr std::array acutalMovesTopLeft {constants::RIGHT, constants::DOWN};

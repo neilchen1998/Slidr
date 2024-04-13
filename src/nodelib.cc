@@ -33,6 +33,12 @@ std::vector<int> Node::AvailableMoves() const
         ret.push_back(constants::RIGHT);
     }
 
+    // constants::UP
+    if (xRow >= 1)
+    {
+        ret.push_back(constants::UP);
+    }
+
     // constants::LEFT
     if (xCol >= 1)
     {
@@ -45,11 +51,6 @@ std::vector<int> Node::AvailableMoves() const
         ret.push_back(constants::DOWN);
     }
 
-    // constants::UP
-    if (xRow >= 1)
-    {
-        ret.push_back(constants::UP);
-    }
 
     return ret;
 }
