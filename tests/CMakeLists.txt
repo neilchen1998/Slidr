@@ -4,10 +4,10 @@ FetchContent_Declare(
   GIT_TAG v2.13.6)
 FetchContent_MakeAvailable(catch)
 
-add_executable(testlib testlib.cc)
+add_executable(mathtestlib mathtestlib.cc)
 
-target_compile_features(testlib PRIVATE cxx_std_20)
+target_compile_features(mathtestlib PRIVATE cxx_std_20)
 
-target_link_libraries(testlib PRIVATE Catch2::Catch2 math_library)
+target_link_libraries(mathtestlib PRIVATE Catch2::Catch2 math_library)
 
-add_test(NAME testlibtest COMMAND testlib)
+add_test(NAME mathtestlibtest COMMAND mathtestlib)
