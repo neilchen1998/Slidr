@@ -1,5 +1,6 @@
 #include <iostream> // std::cout
 #include <span> // std::span
+#include <algorithm> // std::ranges::find
 
 #include "node/nodelib.hpp"
 #include "constants/constantslib.hpp"
@@ -8,7 +9,7 @@
 Node::Node(std::vector<int> input) : layout(input)
 {
     hashValue = hash_range(std::span(layout));
-    posX = std::find(input.begin(), input.end(), constants::EMPTY) - input.begin();
+    posX = std::ranges::find(input, constants::EMPTY) - input.begin();
     CalculateManhattanDistance();
 }
 
