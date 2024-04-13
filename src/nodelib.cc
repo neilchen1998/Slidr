@@ -7,14 +7,14 @@
 
 Node::Node(std::vector<int> input) : layout(input)
 {
-    hashValue = hash_range(std::span(layout.begin(), layout.end()));
+    hashValue = hash_range(std::span(layout));
     posX = std::find(input.begin(), input.end(), constants::EMPTY) - input.begin();
     CalculateManhattanDistance();
 }
 
 Node::Node(std::vector<int> input, int posX) : layout(input), posX(posX)
 {
-    hashValue = hash_range(std::span(layout.begin(), layout.end()));
+    hashValue = hash_range(std::span(input));
     CalculateManhattanDistance();
 }
 
