@@ -153,3 +153,24 @@ TEST_CASE( "Get Next Layout", "[main]" )
         REQUIRE (childPosX == actualDownPosX);
     }
 }
+
+TEST_CASE( "Operators", "[main]" )
+{
+    std::vector<int> layout1 {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
+    Node n1(layout1);
+
+    std::vector<int> layout2 {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
+    Node n2(layout2);
+
+    SECTION("Less Than", "[some_details]")
+    {
+        REQUIRE ((n1 < n2) == false);
+        REQUIRE ((n2 < n1));
+    }
+
+    SECTION("Greater Than", "[some_details]")
+    {
+        REQUIRE ((n1 > n2));
+        REQUIRE ((n2 > n1) == false);
+    }
+}
