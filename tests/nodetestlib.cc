@@ -73,3 +73,64 @@ TEST_CASE( "Available Moves", "[main]" )
     REQUIRE (std::ranges::equal(movesCenterTop, acutalMovesCenterTop));
     REQUIRE (std::ranges::equal(movesCenterBottom, acutalMovesCenterBottom));
 }
+
+TEST_CASE( "Get Next Layout", "[main]" )
+{
+    // initializes the start layout
+    Node middle({3, 6, 4, 8, constants::EMPTY, 5, 7, 2, 1});
+    constexpr int acutalPosX = 4;
+
+    // grabs the available moves
+    auto movesMiddle = middle.AvailableMoves();
+
+    // the actual layouts after the moves
+    constexpr std::array actualRightLayout {3, 6, 4, 8, 5, constants::EMPTY, 7, 2, 1};
+    constexpr std::array actualUpLayout {3, constants::EMPTY, 4, 8, 6, 5, 7, 2, 1};
+    constexpr std::array actualLeftLayout {3, 6, 4, constants::EMPTY, 8, 5, 7, 2, 1};
+    constexpr std::array actualDownLayout {3, 6, 4, 8, 2, 5, 7, constants::EMPTY, 1};
+
+    // the actual positions of X after the moves
+    constexpr int actualRightPosX = acutalPosX + 1;
+    constexpr int actualUpPosX = acutalPosX - constants::EIGHT_PUZZLE_SIZE;
+    constexpr int actualLeftPosX = acutalPosX - 1;
+    constexpr int actualDownPosX = acutalPosX + constants::EIGHT_PUZZLE_SIZE;
+
+    // test cases
+    auto itr = movesMiddle.begin();
+    SECTION("Right", "[some_details]")
+    {
+        auto [childLayout, childPosX] = middle.GetNextLayout(*itr);
+
+        REQUIRE (std::ranges::equal(childLayout, actualRightLayout));
+        REQUIRE (childPosX == actualRightPosX);
+    }
+
+    ++itr;
+    SECTION("Up", "[some_details]")
+    {
+        auto [childLayout, childPosX] = middle.GetNextLayout(*itr);
+
+        REQUIRE (std::ranges::equal(childLayout, actualUpLayout));
+        REQUIRE (childPosX == actualUpPosX);
+
+    }
+
+    ++itr;
+    SECTION("Left", "[some_details]")
+    {
+        auto [childLayout, childPosX] = middle.GetNextLayout(*itr);
+
+        REQUIRE (std::ranges::equal(childLayout, actualLeftLayout));
+        REQUIRE (childPosX == actualLeftPosX);
+
+    }
+
+    ++itr;
+    SECTION("Down", "[some_details]")
+    {
+        auto [childLayout, childPosX] = middle.GetNextLayout(*itr);
+
+        REQUIRE (std::ranges::equal(childLayout, actualDownLayout));
+        REQUIRE (childPosX == actualDownPosX);
+    }
+}
