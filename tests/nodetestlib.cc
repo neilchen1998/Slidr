@@ -173,4 +173,14 @@ TEST_CASE( "Operators", "[main]" )
         REQUIRE ((n1 > n2));
         REQUIRE ((n2 > n1) == false);
     }
+
+    SECTION("Equal To", "[some_details]")
+    {
+        REQUIRE ((n2 == n1) == false);
+    }
+
+    SECTION("Not Equal To", "[some_details]")
+    {
+        REQUIRE ((n2 != n1));
+    }
 }
