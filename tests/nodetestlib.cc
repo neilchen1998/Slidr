@@ -4,8 +4,10 @@
 #include <vector>    // std::vector
 #include <array>    // std::array
 #include <algorithm>    // std::ranges::equal
+#include <span> // std::span
 
 #include "constants/constantslib.hpp"
+#include "math/mathlib.hpp"
 #include "node/nodelib.hpp"
 
 struct Tester : Node
@@ -17,14 +19,31 @@ struct Tester : Node
 
 TEST_CASE( "Node Initialization", "[main]" )
 {
-    std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
-    Node n(layout);
+    SECTION("Unsolved", "[some_details]")
+    {
+        std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
+        Node n(layout);
 
-    // tests all its members upon initialization
-    REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetLayout(), layout) == true);
-    REQUIRE (static_cast<const Tester&>(n).GetPosX() == 2);
-    REQUIRE (n.GetCurrentManhattanDistance() == 2);
-    REQUIRE (n.GetCurrentHashValue() == 3120681741471255429);
+        // tests all its members upon initialization
+        REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetLayout(), layout) == true);
+        REQUIRE (static_cast<const Tester&>(n).GetPosX() == 2);
+        REQUIRE (n.GetCurrentManhattanDistance() == 2);
+        REQUIRE (n.GetCurrentHashValue() == hash_range(std::span(layout)));
+        REQUIRE (n.IsSolved() == false);
+    }
+
+    SECTION("Solved", "[some_details]")
+    {
+        std::vector<int> layout {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
+        Node n(layout);
+
+        // tests all its members upon initialization
+        REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetLayout(), layout) == true);
+        REQUIRE (static_cast<const Tester&>(n).GetPosX() == 8);
+        REQUIRE (n.GetCurrentManhattanDistance() == 0);
+        REQUIRE (n.GetCurrentHashValue() == hash_range(std::span(layout)));
+        REQUIRE (n.IsSolved());
+    }
 }
 
 TEST_CASE( "Available Moves", "[main]" )
