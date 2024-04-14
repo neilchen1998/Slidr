@@ -25,7 +25,7 @@ TEST_CASE( "Node Initialization", "[main]" )
         Node n(layout);
 
         // tests all its members upon initialization
-        REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetLayout(), layout) == true);
+        REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetLayout(), layout));
         REQUIRE (static_cast<const Tester&>(n).GetPosX() == 2);
         REQUIRE (n.GetCurrentManhattanDistance() == 2);
         REQUIRE (n.GetCurrentHashValue() == hash_range(std::span(layout)));
@@ -38,7 +38,7 @@ TEST_CASE( "Node Initialization", "[main]" )
         Node n(layout);
 
         // tests all its members upon initialization
-        REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetLayout(), layout) == true);
+        REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetLayout(), layout));
         REQUIRE (static_cast<const Tester&>(n).GetPosX() == 8);
         REQUIRE (n.GetCurrentManhattanDistance() == 0);
         REQUIRE (n.GetCurrentHashValue() == hash_range(std::span(layout)));
