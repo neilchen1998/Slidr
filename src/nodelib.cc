@@ -148,6 +148,16 @@ bool Node::operator>(const Node &rhs) const
     return manhattanDistance > rhs.GetCurrentManhattanDistance();
 }
 
+bool Node::operator==(const Node &rhs) const
+{
+    return manhattanDistance == rhs.GetCurrentManhattanDistance();
+}
+
+bool Node::operator!=(const Node &rhs) const
+{
+    return manhattanDistance != rhs.GetCurrentManhattanDistance();
+}
+
 bool Node::IsSolved() const
 {
     return (manhattanDistance == 0) ? true : false;

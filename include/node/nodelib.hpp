@@ -29,6 +29,10 @@ public:
 
     bool operator>(const Node& rhs) const;
 
+    bool operator==(const Node& rhs) const;
+
+    bool operator!=(const Node& rhs) const;
+
     bool IsSolved() const;
 
 private:
