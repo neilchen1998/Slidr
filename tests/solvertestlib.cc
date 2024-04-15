@@ -72,3 +72,24 @@ TEST_CASE( "Solver Initialization", "[main]" )
         REQUIRE (t.GetSteps() == 0);
     }
 }
+
+TEST_CASE( "Priority Queue", "[main]" )
+{
+    Node actualZero = Node({1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY});
+    Node actualOne = Node({1, 2, 3, 4, 5, constants::EMPTY, 7, 8, 6});
+    Node actualTwo = Node({1, 2, 3, 4, 6, constants::EMPTY, 7, 8, 5});
+    SECTION("Three Unique Manhattan Distance Values", "[some_details]")
+    {
+        Solver s = Solver({1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY});
+        Tester t = static_cast<const Tester&>(s);
+        auto pq = t.GetPQ();
+        pq.push(actualOne);
+        pq.push(actualTwo);
+
+        std::vector<Node> vec = GetContainer(pq);
+        auto itr = vec.begin();
+        REQUIRE (*itr++ == actualZero);
+        REQUIRE (*itr++ == actualOne);
+        REQUIRE (*itr == actualTwo);
+    }
+}
