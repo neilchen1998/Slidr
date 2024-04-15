@@ -9,7 +9,7 @@
 #include "node/nodelib.hpp"
 #include "solver/solverlib.hpp"
 
-Solver::Solver(const std::vector<int> initialLayout) : visited(), steps(0)
+Solver::Solver(const std::vector<int> initialLayout) : visited(), curNode(Node(initialLayout)), steps(0)
 {
     pq.push(Node(initialLayout));
 }
