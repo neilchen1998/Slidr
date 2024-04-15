@@ -13,9 +13,9 @@
 #include "solver/solverlib.hpp"
 
 /// @brief Get the underlying container of an iteralbe type
-/// @tparam Adaptor 
-/// @param adaptor 
-/// @return 
+/// @tparam Adaptor the data type of the input
+/// @param adaptor an iterable data structure
+/// @return the underlying container of the input
 template<typename Adaptor>
 requires (std::ranges::input_range<typename Adaptor::container_type>)   // makes sure Adaptor is iterable
 inline std::vector<typename Adaptor::value_type> GetContainer(const Adaptor& adaptor)
@@ -28,6 +28,7 @@ inline std::vector<typename Adaptor::value_type> GetContainer(const Adaptor& ada
     return static_cast<const Printer&>(adaptor).GetContainer();
 }
 
+/// @brief Tester inherits all the protected members of Solver
 struct Tester : Solver
 {
     std::unordered_set<std::size_t> GetVisited() const { return this->visited; }
@@ -38,12 +39,11 @@ struct Tester : Solver
 
 TEST_CASE( "Solver Initialization", "[main]" )
 {
-    // 
     std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
     Solver s = Solver(layout);
-    Node n = Node(layout);
-    std::vector<Node> actualNode {n};
+    Node actualNode = Node(layout);
 
+    // convert it to be of type Tester so we can get all its protected members
     Tester t = static_cast<const Tester&>(s);
 
     SECTION("Visited", "[some_details]")
@@ -59,12 +59,12 @@ TEST_CASE( "Solver Initialization", "[main]" )
         std::vector<Node> vec = GetContainer(pq);
         
         REQUIRE (vec.size() == 1);
-        REQUIRE (vec.front() == n);
+        REQUIRE (vec.front() == actualNode);
     }
 
     SECTION("Current Node", "[some_details]")
     {
-        REQUIRE (t.GetCurrentNode() == n);
+        REQUIRE (t.GetCurrentNode() == actualNode);
     }
 
     SECTION("Steps", "[some_details]")
