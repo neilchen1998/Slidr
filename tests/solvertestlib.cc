@@ -12,27 +12,20 @@
 #include "node/nodelib.hpp"
 #include "solver/solverlib.hpp"
 
+/// @brief Get the underlying container of an iteralbe type
+/// @tparam Adaptor 
+/// @param adaptor 
+/// @return 
 template<typename Adaptor>
 requires (std::ranges::input_range<typename Adaptor::container_type>)   // makes sure Adaptor is iterable
 inline std::vector<typename Adaptor::value_type> GetContainer(const Adaptor& adaptor)
 {
-    struct Printer : Adaptor
+    struct Printer : Adaptor // to access protected Adaptor::Container c (protected inheritance)
     {
         std::vector<typename Adaptor::value_type> GetContainer() const { return this->c; }
     };
 
     return static_cast<const Printer&>(adaptor).GetContainer();
-}
-
-template<typename T, typename U, typename V>
-std::vector<T> PQ2Vector(const std::priority_queue<T, U, V>& pq)
-{
-    struct Getter : std::priority_queue<T, U, V>
-    {
-        std::vector<T> GetContainer() const { return this->c; }
-    };
-    
-    return static_cast<const Getter&>(pq).GetContainer();
 }
 
 struct Tester : Solver
@@ -71,7 +64,7 @@ TEST_CASE( "Solver Initialization", "[main]" )
 
     SECTION("Current Node", "[some_details]")
     {
-        // REQUIRE (t.GetCurrentNode() == );
+        REQUIRE (t.GetCurrentNode() == n);
     }
 
     SECTION("Steps", "[some_details]")
