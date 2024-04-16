@@ -35,11 +35,11 @@ struct Tester : Solver
 
     /// @brief Get a copy of the priority queue of Solver
     /// @return A copy of the priority queue
-    std::priority_queue<Node, std::vector<Node>, std::greater<Node>> GetPQ() const { return this->pq; }
+    std::priority_queue<Node, std::vector<Node>, NodeCmp> GetPQ() const { return this->pq; }
 
     /// @brief Get the reference of the priority queue of Solver
     /// @return The reference
-    std::priority_queue<Node, std::vector<Node>, std::greater<Node>> &GetPQ() { return this->pq; }
+    std::priority_queue<Node, std::vector<Node>, NodeCmp> &GetPQ() { return this->pq; }
     Node GetCurrentNode () const { return this->curNode; }
     int GetSteps() const { return this->steps; }
 };
@@ -93,7 +93,7 @@ TEST_CASE( "Priority Queue", "[main]" )
         Tester t = static_cast<const Tester&>(s);
 
         // gets the reference of the priority queue of the Solver instance
-        std::priority_queue<Node, std::vector<Node>, std::greater<Node>>& pq = t.GetPQ();
+        auto& pq = t.GetPQ();
 
         // inject the values directly
         pq.push(actualOne1);
@@ -105,5 +105,25 @@ TEST_CASE( "Priority Queue", "[main]" )
         REQUIRE (*itr++ == actualZero);
         REQUIRE (*itr++ == actualOne1);
         REQUIRE (*itr == actualTwo);
+    }
+
+    SECTION("Two Nodes with Two Distinct Values", "[some_details]")
+    {
+        Solver s = Solver({1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY});
+        Tester t = static_cast<const Tester&>(s);
+
+        // gets the reference of the priority queue of the Solver instance
+        auto& pq = t.GetPQ();
+
+        // inject the values directly
+        pq.push(actualOne1);
+        pq.push(actualOne2);
+
+        std::vector<Node> vec = GetContainer(pq);
+        REQUIRE (vec.size() == 3);
+        auto itr = vec.begin();
+        REQUIRE (*itr++ == actualZero);
+        REQUIRE (*itr++ == actualOne2);
+        REQUIRE (*itr == actualOne1);
     }
 }
