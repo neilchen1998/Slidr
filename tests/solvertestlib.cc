@@ -83,8 +83,9 @@ TEST_CASE( "Solver Initialization", "[main]" )
 TEST_CASE( "Priority Queue", "[main]" )
 {
     Node actualZero = Node({1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY});
-    Node actualOne = Node({1, 2, 3, 4, 5, constants::EMPTY, 7, 8, 6});
-    Node actualTwo = Node({1, 2, 3, 4, 6, constants::EMPTY, 7, 8, 5});
+    Node actualOne1 = Node({1, 2, 3, 4, 5, constants::EMPTY, 7, 8, 6});
+    Node actualOne2 = Node({1, 2, 3, 4, 5, 6, 7, constants::EMPTY, 8});
+    Node actualTwo = Node({1, 2, 3, 4, constants::EMPTY, 6, 7, 5, 8});
 
     SECTION("Three Nodes with Three Distinct Values", "[some_details]")
     {
@@ -95,13 +96,14 @@ TEST_CASE( "Priority Queue", "[main]" )
         std::priority_queue<Node, std::vector<Node>, std::greater<Node>>& pq = t.GetPQ();
 
         // inject the values directly
-        pq.push(actualOne);
+        pq.push(actualOne1);
         pq.push(actualTwo);
 
         std::vector<Node> vec = GetContainer(pq);
+        REQUIRE (vec.size() == 3);
         auto itr = vec.begin();
         REQUIRE (*itr++ == actualZero);
-        REQUIRE (*itr++ == actualOne);
+        REQUIRE (*itr++ == actualOne1);
         REQUIRE (*itr == actualTwo);
     }
 }
