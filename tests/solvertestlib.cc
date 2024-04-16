@@ -14,8 +14,8 @@
 
 /// @brief Get the underlying container of an iteralbe type
 /// @tparam Adaptor the data type of the input
-/// @param adaptor an iterable data structure
-/// @return the underlying container of the input
+/// @param adaptor An iterable data structure
+/// @return The underlying container of the input
 template<typename Adaptor>
 requires (std::ranges::input_range<typename Adaptor::container_type>)   // makes sure Adaptor is iterable
 inline std::vector<typename Adaptor::value_type> GetContainer(const Adaptor& adaptor)
@@ -32,7 +32,14 @@ inline std::vector<typename Adaptor::value_type> GetContainer(const Adaptor& ada
 struct Tester : Solver
 {
     std::unordered_set<std::size_t> GetVisited() const { return this->visited; }
+
+    /// @brief Get a copy of the priority queue of Solver
+    /// @return A copy of the priority queue
     std::priority_queue<Node, std::vector<Node>, std::greater<Node>> GetPQ() const { return this->pq; }
+
+    /// @brief Get the reference of the priority queue of Solver
+    /// @return The reference
+    std::priority_queue<Node, std::vector<Node>, std::greater<Node>> &GetPQ() { return this->pq; }
     Node GetCurrentNode () const { return this->curNode; }
     int GetSteps() const { return this->steps; }
 };
@@ -78,11 +85,16 @@ TEST_CASE( "Priority Queue", "[main]" )
     Node actualZero = Node({1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY});
     Node actualOne = Node({1, 2, 3, 4, 5, constants::EMPTY, 7, 8, 6});
     Node actualTwo = Node({1, 2, 3, 4, 6, constants::EMPTY, 7, 8, 5});
-    SECTION("Three Unique Manhattan Distance Values", "[some_details]")
+
+    SECTION("Three Nodes with Three Distinct Values", "[some_details]")
     {
         Solver s = Solver({1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY});
         Tester t = static_cast<const Tester&>(s);
-        auto pq = t.GetPQ();
+
+        // gets the reference of the priority queue of the Solver instance
+        std::priority_queue<Node, std::vector<Node>, std::greater<Node>>& pq = t.GetPQ();
+
+        // inject the values directly
         pq.push(actualOne);
         pq.push(actualTwo);
 
