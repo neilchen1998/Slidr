@@ -17,8 +17,24 @@ public:
     std::tuple<bool, int> SolvePuzzle();
 
 protected:
+
+    struct NodeCmp
+    {
+        bool operator()(const Node& lhs, const Node& rhs)
+        {
+            if (lhs != rhs)
+            {
+                return lhs > rhs;
+            }
+            else
+            {
+                return lhs.GetCurrentHashValue() > rhs.GetCurrentHashValue();
+            }
+        }
+    };
+
     std::unordered_set<std::size_t> visited;
-    std::priority_queue<Node, std::vector<Node>, std::greater<Node>> pq;
+    std::priority_queue<Node, std::vector<Node>, NodeCmp> pq;
     Node curNode;
     int steps;
 };
