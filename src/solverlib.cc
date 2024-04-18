@@ -14,6 +14,11 @@ Solver::Solver(const std::vector<int> initialLayout) : visited(), curNode(Node(i
     pq.push(Node(initialLayout));
 }
 
+Solver::Solver(const Node& initialNode) : visited(), curNode(initialNode), steps(0)
+{
+    pq.push(initialNode);
+}
+
 std::tuple<bool, int> Solver::SolvePuzzle()
 {
     while (!pq.empty())
