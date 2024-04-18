@@ -44,6 +44,28 @@ struct Tester : Solver
     int GetSteps() const { return this->steps; }
 };
 
+TEST_CASE( "Solver Constructor", "[main]" )
+{
+    std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
+
+    SECTION("Constructor with Vector", "[some_details]")
+    {
+        Solver s = Solver(layout);
+        // convert it to be of type Tester so we can get all its protected members
+        Tester t = static_cast<const Tester&>(s);
+        REQUIRE (t.GetVisited().empty());
+    }
+
+    SECTION("Constructor with Node", "[some_details]")
+    {
+        Node initalNode = Node(layout);
+        Solver s = Solver(initalNode);
+        // convert it to be of type Tester so we can get all its protected members
+        Tester t = static_cast<const Tester&>(s);
+        REQUIRE (t.GetVisited().empty());
+    }
+}
+
 TEST_CASE( "Solver Initialization", "[main]" )
 {
     std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
