@@ -149,3 +149,34 @@ TEST_CASE( "Priority Queue", "[main]" )
         REQUIRE (*itr == actualOne1);
     }
 }
+
+TEST_CASE( "Can Solve Puzzles", "[main]" )
+{
+    SECTION("Puzzle 0", "[trivial case]")
+    {
+        std::vector<int> layout {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
+        Solver s = Solver(layout);
+        auto [isSolved, totalSteps] = s.SolvePuzzle();
+
+        REQUIRE (isSolved);
+        REQUIRE (totalSteps == 0);
+    }
+
+    SECTION("Puzzle 1", "[general case]")
+    {
+        std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
+        Solver s = Solver(layout);
+        auto [isSolved, totalSteps] = s.SolvePuzzle();
+
+        REQUIRE (isSolved);
+    }
+
+    SECTION("Puzzle 2", "[general case]")
+    {
+        std::vector<int> layout {5, 3, 6, 2, constants::EMPTY, 8, 4, 1, 7};
+        Solver s = Solver(layout);
+        auto [isSolved, totalSteps] = s.SolvePuzzle();
+
+        REQUIRE (isSolved);
+    }
+}
