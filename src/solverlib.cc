@@ -29,7 +29,6 @@ std::tuple<bool, int> Solver::SolvePuzzle()
         // checks if we have solved the problem
         if (curNode.IsSolved())
         {
-            curNode.Print();
             return std::tuple{curNode.IsSolved(), steps};
         }
 
@@ -51,8 +50,6 @@ std::tuple<bool, int> Solver::SolvePuzzle()
 
         ++steps;
     }
-
-    curNode.Print();
 
     return std::tuple{curNode.IsSolved(), steps};
 }
