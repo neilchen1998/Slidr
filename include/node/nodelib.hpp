@@ -39,9 +39,16 @@ private:
     void CalculateManhattanDistance();
 
 protected:
+    /// @brief the layout of the node
     std::vector<int> layout;
+
+    /// @brief the position of the empty piece
     int posX;
+
+    /// @brief the Manhattan distance
     int manhattanDistance;
+
+    /// @brief the hash value
     std::size_t hashValue;
 };
 
