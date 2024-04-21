@@ -6,14 +6,14 @@
 #include "constants/constantslib.hpp"
 #include "math/mathlib.hpp"
 
-Node::Node(std::vector<int> input) : layout(input)
+Node::Node(std::vector<int> input) : state(input), depth(0)
 {
-    hashValue = hash_range(std::span(layout));
+    hashValue = hash_range(std::span(state));
     posX = std::ranges::find(input, constants::EMPTY) - input.begin();
     CalculateManhattanDistance();
 }
 
-Node::Node(std::vector<int> input, int posX) : layout(input), posX(posX)
+Node::Node(std::vector<int> input, int posX, int depth) : state(input), posX(posX), depth(depth)
 {
     hashValue = hash_range(std::span(input));
     CalculateManhattanDistance();
@@ -63,38 +63,38 @@ std::vector<Node> Node::GetChildrenNodes() const
 
     for(const int& move : moves)
     {
-        auto [childLayout, childPosX] = GetNextLayout(move);
-        children.emplace_back(childLayout, childPosX);
+        auto [childState, childPosX] = GetNextState(move);
+        children.emplace_back(childState, childPosX, depth + 1);
     }
 
     return children;
 }
 
-std::tuple<std::vector<int>, int> Node::GetNextLayout(int dir) const
+std::tuple<std::vector<int>, int> Node::GetNextState(int dir) const
 {
-    std::vector<int> newLayout = layout;
+    std::vector<int> newState = state;
     int newPosX = posX;
 
     // swaps the piece
     switch (dir)
     {
     case constants::LEFT:
-        std::swap(newLayout[newPosX], newLayout[newPosX - 1]);
+        std::swap(newState[newPosX], newState[newPosX - 1]);
         newPosX -= 1;
         break;
 
     case constants::RIGHT:
-        std::swap(newLayout[newPosX], newLayout[newPosX + 1]);
+        std::swap(newState[newPosX], newState[newPosX + 1]);
         newPosX += 1;
         break;
 
     case constants::UP:
-        std::swap(newLayout[newPosX], newLayout[newPosX - constants::EIGHT_PUZZLE_SIZE]);
+        std::swap(newState[newPosX], newState[newPosX - constants::EIGHT_PUZZLE_SIZE]);
         newPosX -= constants::EIGHT_PUZZLE_SIZE;
         break;
 
     case constants::DOWN:
-        std::swap(newLayout[newPosX], newLayout[newPosX + constants::EIGHT_PUZZLE_SIZE]);
+        std::swap(newState[newPosX], newState[newPosX + constants::EIGHT_PUZZLE_SIZE]);
         newPosX += constants::EIGHT_PUZZLE_SIZE;
         break;
 
@@ -102,7 +102,7 @@ std::tuple<std::vector<int>, int> Node::GetNextLayout(int dir) const
         break;
     }
 
-    return std::tuple<std::vector<int>, int>{newLayout, newPosX};
+    return std::tuple<std::vector<int>, int>{newState, newPosX};
 }
 
 int Node::GetCurrentManhattanDistance() const
@@ -118,7 +118,7 @@ std::size_t Node::GetCurrentHashValue() const
 void Node::Print() const
 {
     std::size_t cnt = 0;
-    for (const auto& ele : layout)
+    for (const auto& ele : state)
     {
         // prints "x" if the value if equals to "constants::EMPTY"
         if (ele != constants::EMPTY)
@@ -166,7 +166,7 @@ bool Node::IsSolved() const
 void Node::CalculateManhattanDistance()
 {
     int ptr = 0;
-    manhattanDistance = std::accumulate(layout.begin(), layout.end(), 0,
+    manhattanDistance = std::accumulate(state.begin(), state.end(), 0,
         [&](int s, int v)
         {
             int diff = 0;
@@ -192,4 +192,9 @@ void Node::CalculateManhattanDistance()
 
             return s += diff;
         });
+}
+
+int Node::GetDepth() const
+{
+    return depth;
 }

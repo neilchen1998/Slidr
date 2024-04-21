@@ -10,14 +10,14 @@ class Node
 public:
     Node() = default;
     Node(std::vector<int> input);
-    Node(std::vector<int> input, int posX);
+    explicit Node(std::vector<int> input, int posX, int depth);
     ~Node() = default;
 
     std::vector<int> AvailableMoves() const;
 
     std::vector<Node> GetChildrenNodes() const;
 
-    std::tuple<std::vector<int>, int> GetNextLayout(int dir) const;
+    std::tuple<std::vector<int>, int> GetNextState(int dir) const;
 
     int GetCurrentManhattanDistance() const;
 
@@ -35,12 +35,14 @@ public:
 
     bool IsSolved() const;
 
+    int GetDepth() const;
+
 private:
     void CalculateManhattanDistance();
 
 protected:
-    /// @brief the layout of the node
-    std::vector<int> layout;
+    /// @brief the state of the node
+    std::vector<int> state;
 
     /// @brief the position of the empty piece
     int posX;
@@ -50,6 +52,9 @@ protected:
 
     /// @brief the hash value
     std::size_t hashValue;
+
+    /// @brief the depth value
+    int depth;
 };
 
 #endif // INCLUDE_NODE_NODELIB_H_

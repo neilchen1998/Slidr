@@ -12,7 +12,7 @@
 
 struct Tester : Node
 {
-    std::vector<int> GetLayout() const { return this-> layout; }
+    std::vector<int> GetState() const { return this->state; }
 
     int GetPosX() const { return this->posX; }
 };
@@ -21,27 +21,27 @@ TEST_CASE( "Node Initialization", "[main]" )
 {
     SECTION("Unsolved", "[some_details]")
     {
-        std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
-        Node n(layout);
+        std::vector<int> state {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
+        Node n(state);
 
         // tests all its members upon initialization
-        REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetLayout(), layout));
+        REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetState(), state));
         REQUIRE (static_cast<const Tester&>(n).GetPosX() == 2);
         REQUIRE (n.GetCurrentManhattanDistance() == 2);
-        REQUIRE (n.GetCurrentHashValue() == hash_range(std::span(layout)));
+        REQUIRE (n.GetCurrentHashValue() == hash_range(std::span(state)));
         REQUIRE (n.IsSolved() == false);
     }
 
     SECTION("Solved", "[some_details]")
     {
-        std::vector<int> layout {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
-        Node n(layout);
+        std::vector<int> state {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
+        Node n(state);
 
         // tests all its members upon initialization
-        REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetLayout(), layout));
+        REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetState(), state));
         REQUIRE (static_cast<const Tester&>(n).GetPosX() == 8);
         REQUIRE (n.GetCurrentManhattanDistance() == 0);
-        REQUIRE (n.GetCurrentHashValue() == hash_range(std::span(layout)));
+        REQUIRE (n.GetCurrentHashValue() == hash_range(std::span(state)));
         REQUIRE (n.IsSolved());
     }
 }
@@ -93,9 +93,9 @@ TEST_CASE( "Available Moves", "[main]" )
     REQUIRE (std::ranges::equal(movesCenterBottom, acutalMovesCenterBottom));
 }
 
-TEST_CASE( "Get Next Layout", "[main]" )
+TEST_CASE( "Get Next State", "[main]" )
 {
-    // initializes the start layout
+    // initializes the start state
     Node middle({3, 6, 4, 8, constants::EMPTY, 5, 7, 2, 1});
     constexpr int acutalPosX = 4;
 
@@ -118,18 +118,18 @@ TEST_CASE( "Get Next Layout", "[main]" )
     auto itr = movesMiddle.begin();
     SECTION("Right", "[some_details]")
     {
-        auto [childLayout, childPosX] = middle.GetNextLayout(*itr);
+        auto [childState, childPosX] = middle.GetNextState(*itr);
 
-        REQUIRE (std::ranges::equal(childLayout, actualRightLayout));
+        REQUIRE (std::ranges::equal(childState, actualRightLayout));
         REQUIRE (childPosX == actualRightPosX);
     }
 
     ++itr;
     SECTION("Up", "[some_details]")
     {
-        auto [childLayout, childPosX] = middle.GetNextLayout(*itr);
+        auto [childState, childPosX] = middle.GetNextState(*itr);
 
-        REQUIRE (std::ranges::equal(childLayout, actualUpLayout));
+        REQUIRE (std::ranges::equal(childState, actualUpLayout));
         REQUIRE (childPosX == actualUpPosX);
 
     }
@@ -137,9 +137,9 @@ TEST_CASE( "Get Next Layout", "[main]" )
     ++itr;
     SECTION("Left", "[some_details]")
     {
-        auto [childLayout, childPosX] = middle.GetNextLayout(*itr);
+        auto [childState, childPosX] = middle.GetNextState(*itr);
 
-        REQUIRE (std::ranges::equal(childLayout, actualLeftLayout));
+        REQUIRE (std::ranges::equal(childState, actualLeftLayout));
         REQUIRE (childPosX == actualLeftPosX);
 
     }
@@ -147,9 +147,9 @@ TEST_CASE( "Get Next Layout", "[main]" )
     ++itr;
     SECTION("Down", "[some_details]")
     {
-        auto [childLayout, childPosX] = middle.GetNextLayout(*itr);
+        auto [childState, childPosX] = middle.GetNextState(*itr);
 
-        REQUIRE (std::ranges::equal(childLayout, actualDownLayout));
+        REQUIRE (std::ranges::equal(childState, actualDownLayout));
         REQUIRE (childPosX == actualDownPosX);
     }
 }
@@ -182,5 +182,32 @@ TEST_CASE( "Operators", "[main]" )
     SECTION("Not Equal To", "[some_details]")
     {
         REQUIRE ((n2 != n1));
+    }
+}
+
+TEST_CASE( "Depth", "[main]" )
+{
+    std::vector<int> state {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
+
+    SECTION("Depth 0", "[some_details]")
+    {
+        Node n(state, 2, 0);
+        std::vector<Node> childredNodes = n.GetChildrenNodes();
+        auto itr = childredNodes.begin();
+
+        REQUIRE (itr->GetDepth() == 1);
+        ++itr;
+        REQUIRE (itr->GetDepth() == 1);
+    }
+
+    SECTION("Depth 99", "[some_details]")
+    {
+        Node n(state, 2, 99);
+        std::vector<Node> childredNodes = n.GetChildrenNodes();
+        auto itr = childredNodes.begin();
+
+        REQUIRE (itr->GetDepth() == 100);
+        ++itr;
+        REQUIRE (itr->GetDepth() == 100);
     }
 }
