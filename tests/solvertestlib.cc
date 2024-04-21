@@ -42,15 +42,16 @@ struct Tester : Solver
     std::priority_queue<Node, std::vector<Node>, NodeCmp> &GetPQ() { return this->pq; }
     Node GetStartNode () const { return this->startNode; }
     int GetIterations() const { return this->iterations; }
+    std::vector<Node> GetSolution() const { return this->solution; }
 };
 
 TEST_CASE( "Solver Constructor", "[main]" )
 {
-    std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
+    std::vector<int> initialState {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
 
     SECTION("Constructor with Vector", "[some_details]")
     {
-        Solver s = Solver(layout);
+        Solver s = Solver(initialState);
         // convert it to be of type Tester so we can get all its protected members
         Tester t = static_cast<const Tester&>(s);
         REQUIRE (t.GetVisited().empty());
@@ -58,7 +59,7 @@ TEST_CASE( "Solver Constructor", "[main]" )
 
     SECTION("Constructor with Node", "[some_details]")
     {
-        Node initalNode = Node(layout);
+        Node initalNode = Node(initialState);
         Solver s = Solver(initalNode);
         // convert it to be of type Tester so we can get all its protected members
         Tester t = static_cast<const Tester&>(s);
@@ -68,9 +69,9 @@ TEST_CASE( "Solver Constructor", "[main]" )
 
 TEST_CASE( "Solver Initialization", "[main]" )
 {
-    std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
-    Solver s = Solver(layout);
-    Node actualNode = Node(layout);
+    std::vector<int> initialState {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
+    Solver s = Solver(initialState);
+    Node actualNode = Node(initialState);
 
     // convert it to be of type Tester so we can get all its protected members
     Tester t = static_cast<const Tester&>(s);
@@ -154,8 +155,8 @@ TEST_CASE( "Can Solve Puzzles", "[main]" )
 {
     SECTION("Puzzle 0", "[trivial case]")
     {
-        std::vector<int> layout {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
-        Solver s = Solver(layout);
+        std::vector<int> initialState {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
+        Solver s = Solver(initialState);
         auto [isSolved, totalIterations] = s.SolvePuzzle();
 
         REQUIRE (isSolved);
@@ -164,8 +165,8 @@ TEST_CASE( "Can Solve Puzzles", "[main]" )
 
     SECTION("Puzzle 1", "[general case]")
     {
-        std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
-        Solver s = Solver(layout);
+        std::vector<int> initialState {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
+        Solver s = Solver(initialState);
         auto [isSolved, totalIterations] = s.SolvePuzzle();
 
         REQUIRE (isSolved);
@@ -173,8 +174,8 @@ TEST_CASE( "Can Solve Puzzles", "[main]" )
 
     SECTION("Puzzle 2", "[general case]")
     {
-        std::vector<int> layout {5, 3, 6, 2, constants::EMPTY, 8, 4, 1, 7};
-        Solver s = Solver(layout);
+        std::vector<int> initialState {5, 3, 6, 2, constants::EMPTY, 8, 4, 1, 7};
+        Solver s = Solver(initialState);
         auto [isSolved, totalIterations] = s.SolvePuzzle();
 
         REQUIRE (isSolved);
@@ -186,8 +187,8 @@ TEST_CASE( "Solve Puzzles with Least Steps", "[main]" )
     // source: https://deniz.co/8-puzzle-solver/
     SECTION("Puzzle 0", "[trivial case]")
     {
-        std::vector<int> layout {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
-        Solver s = Solver(layout);
+        std::vector<int> initialState {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
+        Solver s = Solver(initialState);
         auto [isSolved, totalIterations] = s.SolvePuzzle();
 
         REQUIRE (isSolved);
@@ -196,8 +197,8 @@ TEST_CASE( "Solve Puzzles with Least Steps", "[main]" )
 
     SECTION("Puzzle 1", "[general case]")
     {
-        std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
-        Solver s = Solver(layout);
+        std::vector<int> initialState {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
+        Solver s = Solver(initialState);
         auto [isSolved, totalIterations] = s.SolvePuzzle();
 
         REQUIRE (isSolved);
@@ -206,9 +207,11 @@ TEST_CASE( "Solve Puzzles with Least Steps", "[main]" )
 
     SECTION("Puzzle 2", "[general case]")
     {
-        std::vector<int> layout {5, 3, 6, 2, constants::EMPTY, 8, 4, 1, 7};
-        Solver s = Solver(layout);
+        std::vector<int> initialState {5, 3, 6, 2, constants::EMPTY, 8, 4, 1, 7};
+        Solver s = Solver(initialState);
         auto [isSolved, totalIterations] = s.SolvePuzzle();
+
+        s.GetSolution();
 
         REQUIRE (isSolved);
         REQUIRE (s.GetDepth() == 14);
@@ -216,13 +219,15 @@ TEST_CASE( "Solve Puzzles with Least Steps", "[main]" )
 
     SECTION("Puzzle 3", "[general case]")
     {
-        std::vector<int> layout {4, 8, 7, 1, constants::EMPTY, 3, 6, 5, 2};
-        Node start = Node(layout);
+        std::vector<int> initialState {4, 8, 7, 1, constants::EMPTY, 3, 6, 5, 2};
+        Node start = Node(initialState);
 
         REQUIRE(start.GetManhattanDistance() == 16);
 
-        Solver s = Solver(layout);
+        Solver s = Solver(initialState);
         auto [isSolved, totalIterations] = s.SolvePuzzle();
+
+        s.GetSolution();
 
         REQUIRE (isSolved);
         REQUIRE (s.GetDepth() == 42);
@@ -230,13 +235,16 @@ TEST_CASE( "Solve Puzzles with Least Steps", "[main]" )
 
     SECTION("Puzzle 4", "[general case]")
     {
-        std::vector<int> layout {3, 7, 8, constants::EMPTY, 2, 1, 4, 6, 5};
-        Node start = Node(layout);
+        std::vector<int> initialState {3, 7, 8, constants::EMPTY, 2, 1, 4, 6, 5};
+        Node start = Node(initialState);
 
         REQUIRE(start.GetManhattanDistance() == 17);
 
-        Solver s = Solver(layout);
+        Solver s = Solver(initialState);
         auto [isSolved, totalIterations] = s.SolvePuzzle();
+        Tester t = static_cast<const Tester&>(s);
+
+        s.GetSolution();
 
         REQUIRE (isSolved);
         REQUIRE (s.GetDepth() == 24);

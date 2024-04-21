@@ -29,6 +29,8 @@ public:
 
     int GetDepth() const;
 
+    std::vector<Node> GetSolution() const;
+
 protected:
 
     /// @brief the compare function for the priority queue
@@ -36,7 +38,7 @@ protected:
     {
         bool operator()(const Node& lhs, const Node& rhs)
         {
-            return lhs.GetManhattanDistance() + lhs.GetDepth() > rhs.GetManhattanDistance() + rhs.GetDepth();
+            return lhs.GetManhattanDistance() > rhs.GetManhattanDistance();
         }
     };
 
@@ -78,6 +80,8 @@ protected:
 
     /// @brief the depth (the least steps) to solve the puzzle
     int depth;
+
+    std::vector<Node> solution;
 };
 
 #endif // INCLUDE_SOLVER_SOLVERLIB_H_

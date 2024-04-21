@@ -4,6 +4,8 @@
 #include <queue>    // std::priority_queue
 #include <tuple>    // std::tuple
 #include <climits>  // INT_MAX
+#include <algorithm>  // std::ranges::reverse
+#include <iostream> // std::cout
 
 #include "constants/constantslib.hpp"
 #include "math/mathlib.hpp"
@@ -62,16 +64,37 @@ std::tuple<bool, int> Solver::SolvePuzzle()
 void Solver::Backtracking()
 {
     Node cur = curNode;
+    solution.push_back(cur);
 
     depth = 0;
     while (cur != startNode)
     {
         cur = parents[cur];
+        solution.push_back(cur);
         ++depth;
     }
+
+    std::reverse(solution.begin(), solution.end());
 }
 
 int Solver::GetDepth() const
 {
     return depth;
+}
+
+std::vector<Node> Solver::GetSolution() const
+{
+    // // DEBUG
+    // int i = 0;
+    // auto itr = solution.cbegin();
+    // while (itr != solution.cend())
+    // {
+    //     std::cout << "Step " << i << ":\n";
+    //     itr->Print();
+
+    //     ++itr;
+    //     ++i;
+    // }
+
+    return solution;
 }
