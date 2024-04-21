@@ -219,7 +219,7 @@ TEST_CASE( "Solve Puzzles with Least Steps", "[main]" )
         std::vector<int> layout {4, 8, 7, 1, constants::EMPTY, 3, 6, 5, 2};
         Node start = Node(layout);
 
-        REQUIRE(start.GetCurrentManhattanDistance() == 16);
+        REQUIRE(start.GetManhattanDistance() == 16);
 
         Solver s = Solver(layout);
         auto [isSolved, totalIterations] = s.SolvePuzzle();
@@ -233,7 +233,7 @@ TEST_CASE( "Solve Puzzles with Least Steps", "[main]" )
         std::vector<int> layout {3, 7, 8, constants::EMPTY, 2, 1, 4, 6, 5};
         Node start = Node(layout);
 
-        REQUIRE(start.GetCurrentManhattanDistance() == 17);
+        REQUIRE(start.GetManhattanDistance() == 17);
 
         Solver s = Solver(layout);
         auto [isSolved, totalIterations] = s.SolvePuzzle();

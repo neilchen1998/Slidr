@@ -105,7 +105,7 @@ std::tuple<std::vector<int>, int> Node::GetNextState(int dir) const
     return std::tuple<std::vector<int>, int>{newState, newPosX};
 }
 
-int Node::GetCurrentManhattanDistance() const
+int Node::GetManhattanDistance() const
 {
     return manhattanDistance;
 }
@@ -140,22 +140,22 @@ void Node::Print() const
 
 bool Node::operator<(const Node &rhs) const
 {
-    return manhattanDistance < rhs.GetCurrentManhattanDistance();
+    return manhattanDistance < rhs.GetManhattanDistance();
 }
 
 bool Node::operator>(const Node &rhs) const
 {
-    return manhattanDistance > rhs.GetCurrentManhattanDistance();
+    return manhattanDistance > rhs.GetManhattanDistance();
 }
 
 bool Node::operator==(const Node &rhs) const
 {
-    return manhattanDistance == rhs.GetCurrentManhattanDistance();
+    return manhattanDistance == rhs.GetManhattanDistance();
 }
 
 bool Node::operator!=(const Node &rhs) const
 {
-    return manhattanDistance != rhs.GetCurrentManhattanDistance();
+    return manhattanDistance != rhs.GetManhattanDistance();
 }
 
 bool Node::IsSolved() const

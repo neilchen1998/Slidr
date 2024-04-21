@@ -19,7 +19,7 @@ public:
 
     std::tuple<std::vector<int>, int> GetNextState(int dir) const;
 
-    int GetCurrentManhattanDistance() const;
+    int GetManhattanDistance() const;
 
     std::size_t GetCurrentHashValue() const;
 
