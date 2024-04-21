@@ -40,8 +40,8 @@ struct Tester : Solver
     /// @brief Get the reference of the priority queue of Solver
     /// @return The reference
     std::priority_queue<Node, std::vector<Node>, NodeCmp> &GetPQ() { return this->pq; }
-    Node GetCurrentNode () const { return this->curNode; }
-    int GetSteps() const { return this->steps; }
+    Node GetStartNode () const { return this->startNode; }
+    int GetIterations() const { return this->iterations; }
 };
 
 TEST_CASE( "Solver Constructor", "[main]" )
@@ -93,12 +93,12 @@ TEST_CASE( "Solver Initialization", "[main]" )
 
     SECTION("Current Node", "[some_details]")
     {
-        REQUIRE (t.GetCurrentNode() == actualNode);
+        REQUIRE (t.GetStartNode() == actualNode);
     }
 
     SECTION("Steps", "[some_details]")
     {
-        REQUIRE (t.GetSteps() == 0);
+        REQUIRE (t.GetIterations() == 0);
     }
 }
 
@@ -156,17 +156,17 @@ TEST_CASE( "Can Solve Puzzles", "[main]" )
     {
         std::vector<int> layout {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
         Solver s = Solver(layout);
-        auto [isSolved, totalSteps] = s.SolvePuzzle();
+        auto [isSolved, totalIterations] = s.SolvePuzzle();
 
         REQUIRE (isSolved);
-        REQUIRE (totalSteps == 0);
+        REQUIRE (totalIterations == 0);
     }
 
     SECTION("Puzzle 1", "[general case]")
     {
         std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
         Solver s = Solver(layout);
-        auto [isSolved, totalSteps] = s.SolvePuzzle();
+        auto [isSolved, totalIterations] = s.SolvePuzzle();
 
         REQUIRE (isSolved);
     }
@@ -175,8 +175,70 @@ TEST_CASE( "Can Solve Puzzles", "[main]" )
     {
         std::vector<int> layout {5, 3, 6, 2, constants::EMPTY, 8, 4, 1, 7};
         Solver s = Solver(layout);
-        auto [isSolved, totalSteps] = s.SolvePuzzle();
+        auto [isSolved, totalIterations] = s.SolvePuzzle();
 
         REQUIRE (isSolved);
+    }
+}
+
+TEST_CASE( "Solve Puzzles with Least Steps", "[main]" )
+{
+    // source: https://deniz.co/8-puzzle-solver/
+    SECTION("Puzzle 0", "[trivial case]")
+    {
+        std::vector<int> layout {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
+        Solver s = Solver(layout);
+        auto [isSolved, totalIterations] = s.SolvePuzzle();
+
+        REQUIRE (isSolved);
+        REQUIRE (totalIterations == 0);
+    }
+
+    SECTION("Puzzle 1", "[general case]")
+    {
+        std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
+        Solver s = Solver(layout);
+        auto [isSolved, totalIterations] = s.SolvePuzzle();
+
+        REQUIRE (isSolved);
+        REQUIRE (s.GetDepth() == 2);
+    }
+
+    SECTION("Puzzle 2", "[general case]")
+    {
+        std::vector<int> layout {5, 3, 6, 2, constants::EMPTY, 8, 4, 1, 7};
+        Solver s = Solver(layout);
+        auto [isSolved, totalIterations] = s.SolvePuzzle();
+
+        REQUIRE (isSolved);
+        REQUIRE (s.GetDepth() == 14);
+    }
+
+    SECTION("Puzzle 3", "[general case]")
+    {
+        std::vector<int> layout {4, 8, 7, 1, constants::EMPTY, 3, 6, 5, 2};
+        Node start = Node(layout);
+
+        REQUIRE(start.GetCurrentManhattanDistance() == 16);
+
+        Solver s = Solver(layout);
+        auto [isSolved, totalIterations] = s.SolvePuzzle();
+
+        REQUIRE (isSolved);
+        REQUIRE (s.GetDepth() == 42);
+    }
+
+    SECTION("Puzzle 4", "[general case]")
+    {
+        std::vector<int> layout {3, 7, 8, constants::EMPTY, 2, 1, 4, 6, 5};
+        Node start = Node(layout);
+
+        REQUIRE(start.GetCurrentManhattanDistance() == 17);
+
+        Solver s = Solver(layout);
+        auto [isSolved, totalIterations] = s.SolvePuzzle();
+
+        REQUIRE (isSolved);
+        REQUIRE (s.GetDepth() == 24);
     }
 }

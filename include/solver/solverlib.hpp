@@ -4,6 +4,7 @@
 #include <cstdlib>  // std::size_t
 #include <vector>   // std::vector
 #include <unordered_set>    // std::unordered_set
+#include <unordered_map>    // std::unordered_map
 #include <queue>    // std::priority_queue
 #include <tuple>    // std::tuple
 
@@ -13,8 +14,8 @@ class Solver
 {
 public:
     /// @brief The constructor
-    /// @param initialLayout the initial layout of the puzzle (vector type)
-    Solver(std::vector<int> initialLayout);
+    /// @param initialState the initial layout of the puzzle (vector type)
+    Solver(std::vector<int> initialState);
 
     /// @brief The constructor
     /// @param initialNode the initial layout of the puzzle (vector type)
@@ -23,8 +24,10 @@ public:
     ~Solver() = default;
 
     /// @brief Solve the puzzle
-    /// @return { whether the puzzle is solved, the number of steps the Solver took }
+    /// @return { whether the puzzle is solved, the number of iterations the Solver took }
     std::tuple<bool, int> SolvePuzzle();
+
+    int GetDepth() const;
 
 protected:
 
@@ -33,35 +36,48 @@ protected:
     {
         bool operator()(const Node& lhs, const Node& rhs)
         {
-            // checks if the two Nodes have different Manhattan value
-            if (lhs != rhs)
-            {
-                // different Manhattan value, uses their values
-                // since we are using a priority queue,
-                // we prefer the Node with smaller Manhattan value
-                return lhs > rhs;
-            }
-            else
-            {
-                // two Nodes have the same Manhattan value
-                // we prefer the Node with high hash value since that indicates
-                // the Node is closer to finish
-                return lhs.GetCurrentHashValue() < rhs.GetCurrentHashValue();
-            }
+            return lhs > rhs;
         }
     };
+
+    struct KeyHash
+    {
+        std::size_t operator()(const Node& k) const
+        {
+            return k.GetCurrentHashValue();
+        }
+    };
+
+    struct KeyEqual
+    {
+        bool operator()(const Node& lhs, const Node& rhs) const
+        {
+            return lhs.GetCurrentHashValue() == rhs.GetCurrentHashValue();
+        }
+    };
+
+    void Backtracking();
 
     /// @brief the cache that stores all visited nodes
     std::unordered_set<std::size_t> visited;
 
+    /// @brief the map that contains nodes' parents
+    std::unordered_map<Node, Node, KeyHash, KeyEqual> parents;
+
     /// @brief the priority queue that stores all candidate nodes
     std::priority_queue<Node, std::vector<Node>, NodeCmp> pq;
+
+    /// @brief the start node
+    Node startNode;
 
     /// @brief the current node
     Node curNode;
 
-    /// @brief the number of steps
-    int steps;
+    /// @brief the number of iterations
+    int iterations;
+
+    /// @brief the depth (the least steps) to solve the puzzle
+    int depth;
 };
 
 #endif // INCLUDE_SOLVER_SOLVERLIB_H_

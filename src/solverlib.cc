@@ -3,18 +3,19 @@
 #include <unordered_set>    // std::unordered_set
 #include <queue>    // std::priority_queue
 #include <tuple>    // std::tuple
+#include <climits>  // INT_MAX
 
 #include "constants/constantslib.hpp"
 #include "math/mathlib.hpp"
 #include "node/nodelib.hpp"
 #include "solver/solverlib.hpp"
 
-Solver::Solver(const std::vector<int> initialLayout) : visited(), curNode(Node(initialLayout)), steps(0)
+Solver::Solver(const std::vector<int> initialState) : visited(), startNode(Node(initialState)), iterations(0), depth(0)
 {
-    pq.push(Node(initialLayout));
+    pq.push(Node(initialState));
 }
 
-Solver::Solver(const Node& initialNode) : visited(), curNode(initialNode), steps(0)
+Solver::Solver(const Node& initialNode) : visited(), startNode(initialNode), iterations(0), depth(0)
 {
     pq.push(initialNode);
 }
@@ -29,7 +30,9 @@ std::tuple<bool, int> Solver::SolvePuzzle()
         // checks if we have solved the problem
         if (curNode.IsSolved())
         {
-            return std::tuple{curNode.IsSolved(), steps};
+            Backtracking();
+
+            return std::tuple{curNode.IsSolved(), iterations};
         }
 
         pq.pop();
@@ -44,12 +47,31 @@ std::tuple<bool, int> Solver::SolvePuzzle()
             if (visited.count(curHashValue) == 0)
             {
                 pq.push(child);
+                parents[child] = curNode;
+
                 visited.insert(curHashValue);
             }
         }
 
-        ++steps;
+        ++iterations;
     }
 
-    return std::tuple{curNode.IsSolved(), steps};
+    return std::tuple{false, INT_MAX};
+}
+
+void Solver::Backtracking()
+{
+    Node cur = curNode;
+
+    depth = 0;
+    while (cur != startNode)
+    {
+        cur = parents[cur];
+        ++depth;
+    }
+}
+
+int Solver::GetDepth() const
+{
+    return depth;
 }
