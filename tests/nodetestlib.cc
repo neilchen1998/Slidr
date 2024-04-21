@@ -195,8 +195,7 @@ TEST_CASE( "Depth", "[main]" )
         std::vector<Node> childredNodes = n.GetChildrenNodes();
         auto itr = childredNodes.begin();
 
-        REQUIRE (itr->GetDepth() == 1);
-        ++itr;
+        REQUIRE (itr++->GetDepth() == 1);
         REQUIRE (itr->GetDepth() == 1);
     }
 
@@ -206,8 +205,22 @@ TEST_CASE( "Depth", "[main]" )
         std::vector<Node> childredNodes = n.GetChildrenNodes();
         auto itr = childredNodes.begin();
 
+        REQUIRE (itr++->GetDepth() == 100);
         REQUIRE (itr->GetDepth() == 100);
-        ++itr;
-        REQUIRE (itr->GetDepth() == 100);
+    }
+
+    SECTION("Depth of a Child", "[some_details]")
+    {
+        constexpr int parentDepth = 45;
+        Node n(state, 2, parentDepth);
+        constexpr int childrenDepth = parentDepth + 1;
+        constexpr int grandchildrenDepth = parentDepth + 2;
+        std::vector<Node> childredNodes = n.GetChildrenNodes();
+        auto itr = childredNodes.begin();
+
+        REQUIRE (itr->GetDepth() == childrenDepth);
+        REQUIRE (itr++->GetChildrenNodes().front().GetDepth() == grandchildrenDepth);
+        REQUIRE (itr->GetDepth() == childrenDepth);
+        REQUIRE (itr++->GetChildrenNodes().front().GetDepth() == grandchildrenDepth);
     }
 }
