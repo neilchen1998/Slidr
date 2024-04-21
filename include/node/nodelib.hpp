@@ -21,7 +21,7 @@ public:
 
     int GetManhattanDistance() const;
 
-    std::size_t GetCurrentHashValue() const;
+    std::size_t GetHashValue() const;
 
     void Print() const;
 

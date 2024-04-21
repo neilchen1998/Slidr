@@ -28,7 +28,7 @@ TEST_CASE( "Node Initialization", "[main]" )
         REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetState(), state));
         REQUIRE (static_cast<const Tester&>(n).GetPosX() == 2);
         REQUIRE (n.GetManhattanDistance() == 2);
-        REQUIRE (n.GetCurrentHashValue() == hash_range(std::span(state)));
+        REQUIRE (n.GetHashValue() == hash_range(std::span(state)));
         REQUIRE (n.IsSolved() == false);
     }
 
@@ -41,7 +41,7 @@ TEST_CASE( "Node Initialization", "[main]" )
         REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetState(), state));
         REQUIRE (static_cast<const Tester&>(n).GetPosX() == 8);
         REQUIRE (n.GetManhattanDistance() == 0);
-        REQUIRE (n.GetCurrentHashValue() == hash_range(std::span(state)));
+        REQUIRE (n.GetHashValue() == hash_range(std::span(state)));
         REQUIRE (n.IsSolved());
     }
 }

@@ -110,7 +110,7 @@ int Node::GetManhattanDistance() const
     return manhattanDistance;
 }
 
-std::size_t Node::GetCurrentHashValue() const
+std::size_t Node::GetHashValue() const
 {
     return hashValue;
 }

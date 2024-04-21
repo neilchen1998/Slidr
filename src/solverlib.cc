@@ -43,7 +43,7 @@ std::tuple<bool, int> Solver::SolvePuzzle()
         // starts from the beginning and checks if we have visited it before
         for(const Node& child : children)
         {
-            auto curHashValue = child.GetCurrentHashValue();
+            auto curHashValue = child.GetHashValue();
             if (visited.count(curHashValue) == 0)
             {
                 pq.push(child);

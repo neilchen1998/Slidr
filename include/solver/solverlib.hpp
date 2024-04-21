@@ -44,7 +44,7 @@ protected:
     {
         std::size_t operator()(const Node& k) const
         {
-            return k.GetCurrentHashValue();
+            return k.GetHashValue();
         }
     };
 
@@ -52,7 +52,7 @@ protected:
     {
         bool operator()(const Node& lhs, const Node& rhs) const
         {
-            return lhs.GetCurrentHashValue() == rhs.GetCurrentHashValue();
+            return lhs.GetHashValue() == rhs.GetHashValue();
         }
     };
 
