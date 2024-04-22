@@ -45,6 +45,8 @@ struct Tester : Solver
     std::vector<Node> GetSolution() const { return this->solution; }
 };
 
+const std::vector<int> goalState {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
+
 TEST_CASE( "Solver Constructor", "[main]" )
 {
     std::vector<int> initialState {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
@@ -105,14 +107,14 @@ TEST_CASE( "Solver Initialization", "[main]" )
 
 TEST_CASE( "Priority Queue", "[main]" )
 {
-    Node actualZero = Node({1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY});
+    Node actualZero = Node(goalState);
     Node actualOne1 = Node({1, 2, 3, 4, 5, constants::EMPTY, 7, 8, 6});
     Node actualOne2 = Node({1, 2, 3, 4, 5, 6, 7, constants::EMPTY, 8});
     Node actualTwo = Node({1, 2, 3, 4, constants::EMPTY, 6, 7, 5, 8});
 
     SECTION("Three Nodes with Three Distinct Values", "[some_details]")
     {
-        Solver s = Solver({1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY});
+        Solver s = Solver(goalState);
         Tester t = static_cast<const Tester&>(s);
 
         // gets the reference of the priority queue of the Solver instance
@@ -132,7 +134,7 @@ TEST_CASE( "Priority Queue", "[main]" )
 
     SECTION("Two Nodes with Two Distinct Values", "[some_details]")
     {
-        Solver s = Solver({1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY});
+        Solver s = Solver(goalState);
         Tester t = static_cast<const Tester&>(s);
 
         // gets the reference of the priority queue of the Solver instance
@@ -157,8 +159,7 @@ TEST_CASE( "Can Solve Puzzles", "[main]" )
 {
     SECTION("Puzzle 0", "[trivial case]")
     {
-        std::vector<int> initialState {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
-        Solver s = Solver(initialState);
+        Solver s = Solver(goalState);
         auto [isSolved, totalIterations] = s.SolvePuzzle();
 
         REQUIRE (isSolved);
@@ -189,8 +190,7 @@ TEST_CASE( "Solve Puzzles with Least Steps", "[main]" )
     // source: https://deniz.co/8-puzzle-solver/
     SECTION("Puzzle 0", "[trivial case]")
     {
-        std::vector<int> initialState {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
-        Solver s = Solver(initialState);
+        Solver s = Solver(goalState);
         auto [isSolved, totalIterations] = s.SolvePuzzle();
 
         REQUIRE (isSolved);
@@ -213,7 +213,9 @@ TEST_CASE( "Solve Puzzles with Least Steps", "[main]" )
         Solver s = Solver(initialState);
         auto [isSolved, totalIterations] = s.SolvePuzzle();
 
-        s.GetSolution();
+        std::vector<Node> solution = s.GetSolution();
+        REQUIRE (solution.front() == Node(initialState));
+        REQUIRE (solution.back() == Node(goalState));
 
         REQUIRE (isSolved);
         REQUIRE (s.GetDepth() == 14);
@@ -229,10 +231,12 @@ TEST_CASE( "Solve Puzzles with Least Steps", "[main]" )
         Solver s = Solver(initialState);
         auto [isSolved, totalIterations] = s.SolvePuzzle();
 
-        s.GetSolution();
+        std::vector<Node> solution = s.GetSolution();
+        REQUIRE (solution.front() == Node(initialState));
+        REQUIRE (solution.back() == Node(goalState));
 
         REQUIRE (isSolved);
-        REQUIRE (s.GetDepth() == 42);
+        REQUIRE (s.GetDepth() == 26);
     }
 
     SECTION("Puzzle 4", "[general case]")
@@ -244,11 +248,12 @@ TEST_CASE( "Solve Puzzles with Least Steps", "[main]" )
 
         Solver s = Solver(initialState);
         auto [isSolved, totalIterations] = s.SolvePuzzle();
-        Tester t = static_cast<const Tester&>(s);
 
-        s.GetSolution();
+        std::vector<Node> solution = s.GetSolution();
+        REQUIRE (solution.front() == Node(initialState));
+        REQUIRE (solution.back() == Node(goalState));
 
         REQUIRE (isSolved);
-        REQUIRE (s.GetDepth() == 24);
+        REQUIRE (s.GetDepth() == 23);
     }
 }
