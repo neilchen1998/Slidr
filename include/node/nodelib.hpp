@@ -25,10 +25,6 @@ public:
 
     void Print() const;
 
-    bool operator<(const Node& rhs) const;
-
-    bool operator>(const Node& rhs) const;
-
     bool operator==(const Node& rhs) const;
 
     bool operator!=(const Node& rhs) const;

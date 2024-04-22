@@ -162,18 +162,6 @@ TEST_CASE( "Operators", "[main]" )
     std::vector<int> layout2 {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
     Node n2(layout2);
 
-    SECTION("Less Than", "[some_details]")
-    {
-        REQUIRE ((n1 < n2) == false);
-        REQUIRE ((n2 < n1));
-    }
-
-    SECTION("Greater Than", "[some_details]")
-    {
-        REQUIRE ((n1 > n2));
-        REQUIRE ((n2 > n1) == false);
-    }
-
     SECTION("Equal To", "[some_details]")
     {
         REQUIRE ((n2 == n1) == false);

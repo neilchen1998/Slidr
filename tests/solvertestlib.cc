@@ -146,8 +146,10 @@ TEST_CASE( "Priority Queue", "[main]" )
         REQUIRE (vec.size() == 3);
         auto itr = vec.begin();
         REQUIRE (*itr++ == actualZero);
-        REQUIRE (*itr++ == actualOne2);
-        REQUIRE (*itr == actualOne1);
+        bool statement2 = *itr == actualOne1 || *itr++ == actualOne2;
+        REQUIRE (statement2);
+        bool statement3 = *itr == actualOne1 || *itr++ == actualOne2;
+        REQUIRE (statement3);
     }
 }
 

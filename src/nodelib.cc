@@ -138,24 +138,14 @@ void Node::Print() const
     }
 }
 
-bool Node::operator<(const Node &rhs) const
-{
-    return manhattanDistance < rhs.GetManhattanDistance();
-}
-
-bool Node::operator>(const Node &rhs) const
-{
-    return manhattanDistance > rhs.GetManhattanDistance();
-}
-
 bool Node::operator==(const Node &rhs) const
 {
-    return manhattanDistance == rhs.GetManhattanDistance();
+    return hashValue == rhs.GetHashValue();
 }
 
 bool Node::operator!=(const Node &rhs) const
 {
-    return manhattanDistance != rhs.GetManhattanDistance();
+    return hashValue != rhs.GetHashValue();
 }
 
 bool Node::IsSolved() const

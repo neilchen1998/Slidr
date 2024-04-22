@@ -38,7 +38,7 @@ protected:
     {
         bool operator()(const Node& lhs, const Node& rhs)
         {
-            return lhs.GetManhattanDistance() > rhs.GetManhattanDistance();
+            return lhs.GetManhattanDistance() + lhs.GetDepth() > rhs.GetManhattanDistance() + lhs.GetDepth();
         }
     };
 
