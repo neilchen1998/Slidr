@@ -173,7 +173,24 @@ TEST_CASE( "Operators", "[main]" )
     }
 }
 
-TEST_CASE( "Depth", "[main]" )
+TEST_CASE( "Calculate the Number of Inversions", "[main]" )
+{
+    SECTION("Even Number of Inversions", "[some_details]")
+    {
+        std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
+        Node n(layout);
+        REQUIRE (n.GetInversion() == 4);
+    }
+
+    SECTION("Odd Number of Inversions", "[some_details]")
+    {
+        std::vector<int> layout {8, 1, 2, constants::EMPTY, 4, 3, 7, 6, 5};
+        Node n(layout);
+        REQUIRE (n.GetInversion() == 11);
+    }
+}
+
+TEST_CASE( "Calculate the Depth", "[main]" )
 {
     std::vector<int> state {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
 

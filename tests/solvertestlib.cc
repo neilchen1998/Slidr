@@ -183,6 +183,16 @@ TEST_CASE( "Can Solve Puzzles", "[main]" )
 
         REQUIRE (isSolved);
     }
+
+    SECTION("Puzzle 3 (Unsolvable)", "[trivial case]")
+    {
+        std::vector<int> initialState {8, 1, 2, constants::EMPTY, 4, 3, 7, 6, 5};
+        Solver s = Solver(initialState);
+        auto [isSolved, totalIterations] = s.SolvePuzzle();
+
+        REQUIRE (isSolved == false);
+        REQUIRE (totalIterations == INT_MAX);
+    }
 }
 
 TEST_CASE( "Solve Puzzles with Least Steps", "[main]" )
