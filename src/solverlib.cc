@@ -24,6 +24,10 @@ Solver::Solver(const Node& initialNode) : visited(), startNode(initialNode), ite
 
 std::tuple<bool, int> Solver::SolvePuzzle()
 {
+    // first checks if the puzzle is solvable or not
+    if (startNode.GetInversion() % 2)   return {false, INT_MAX};
+
+    // keep solving until the priority queue is empty
     while (!pq.empty())
     {
         // gets the top node
@@ -92,17 +96,17 @@ int Solver::GetDepth() const
 
 std::vector<Node> Solver::GetSolution() const
 {
-    // DEBUG
-    int i = 0;
-    auto itr = solution.cbegin();
-    while (itr != solution.cend())
-    {
-        std::cout << "Step " << i << ":\n";
-        itr->Print();
+    // // DEBUG
+    // int i = 0;
+    // auto itr = solution.cbegin();
+    // while (itr != solution.cend())
+    // {
+    //     std::cout << "Step " << i << ":\n";
+    //     itr->Print();
 
-        ++itr;
-        ++i;
-    }
+    //     ++itr;
+    //     ++i;
+    // }
 
     return solution;
 }

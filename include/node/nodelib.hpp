@@ -33,10 +33,14 @@ public:
 
     int GetDepth() const;
 
+    int GetInversion() const;
+
     void UpdateDepth(int newDepth);
 
 private:
     void CalculateManhattanDistance();
+
+    void CalculateInversion();
 
 protected:
     /// @brief the state of the node
@@ -53,6 +57,8 @@ protected:
 
     /// @brief the depth value
     int depth;
+
+    int inversion;
 };
 
 #endif // INCLUDE_NODE_NODELIB_H_

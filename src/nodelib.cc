@@ -6,17 +6,19 @@
 #include "constants/constantslib.hpp"
 #include "math/mathlib.hpp"
 
-Node::Node(std::vector<int> input) : state(input), depth(0)
+Node::Node(std::vector<int> input) : state(input), depth(0), inversion(0)
 {
     hashValue = hash_range(std::span(state));
     posX = std::ranges::find(input, constants::EMPTY) - input.begin();
     CalculateManhattanDistance();
+    CalculateInversion();
 }
 
-Node::Node(std::vector<int> input, int posX, int depth) : state(input), posX(posX), depth(depth)
+Node::Node(std::vector<int> input, int posX, int depth) : state(input), posX(posX), depth(depth), inversion(0)
 {
     hashValue = hash_range(std::span(input));
     CalculateManhattanDistance();
+    CalculateInversion();
 }
 
 std::vector<int> Node::AvailableMoves() const
@@ -184,9 +186,35 @@ void Node::CalculateManhattanDistance()
         });
 }
 
+void Node::CalculateInversion()
+{
+    // loop through the entire vector
+    auto right = state.cbegin();
+    while (right != state.cend())
+    {
+        // disregard 'empty' element
+        if (*right != constants::EMPTY)
+        {
+            // count the number of inversions between the first element to the current one
+            inversion += std::ranges::count_if(state.cbegin(), right, [&](int i)
+            {
+                // only cares when the element is greater than the current one and disregard 'empty' element
+                return i > *right && i != constants::EMPTY;
+            });
+        }
+        
+        ++right;
+    }
+}
+
 int Node::GetDepth() const
 {
     return depth;
+}
+
+int Node::GetInversion() const
+{
+    return inversion;
 }
 
 void Node::UpdateDepth(int newDepth)
