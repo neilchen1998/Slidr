@@ -28,6 +28,7 @@ std::tuple<bool, int> Solver::SolvePuzzle()
     {
         // gets the top node
         curNode = pq.top();
+        pq.pop();
 
         // checks if we have solved the problem
         if (curNode.IsSolved())
@@ -37,13 +38,14 @@ std::tuple<bool, int> Solver::SolvePuzzle()
             return std::tuple{curNode.IsSolved(), iterations};
         }
 
-        pq.pop();
+        // gets current depth
+        int curDepth = curNode.GetDepth();
 
         // gets all fessible children
         std::vector<Node> children = curNode.GetChildrenNodes();
 
         // starts from the beginning and checks if we have visited it before
-        for(const Node& child : children)
+        for(Node& child : children)
         {
             auto curHashValue = child.GetHashValue();
             if (visited.count(curHashValue) == 0)
@@ -52,6 +54,12 @@ std::tuple<bool, int> Solver::SolvePuzzle()
                 parents[child] = curNode;
 
                 visited.insert(curHashValue);
+            }
+            else if (child.GetDepth() > curDepth + 1)
+            {
+                child.UpdateDepth(curDepth + 1);
+                pq.push(child);
+                parents[child] = curNode;
             }
         }
 
@@ -84,17 +92,17 @@ int Solver::GetDepth() const
 
 std::vector<Node> Solver::GetSolution() const
 {
-    // // DEBUG
-    // int i = 0;
-    // auto itr = solution.cbegin();
-    // while (itr != solution.cend())
-    // {
-    //     std::cout << "Step " << i << ":\n";
-    //     itr->Print();
+    // DEBUG
+    int i = 0;
+    auto itr = solution.cbegin();
+    while (itr != solution.cend())
+    {
+        std::cout << "Step " << i << ":\n";
+        itr->Print();
 
-    //     ++itr;
-    //     ++i;
-    // }
+        ++itr;
+        ++i;
+    }
 
     return solution;
 }

@@ -33,6 +33,8 @@ public:
 
     int GetDepth() const;
 
+    void UpdateDepth(int newDepth);
+
 private:
     void CalculateManhattanDistance();
 

@@ -188,3 +188,8 @@ int Node::GetDepth() const
 {
     return depth;
 }
+
+void Node::UpdateDepth(int newDepth)
+{
+    depth = newDepth;
+}
