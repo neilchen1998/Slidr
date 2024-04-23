@@ -5,6 +5,7 @@
 #include <cstdlib>  // std::size_t
 #include <tuple>    // std::tuple
 
+template <int GameType>
 class Node
 {
 public:

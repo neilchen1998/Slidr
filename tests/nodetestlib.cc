@@ -10,19 +10,19 @@
 #include "math/mathlib.hpp"
 #include "node/nodelib.hpp"
 
-struct Tester : Node
+struct Tester : Node<3>
 {
     std::vector<int> GetState() const { return this->state; }
 
     int GetPosX() const { return this->posX; }
 };
 
-TEST_CASE( "Node Initialization", "[main]" )
+TEST_CASE( "Node<3> Initialization", "[main]" )
 {
     SECTION("Unsolved", "[some_details]")
     {
         std::vector<int> state {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
-        Node n(state);
+        Node<3> n(state);
 
         // tests all its members upon initialization
         REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetState(), state));
@@ -35,7 +35,7 @@ TEST_CASE( "Node Initialization", "[main]" )
     SECTION("Solved", "[some_details]")
     {
         std::vector<int> state {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
-        Node n(state);
+        Node<3> n(state);
 
         // tests all its members upon initialization
         REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetState(), state));
@@ -49,15 +49,15 @@ TEST_CASE( "Node Initialization", "[main]" )
 TEST_CASE( "Available Moves", "[main]" )
 {
     // initializes all possible positions that the empty puzzle can be in
-    Node middle({1, 2, 3, 4, constants::EMPTY, 6, 7, 5, 8});
-    Node topLeft({constants::EMPTY, 2, 3, 4, 1, 6, 7, 5, 8});
-    Node topRight({1, 2, constants::EMPTY, 4, 3, 6, 7, 5, 8});
-    Node middleLeft({1, 2, 3, constants::EMPTY, 4, 6, 7, 5, 8});
-    Node middleRight({1, 2, 3, 4, 6, constants::EMPTY, 7, 5, 8});
-    Node bottomLeft({1, 2, 3, 4, 7, 6, constants::EMPTY, 5, 8});
-    Node bottomRight({1, 2, 3, 4, 8, 6, 7, 5, constants::EMPTY});
-    Node centerTop({1, constants::EMPTY, 3, 4, 2, 6, 7, 5, 8});
-    Node centerBottom({1, 2, 3, 4, 5, 6, 7, constants::EMPTY, 8});
+    Node<3> middle({1, 2, 3, 4, constants::EMPTY, 6, 7, 5, 8});
+    Node<3> topLeft({constants::EMPTY, 2, 3, 4, 1, 6, 7, 5, 8});
+    Node<3> topRight({1, 2, constants::EMPTY, 4, 3, 6, 7, 5, 8});
+    Node<3> middleLeft({1, 2, 3, constants::EMPTY, 4, 6, 7, 5, 8});
+    Node<3> middleRight({1, 2, 3, 4, 6, constants::EMPTY, 7, 5, 8});
+    Node<3> bottomLeft({1, 2, 3, 4, 7, 6, constants::EMPTY, 5, 8});
+    Node<3> bottomRight({1, 2, 3, 4, 8, 6, 7, 5, constants::EMPTY});
+    Node<3> centerTop({1, constants::EMPTY, 3, 4, 2, 6, 7, 5, 8});
+    Node<3> centerBottom({1, 2, 3, 4, 5, 6, 7, constants::EMPTY, 8});
 
     // grabs the available moves and sorts it
     auto movesMiddle = middle.AvailableMoves();
@@ -96,7 +96,7 @@ TEST_CASE( "Available Moves", "[main]" )
 TEST_CASE( "Get Next State", "[main]" )
 {
     // initializes the start state
-    Node middle({3, 6, 4, 8, constants::EMPTY, 5, 7, 2, 1});
+    Node<3> middle({3, 6, 4, 8, constants::EMPTY, 5, 7, 2, 1});
     constexpr int acutalPosX = 4;
 
     // grabs the available moves
@@ -157,10 +157,10 @@ TEST_CASE( "Get Next State", "[main]" )
 TEST_CASE( "Operators", "[main]" )
 {
     std::vector<int> layout1 {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
-    Node n1(layout1);
+    Node<3> n1(layout1);
 
     std::vector<int> layout2 {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
-    Node n2(layout2);
+    Node<3> n2(layout2);
 
     SECTION("Equal To", "[some_details]")
     {
@@ -178,14 +178,14 @@ TEST_CASE( "Calculate the Number of Inversions", "[main]" )
     SECTION("Even Number of Inversions", "[some_details]")
     {
         std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
-        Node n(layout);
+        Node<3> n(layout);
         REQUIRE (n.GetInversion() == 4);
     }
 
     SECTION("Odd Number of Inversions", "[some_details]")
     {
         std::vector<int> layout {8, 1, 2, constants::EMPTY, 4, 3, 7, 6, 5};
-        Node n(layout);
+        Node<3> n(layout);
         REQUIRE (n.GetInversion() == 11);
     }
 }
@@ -196,8 +196,8 @@ TEST_CASE( "Calculate the Depth", "[main]" )
 
     SECTION("Depth 0", "[some_details]")
     {
-        Node n(state, 2, 0);
-        std::vector<Node> childredNodes = n.GetChildrenNodes();
+        Node<3> n(state, 2, 0);
+        std::vector<Node<3>> childredNodes = n.GetChildrenNodes();
         auto itr = childredNodes.begin();
 
         REQUIRE (itr++->GetDepth() == 1);
@@ -206,8 +206,8 @@ TEST_CASE( "Calculate the Depth", "[main]" )
 
     SECTION("Depth 99", "[some_details]")
     {
-        Node n(state, 2, 99);
-        std::vector<Node> childredNodes = n.GetChildrenNodes();
+        Node<3> n(state, 2, 99);
+        std::vector<Node<3>> childredNodes = n.GetChildrenNodes();
         auto itr = childredNodes.begin();
 
         REQUIRE (itr++->GetDepth() == 100);
@@ -217,10 +217,10 @@ TEST_CASE( "Calculate the Depth", "[main]" )
     SECTION("Depth of a Child", "[some_details]")
     {
         constexpr int parentDepth = 45;
-        Node n(state, 2, parentDepth);
+        Node<3> n(state, 2, parentDepth);
         constexpr int childrenDepth = parentDepth + 1;
         constexpr int grandchildrenDepth = parentDepth + 2;
-        std::vector<Node> childredNodes = n.GetChildrenNodes();
+        std::vector<Node<3>> childredNodes = n.GetChildrenNodes();
         auto itr = childredNodes.begin();
 
         REQUIRE (itr->GetDepth() == childrenDepth);

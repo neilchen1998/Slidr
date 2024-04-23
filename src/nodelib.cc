@@ -6,7 +6,10 @@
 #include "constants/constantslib.hpp"
 #include "math/mathlib.hpp"
 
-Node::Node(std::vector<int> input) : state(input), depth(0), inversion(0)
+template class Node<constants::EIGHT_PUZZLE_SIZE>;
+
+template <int GameType>
+Node<GameType>::Node(std::vector<int> input) : state(input), depth(0), inversion(0)
 {
     hashValue = hash_range(std::span(state));
     posX = std::ranges::find(input, constants::EMPTY) - input.begin();
@@ -14,23 +17,25 @@ Node::Node(std::vector<int> input) : state(input), depth(0), inversion(0)
     CalculateInversion();
 }
 
-Node::Node(std::vector<int> input, int posX, int depth) : state(input), posX(posX), depth(depth), inversion(0)
+template <int GameType>
+Node<GameType>::Node(std::vector<int> input, int posX, int depth) : state(input), posX(posX), depth(depth), inversion(0)
 {
     hashValue = hash_range(std::span(input));
     CalculateManhattanDistance();
     CalculateInversion();
 }
 
-std::vector<int> Node::AvailableMoves() const
+template <int GameType>
+std::vector<int> Node<GameType>::AvailableMoves() const
 {
     std::vector<int> ret;
 
-    auto xDv = std::div(posX, constants::EIGHT_PUZZLE_SIZE);
+    auto xDv = std::div(posX, GameType);
     int xRow = xDv.quot;
     int xCol = xDv.rem;
 
     // constants::RIGHT
-    if (xCol + 1 < constants::EIGHT_PUZZLE_SIZE)
+    if (xCol + 1 < GameType)
     {
         ret.push_back(constants::RIGHT);
     }
@@ -48,16 +53,16 @@ std::vector<int> Node::AvailableMoves() const
     }
 
     // constants::DOWN
-    if (xRow + 1 < constants::EIGHT_PUZZLE_SIZE)
+    if (xRow + 1 < GameType)
     {
         ret.push_back(constants::DOWN);
     }
 
-
     return ret;
 }
 
-std::vector<Node> Node::GetChildrenNodes() const
+template <int GameType>
+std::vector<Node<GameType>> Node<GameType>::GetChildrenNodes() const
 {
     std::vector<Node> children;
 
@@ -72,7 +77,8 @@ std::vector<Node> Node::GetChildrenNodes() const
     return children;
 }
 
-std::tuple<std::vector<int>, int> Node::GetNextState(int dir) const
+template <int GameType>
+std::tuple<std::vector<int>, int> Node<GameType>::GetNextState(int dir) const
 {
     std::vector<int> newState = state;
     int newPosX = posX;
@@ -91,13 +97,13 @@ std::tuple<std::vector<int>, int> Node::GetNextState(int dir) const
         break;
 
     case constants::UP:
-        std::swap(newState[newPosX], newState[newPosX - constants::EIGHT_PUZZLE_SIZE]);
-        newPosX -= constants::EIGHT_PUZZLE_SIZE;
+        std::swap(newState[newPosX], newState[newPosX - GameType]);
+        newPosX -= GameType;
         break;
 
     case constants::DOWN:
-        std::swap(newState[newPosX], newState[newPosX + constants::EIGHT_PUZZLE_SIZE]);
-        newPosX += constants::EIGHT_PUZZLE_SIZE;
+        std::swap(newState[newPosX], newState[newPosX + GameType]);
+        newPosX += GameType;
         break;
 
     default:
@@ -107,17 +113,20 @@ std::tuple<std::vector<int>, int> Node::GetNextState(int dir) const
     return std::tuple<std::vector<int>, int>{newState, newPosX};
 }
 
-int Node::GetManhattanDistance() const
+template <int GameType>
+int Node<GameType>::GetManhattanDistance() const
 {
     return manhattanDistance;
 }
 
-std::size_t Node::GetHashValue() const
+template <int GameType>
+std::size_t Node<GameType>::GetHashValue() const
 {
     return hashValue;
 }
 
-void Node::Print() const
+template <int GameType>
+void Node<GameType>::Print() const
 {
     std::size_t cnt = 0;
     for (const auto& ele : state)
@@ -133,29 +142,33 @@ void Node::Print() const
         }
 
         // increments the value of cnt and then be checked
-        if (++cnt % constants::EIGHT_PUZZLE_SIZE == 0)
+        if (++cnt % GameType == 0)
         {
             std::cout << "\n";
         }
     }
 }
 
-bool Node::operator==(const Node &rhs) const
+template <int GameType>
+bool Node<GameType>::operator==(const Node &rhs) const
 {
     return hashValue == rhs.GetHashValue();
 }
 
-bool Node::operator!=(const Node &rhs) const
+template <int GameType>
+bool Node<GameType>::operator!=(const Node &rhs) const
 {
     return hashValue != rhs.GetHashValue();
 }
 
-bool Node::IsSolved() const
+template <int GameType>
+bool Node<GameType>::IsSolved() const
 {
     return (manhattanDistance == 0) ? true : false;
 }
 
-void Node::CalculateManhattanDistance()
+template <int GameType>
+void Node<GameType>::CalculateManhattanDistance()
 {
     int ptr = 0;
     manhattanDistance = std::accumulate(state.begin(), state.end(), 0,
@@ -167,12 +180,12 @@ void Node::CalculateManhattanDistance()
             if (v != constants::EMPTY)
             {
                 // finds the goal coordinate of the element
-                auto goalDv = std::div(v - 1, constants::EIGHT_PUZZLE_SIZE);
+                auto goalDv = std::div(v - 1, GameType);
                 int goalRow = goalDv.quot;
                 int goalCol = goalDv.rem;
 
                 // finds the current coordinate of the element
-                auto curDv = std::div(ptr, constants::EIGHT_PUZZLE_SIZE);
+                auto curDv = std::div(ptr, GameType);
                 int curRow = curDv.quot;
                 int curCol = curDv.rem;
 
@@ -186,7 +199,8 @@ void Node::CalculateManhattanDistance()
         });
 }
 
-void Node::CalculateInversion()
+template <int GameType>
+void Node<GameType>::CalculateInversion()
 {
     // loop through the entire vector
     auto right = state.cbegin();
@@ -207,17 +221,20 @@ void Node::CalculateInversion()
     }
 }
 
-int Node::GetDepth() const
+template <int GameType>
+int Node<GameType>::GetDepth() const
 {
     return depth;
 }
 
-int Node::GetInversion() const
+template <int GameType>
+int Node<GameType>::GetInversion() const
 {
     return inversion;
 }
 
-void Node::UpdateDepth(int newDepth)
+template <int GameType>
+void Node<GameType>::UpdateDepth(int newDepth)
 {
     depth = newDepth;
 }
