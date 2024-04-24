@@ -7,6 +7,7 @@
 #include "math/mathlib.hpp"
 
 template class Node<constants::EIGHT_PUZZLE_SIZE>;
+template class Node<constants::FIFTEEN_PUZZLE_SIZE>;
 
 template <int GameType>
 Node<GameType>::Node(std::vector<int> input) : state(input), depth(0), inversion(0)

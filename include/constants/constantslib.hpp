@@ -7,7 +7,9 @@ namespace constants
 {
     inline constexpr int EMPTY { 0xFF };
     inline constexpr int EIGHT_PUZZLE_SIZE { 3 };
+    inline constexpr int FIFTEEN_PUZZLE_SIZE { 4 };
     inline constexpr int EIGHT_PUZZLE_NUM { (EIGHT_PUZZLE_SIZE * EIGHT_PUZZLE_SIZE) };
+    inline constexpr int FIFTEEN_PUZZLE_NUM { (FIFTEEN_PUZZLE_SIZE * FIFTEEN_PUZZLE_SIZE) };
     inline constexpr int RIGHT { 0 };
     inline constexpr int UP   { 1 };
     inline constexpr int LEFT  { 2 };
