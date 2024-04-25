@@ -12,17 +12,23 @@
 #include "node/nodelib.hpp"
 #include "solver/solverlib.hpp"
 
-Solver::Solver(const std::vector<int> initialState) : visited(), startNode(Node(initialState)), iterations(0), depth(0)
+template class Solver<constants::EIGHT_PUZZLE_SIZE>;
+template class Solver<constants::FIFTEEN_PUZZLE_SIZE>;
+
+template <int GridSize>
+Solver<GridSize>::Solver(const std::vector<int> initialState) : visited(), startNode(Node<GridSize>(initialState)), iterations(0), depth(0)
 {
-    pq.push(Node(initialState));
+    pq.push(Node<GridSize>(initialState));
 }
 
-Solver::Solver(const Node& initialNode) : visited(), startNode(initialNode), iterations(0), depth(0)
+template <int GridSize>
+Solver<GridSize>::Solver(const Node<GridSize>& initialNode) : visited(), startNode(initialNode), iterations(0), depth(0)
 {
     pq.push(initialNode);
 }
 
-std::tuple<bool, int> Solver::SolvePuzzle()
+template <int GridSize>
+std::tuple<bool, int> Solver<GridSize>::SolvePuzzle()
 {
     // first checks if the puzzle is solvable or not
     if (startNode.GetInversion() % 2)   return {false, INT_MAX};
@@ -46,10 +52,10 @@ std::tuple<bool, int> Solver::SolvePuzzle()
         int curDepth = curNode.GetDepth();
 
         // gets all fessible children
-        std::vector<Node> children = curNode.GetChildrenNodes();
+        std::vector<Node<GridSize>> children = curNode.GetChildrenNodes();
 
         // starts from the beginning and checks if we have visited it before
-        for(Node& child : children)
+        for(Node<GridSize>& child : children)
         {
             auto curHashValue = child.GetHashValue();
             if (visited.count(curHashValue) == 0)
@@ -73,9 +79,10 @@ std::tuple<bool, int> Solver::SolvePuzzle()
     return std::tuple{false, INT_MAX};
 }
 
-void Solver::Backtracking()
+template <int GridSize>
+void Solver<GridSize>::Backtracking()
 {
-    Node cur = curNode;
+    Node<GridSize> cur = curNode;
     solution.push_back(cur);
 
     depth = 0;
@@ -89,12 +96,14 @@ void Solver::Backtracking()
     std::reverse(solution.begin(), solution.end());
 }
 
-int Solver::GetDepth() const
+template <int GridSize>
+int Solver<GridSize>::GetDepth() const
 {
     return depth;
 }
 
-std::vector<Node> Solver::GetSolution() const
+template <int GridSize>
+std::vector<Node<GridSize>> Solver<GridSize>::GetSolution() const
 {
     // // DEBUG
     // int i = 0;

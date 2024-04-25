@@ -126,8 +126,8 @@ std::size_t Node<GameType>::GetHashValue() const
     return hashValue;
 }
 
-template <int GameType>
-void Node<GameType>::Print() const
+template <>
+void Node<constants::EIGHT_PUZZLE_SIZE>::Print() const
 {
     std::size_t cnt = 0;
     for (const auto& ele : state)
@@ -143,7 +143,35 @@ void Node<GameType>::Print() const
         }
 
         // increments the value of cnt and then be checked
-        if (++cnt % GameType == 0)
+        if (++cnt % constants::EIGHT_PUZZLE_SIZE == 0)
+        {
+            std::cout << "\n";
+        }
+    }
+}
+
+template <>
+void Node<constants::FIFTEEN_PUZZLE_SIZE>::Print() const
+{
+    std::size_t cnt = 0;
+    for (const auto& ele : state)
+    {
+        // prints "x" if the value if equals to "constants::EMPTY"
+        if (ele < 10)
+        {
+            std::cout << " " << (int)ele << " ";
+        }
+        else if (ele != constants::EMPTY)
+        {
+            std::cout << (int)ele << " ";
+        }
+        else
+        {
+            std::cout << " x ";
+        }
+
+        // increments the value of cnt and then be checked
+        if (++cnt % constants::FIFTEEN_PUZZLE_SIZE == 0)
         {
             std::cout << "\n";
         }
