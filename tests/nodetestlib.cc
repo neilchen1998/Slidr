@@ -327,10 +327,10 @@ TEST_CASE( "Operators <4>", "[main]" )
 {
     constexpr int GridSize = constants::FIFTEEN_PUZZLE_SIZE;
 
-    std::vector<int> layout1 {{1, 2, 3, 4, 5, 6, 7, 5, 9, 10, 11, 12, 13, 14, 15, }};
+    std::vector<int> layout1 {1, 2, 3, 4, 5, 6, 7, 5, 9, 10, 11, 12, 13, 8, 14, 15, constants::EMPTY};
     Node<GridSize> n1(layout1);
 
-    std::vector<int> layout2 {1, 2, 3, 4, 5, 6, 7, 5, 9, 10, 11, constants::EMPTY, 13, 14, 15, 12};
+    std::vector<int> layout2 {1, 2, 3, 4, 5, 6, 7, 5, 9, 10, 11, constants::EMPTY, 13, 14, 15, 12, 8};
     Node<GridSize> n2(layout2);
 
     SECTION("Equal To", "[some_details]")
