@@ -45,7 +45,8 @@
 //     std::vector<Node<constants::EIGHT_PUZZLE_SIZE>> GetSolution() const { return this->solution; }
 // };
 
-const std::vector<int> goalState {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
+const std::vector<int> EIGHT_GOAL_STATE {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
+const std::vector<int> FIFTEEN_GOAL_STATE {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, constants::EMPTY};
 
 // TEST_CASE( "Solver Constructor", "[main]" )
 // {
@@ -107,14 +108,14 @@ const std::vector<int> goalState {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
 
 // TEST_CASE( "Priority Queue", "[main]" )
 // {
-//     Node<constants::EIGHT_PUZZLE_SIZE> actualZero = Node<constants::EIGHT_PUZZLE_SIZE>(goalState);
+//     Node<constants::EIGHT_PUZZLE_SIZE> actualZero = Node<constants::EIGHT_PUZZLE_SIZE>(EIGHT_GOAL_STATE);
 //     Node<constants::EIGHT_PUZZLE_SIZE> actualOne1 = Node<constants::EIGHT_PUZZLE_SIZE>({1, 2, 3, 4, 5, constants::EMPTY, 7, 8, 6});
 //     Node<constants::EIGHT_PUZZLE_SIZE> actualOne2 = Node<constants::EIGHT_PUZZLE_SIZE>({1, 2, 3, 4, 5, 6, 7, constants::EMPTY, 8});
 //     Node<constants::EIGHT_PUZZLE_SIZE> actualTwo = Node<constants::EIGHT_PUZZLE_SIZE>({1, 2, 3, 4, constants::EMPTY, 6, 7, 5, 8});
 
 //     SECTION("Three Nodes with Three Distinct Values", "[some_details]")
 //     {
-//         Solver<constants::EIGHT_PUZZLE_SIZE> s = Solver<constants::EIGHT_PUZZLE_SIZE>(goalState);
+//         Solver<constants::EIGHT_PUZZLE_SIZE> s = Solver<constants::EIGHT_PUZZLE_SIZE>(EIGHT_GOAL_STATE);
 //         Tester t = static_cast<const Tester&>(s);
 
 //         // gets the reference of the priority queue of the Solver instance
@@ -134,7 +135,7 @@ const std::vector<int> goalState {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
 
 //     SECTION("Two Nodes with Two Distinct Values", "[some_details]")
 //     {
-//         Solver<constants::EIGHT_PUZZLE_SIZE> s = Solver<constants::EIGHT_PUZZLE_SIZE>(goalState);
+//         Solver<constants::EIGHT_PUZZLE_SIZE> s = Solver<constants::EIGHT_PUZZLE_SIZE>(EIGHT_GOAL_STATE);
 //         Tester t = static_cast<const Tester&>(s);
 
 //         // gets the reference of the priority queue of the Solver instance
@@ -155,11 +156,11 @@ const std::vector<int> goalState {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
 //     }
 // }
 
-TEST_CASE( "Can Solve Puzzles", "[main]" )
+TEST_CASE( "Can Solve the 8 Puzzle Problem", "[main]" )
 {
     SECTION("Puzzle 0", "[trivial case]")
     {
-        Solver<constants::EIGHT_PUZZLE_SIZE> s = Solver<constants::EIGHT_PUZZLE_SIZE>(goalState);
+        Solver<constants::EIGHT_PUZZLE_SIZE> s = Solver<constants::EIGHT_PUZZLE_SIZE>(EIGHT_GOAL_STATE);
         auto [isSolved, totalIterations] = s.SolvePuzzle();
 
         REQUIRE (isSolved);
@@ -195,12 +196,52 @@ TEST_CASE( "Can Solve Puzzles", "[main]" )
     }
 }
 
-TEST_CASE( "Solve Puzzles with Least Steps", "[main]" )
+TEST_CASE( "Can Solve the 15 Puzzle Problem", "[main]" )
+{
+    SECTION("Puzzle 0", "[trivial case]")
+    {
+        Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(FIFTEEN_GOAL_STATE);
+        auto [isSolved, totalIterations] = s.SolvePuzzle();
+
+        REQUIRE (isSolved);
+        REQUIRE (totalIterations == 0);
+    }
+
+    SECTION("Puzzle 1", "[general case]")
+    {
+        std::vector<int> initialState {7, 2, 9, 6, 8, constants::EMPTY, 3, 13, 4, 1, 10, 5, 14, 15, 11, 12};
+        Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
+        auto [isSolved, totalIterations] = s.SolvePuzzle();
+
+        REQUIRE (isSolved);
+    }
+
+    SECTION("Puzzle 2", "[general case]")
+    {
+        std::vector<int> initialState {13, 4, 2, 3, 12, 6, 5, 9, 14, 10, 1, 8, constants::EMPTY, 7, 11, 15};
+        Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
+        auto [isSolved, totalIterations] = s.SolvePuzzle();
+
+        REQUIRE (isSolved);
+    }
+
+    SECTION("Puzzle 3 (Unsolvable)", "[trivial case]")
+    {
+        std::vector<int> initialState {14, 8, 4, 9, 1, 6, 5, constants::EMPTY, 12, 13, 3, 15, 7, 2, 11, 10};
+        Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
+        auto [isSolved, totalIterations] = s.SolvePuzzle();
+
+        REQUIRE (isSolved == false);
+        REQUIRE (totalIterations == INT_MAX);
+    }
+}
+
+TEST_CASE( "Solve 8 Puzzle Problem with Least Steps", "[main]" )
 {
     // source: https://deniz.co/8-puzzle-solver/
     SECTION("Puzzle 0", "[trivial case]")
     {
-        Solver<constants::EIGHT_PUZZLE_SIZE> s = Solver<constants::EIGHT_PUZZLE_SIZE>(goalState);
+        Solver<constants::EIGHT_PUZZLE_SIZE> s = Solver<constants::EIGHT_PUZZLE_SIZE>(EIGHT_GOAL_STATE);
         auto [isSolved, totalIterations] = s.SolvePuzzle();
 
         REQUIRE (isSolved);
@@ -225,7 +266,7 @@ TEST_CASE( "Solve Puzzles with Least Steps", "[main]" )
 
         std::vector<Node<constants::EIGHT_PUZZLE_SIZE>> solution = s.GetSolution();
         REQUIRE (solution.front() == Node<constants::EIGHT_PUZZLE_SIZE>(initialState));
-        REQUIRE (solution.back() == Node<constants::EIGHT_PUZZLE_SIZE>(goalState));
+        REQUIRE (solution.back() == Node<constants::EIGHT_PUZZLE_SIZE>(EIGHT_GOAL_STATE));
 
         REQUIRE (isSolved);
         REQUIRE (s.GetDepth() == 14);
@@ -243,7 +284,7 @@ TEST_CASE( "Solve Puzzles with Least Steps", "[main]" )
 
         std::vector<Node<constants::EIGHT_PUZZLE_SIZE>> solution = s.GetSolution();
         REQUIRE (solution.front() == Node<constants::EIGHT_PUZZLE_SIZE>(initialState));
-        REQUIRE (solution.back() == Node<constants::EIGHT_PUZZLE_SIZE>(goalState));
+        REQUIRE (solution.back() == Node<constants::EIGHT_PUZZLE_SIZE>(EIGHT_GOAL_STATE));
 
         REQUIRE (isSolved);
         REQUIRE (s.GetDepth() == 26);
@@ -261,9 +302,35 @@ TEST_CASE( "Solve Puzzles with Least Steps", "[main]" )
 
         std::vector<Node<constants::EIGHT_PUZZLE_SIZE>> solution = s.GetSolution();
         REQUIRE (solution.front() == Node<constants::EIGHT_PUZZLE_SIZE>(initialState));
-        REQUIRE (solution.back() == Node<constants::EIGHT_PUZZLE_SIZE>(goalState));
+        REQUIRE (solution.back() == Node<constants::EIGHT_PUZZLE_SIZE>(EIGHT_GOAL_STATE));
 
         REQUIRE (isSolved);
         REQUIRE (s.GetDepth() == 23);
+    }
+}
+
+TEST_CASE( "Solve 15 Puzzle Problem with Least Steps", "[main]" )
+{
+    SECTION("Puzzle 0", "[trivial case]")
+    {
+        Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(FIFTEEN_GOAL_STATE);
+        auto [isSolved, _] = s.SolvePuzzle();
+
+        REQUIRE (isSolved);
+        REQUIRE (totalIterations == 0);
+    }
+
+    SECTION("Puzzle 1", "[general case]")
+    {
+        std::vector<int> initialState {5, 8, 2, 11, 7, 1, 9, 10, 4, 12, 13, 6, 15, constants::EMPTY, 3, 14};
+        Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
+        auto [isSolved, _] = s.SolvePuzzle();
+
+        std::vector<Node<constants::FIFTEEN_PUZZLE_SIZE>> solution = s.GetSolution();
+        REQUIRE (solution.front() == Node<constants::FIFTEEN_PUZZLE_SIZE>(initialState));
+        REQUIRE (solution.back() == Node<constants::FIFTEEN_PUZZLE_SIZE>(FIFTEEN_GOAL_STATE));
+
+        REQUIRE (isSolved);
+        REQUIRE (s.GetDepth() == 48);
     }
 }
