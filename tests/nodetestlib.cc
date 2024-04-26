@@ -465,3 +465,41 @@ TEST_CASE( "Calculate the Depth <4>", "[main]" )
         REQUIRE (itr++->GetChildrenNodes().front().GetDepth() == grandchildrenDepth);
     }
 }
+
+TEST_CASE( "Get Total Cost <3>", "[main]" )
+{
+    constexpr int GridSize = constants::EIGHT_PUZZLE_SIZE;
+
+    SECTION("State 1", "[some_details]")
+    {
+        std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
+        Node<GridSize> n(layout);
+        REQUIRE (n.GetTotalCost() == n.GetManhattanDistance() + n.GetDepth());
+    }
+
+    SECTION("State 2", "[some_details]")
+    {
+        std::vector<int> layout {8, 1, 2, constants::EMPTY, 4, 3, 7, 6, 5};
+        Node<GridSize> n(layout);
+        REQUIRE (n.GetTotalCost() == n.GetManhattanDistance() + n.GetDepth());
+    }
+}
+
+TEST_CASE( "Get Total Cost <4>", "[main]" )
+{
+    constexpr int GridSize = constants::FIFTEEN_PUZZLE_SIZE;
+
+    SECTION("State 1", "[some_details]")
+    {
+        std::vector<int> layout {14, 8, 4, 9, 1, 6, 5, constants::EMPTY, 12, 13, 3, 15, 7, 2, 11, 10};
+        Node<GridSize> n(layout);
+        REQUIRE (n.GetTotalCost() == n.GetManhattanDistance() + n.GetDepth());
+    }
+
+    SECTION("State 2", "[some_details]")
+    {
+        std::vector<int> layout {14, 8, 4, 9, 1, 6, 5, 10, 12, 13, 3, 15, 7, 2, 11, constants::EMPTY};
+        Node<GridSize> n(layout);
+        REQUIRE (n.GetTotalCost() == n.GetManhattanDistance() + n.GetDepth());
+    }
+}
