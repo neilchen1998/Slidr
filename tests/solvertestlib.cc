@@ -333,4 +333,19 @@ TEST_CASE( "Solve 15 Puzzle Problem with Least Steps", "[main]" )
         REQUIRE (isSolved);
         REQUIRE (s.GetDepth() == 48);
     }
+
+    // SECTION("Puzzle 2", "[general case, the hardest one]")
+    // {
+    //     std::vector<int> initialState {15, 14, 8, 12, 10, 11, 9, 13, 2, 6, 5, 1, 3, 7, 4, constants::EMPTY};
+    //     Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
+    //     auto [isSolved, _] = s.SolvePuzzle();
+
+    //     std::vector<Node<constants::FIFTEEN_PUZZLE_SIZE>> solution = s.GetSolution();
+
+    //     REQUIRE (solution.front() == Node<constants::FIFTEEN_PUZZLE_SIZE>(initialState));
+    //     REQUIRE (solution.back() == Node<constants::FIFTEEN_PUZZLE_SIZE>(FIFTEEN_GOAL_STATE));
+
+    //     REQUIRE (isSolved);
+    //     REQUIRE (s.GetDepth() == 80);
+    // }
 }
