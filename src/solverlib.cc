@@ -31,7 +31,7 @@ template <int GridSize>
 std::tuple<bool, int> Solver<GridSize>::SolvePuzzle()
 {
     // first checks if the puzzle is solvable or not
-    if (startNode.GetInversion() % 2)   return {false, INT_MAX};
+    if (startNode.Insolvable())   return {false, INT_MAX};
 
     // keep solving until the priority queue is empty
     while (!pq.empty())

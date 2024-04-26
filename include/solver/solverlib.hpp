@@ -39,7 +39,6 @@ protected:
     {
         bool operator()(const Node<GridSize>& lhs, const Node<GridSize>& rhs)
         {
-            // return lhs.GetManhattanDistance() + lhs.GetDepth() > rhs.GetManhattanDistance() + rhs.GetDepth();
             return lhs.GetTotalCost() > rhs.GetTotalCost();
         }
     };

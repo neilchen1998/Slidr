@@ -5,6 +5,8 @@
 #include <cstdlib>  // std::size_t
 #include <tuple>    // std::tuple
 
+#include "constants/constantslib.hpp"
+
 template <int GameType>
 class Node
 {
@@ -39,6 +41,8 @@ public:
     void UpdateDepth(int newDepth);
 
     int GetTotalCost() const;
+
+    bool Insolvable() const;
 
 private:
     void CalculateManhattanDistance();
