@@ -267,3 +267,9 @@ void Node<GameType>::UpdateDepth(int newDepth)
 {
     depth = newDepth;
 }
+
+template <int GameType>
+int Node<GameType>::GetTotalCost() const
+{
+    return GetManhattanDistance() + GetDepth();
+}

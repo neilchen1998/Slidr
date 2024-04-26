@@ -38,6 +38,8 @@ public:
 
     void UpdateDepth(int newDepth);
 
+    int GetTotalCost() const;
+
 private:
     void CalculateManhattanDistance();
 
