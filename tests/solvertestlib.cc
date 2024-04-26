@@ -317,7 +317,7 @@ TEST_CASE( "Solve 15 Puzzle Problem with Least Steps", "[main]" )
         auto [isSolved, _] = s.SolvePuzzle();
 
         REQUIRE (isSolved);
-        REQUIRE (totalIterations == 0);
+        REQUIRE (s.GetDepth() == 0);
     }
 
     SECTION("Puzzle 1", "[general case]")
