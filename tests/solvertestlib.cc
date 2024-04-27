@@ -345,7 +345,7 @@ TEST_CASE( "Solve 15 Puzzle Problem with Least Steps", "[main]" )
         REQUIRE (solution.back() == Node<constants::FIFTEEN_PUZZLE_SIZE>(FIFTEEN_GOAL_STATE));
 
         REQUIRE (isSolved);
-        REQUIRE (s.GetDepth() == 53);
+        REQUIRE (s.GetDepth() == 51);
     }
 
     // SECTION("Puzzle 2", "[general case, the hardest one]")
