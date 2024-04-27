@@ -382,6 +382,25 @@ TEST_CASE( "Calculate the Number of Inversions <4>", "[main]" )
     }
 }
 
+TEST_CASE( "Calculate If the Puzzle is Insolvable <4>", "[main]" )
+{
+    constexpr int GridSize = constants::FIFTEEN_PUZZLE_SIZE;
+
+    SECTION("Solvable", "[some_details]")
+    {
+        std::vector<int> layout {7, 2, 9, 6, 8, constants::EMPTY, 3, 13, 4, 1, 10, 5, 14, 15, 11, 12};
+        Node<GridSize> n(layout);
+        REQUIRE (n.Insolvable() == false);
+    }
+
+    SECTION("Insolvable", "[some_details]")
+    {
+        std::vector<int> layout {15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, constants::EMPTY};
+        Node<GridSize> n(layout);
+        REQUIRE (n.Insolvable());
+    }
+}
+
 TEST_CASE( "Calculate the Depth <3>", "[main]" )
 {
     constexpr int GridSize = constants::EIGHT_PUZZLE_SIZE;

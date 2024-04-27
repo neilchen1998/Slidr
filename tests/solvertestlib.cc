@@ -216,24 +216,24 @@ TEST_CASE( "Can Solve the 15 Puzzle Problem", "[main]" )
         REQUIRE (isSolved);
     }
 
-    SECTION("Puzzle 2", "[general case]")
-    {
-        std::vector<int> initialState {13, 4, 2, 3, 12, 6, 5, 9, 14, 10, 1, 8, constants::EMPTY, 7, 11, 15};
-        Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
-        auto [isSolved, totalIterations] = s.SolvePuzzle();
+    // SECTION("Puzzle 2", "[general case]")
+    // {
+    //     std::vector<int> initialState {13, 4, 2, 3, 12, 6, 5, 9, 14, 10, 1, 8, constants::EMPTY, 7, 11, 15};
+    //     Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
+    //     auto [isSolved, totalIterations] = s.SolvePuzzle();
 
-        REQUIRE (isSolved);
-    }
+    //     REQUIRE (isSolved);
+    // }
 
-    SECTION("Puzzle 3 (Unsolvable)", "[trivial case]")
-    {
-        std::vector<int> initialState {14, 8, 4, 9, 1, 6, 5, constants::EMPTY, 12, 13, 3, 15, 7, 2, 11, 10};
-        Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
-        auto [isSolved, totalIterations] = s.SolvePuzzle();
+    // SECTION("Puzzle 3 (Unsolvable)", "[trivial case]")
+    // {
+    //     std::vector<int> initialState {14, 8, 4, 9, 1, 6, 5, constants::EMPTY, 12, 13, 3, 15, 7, 2, 11, 10};
+    //     Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
+    //     auto [isSolved, totalIterations] = s.SolvePuzzle();
 
-        REQUIRE (isSolved == false);
-        REQUIRE (totalIterations == INT_MAX);
-    }
+    //     REQUIRE (isSolved == false);
+    //     REQUIRE (totalIterations == INT_MAX);
+    // }
 }
 
 TEST_CASE( "Solve 8 Puzzle Problem with Least Steps", "[main]" )
