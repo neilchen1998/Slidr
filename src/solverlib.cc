@@ -57,13 +57,13 @@ std::tuple<bool, int> Solver<GridSize>::SolvePuzzle()
         // starts from the beginning and checks if we have visited it before
         for(Node<GridSize>& child : children)
         {
-            auto curHashValue = child.GetHashValue();
-            if (visited.count(curHashValue) == 0)
+            auto childHashValue = child.GetHashValue();
+            if (visited.count(childHashValue) == 0)
             {
                 pq.push(child);
                 parents[child] = curNode;
 
-                visited.insert(curHashValue);
+                visited.insert(childHashValue);
             }
             else if (child.GetDepth() > curDepth + 1)
             {
