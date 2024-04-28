@@ -10,6 +10,34 @@
 
 #include "node/nodelib.hpp"
 
+/// @brief the compare function for the priority queue
+template <int GridSize>
+struct NodeCmp
+{
+    bool operator()(const Node<GridSize>& lhs, const Node<GridSize>& rhs)
+    {
+        return lhs.GetTotalCost() > rhs.GetTotalCost();
+    }
+};
+
+template <int GridSize>
+struct KeyHash
+{
+    std::size_t operator()(const Node<GridSize>& k) const
+    {
+        return k.GetHashValue();
+    }
+};
+
+template <int GridSize>
+struct KeyEqual
+{
+    bool operator()(const Node<GridSize>& lhs, const Node<GridSize>& rhs) const
+    {
+        return lhs.GetHashValue() == rhs.GetHashValue();
+    }
+};
+
 template <int GridSize>
 class Solver
 {
@@ -34,41 +62,16 @@ public:
 
 protected:
 
-    /// @brief the compare function for the priority queue
-    struct NodeCmp
-    {
-        bool operator()(const Node<GridSize>& lhs, const Node<GridSize>& rhs)
-        {
-            return lhs.GetTotalCost() > rhs.GetTotalCost();
-        }
-    };
-
-    struct KeyHash
-    {
-        std::size_t operator()(const Node<GridSize>& k) const
-        {
-            return k.GetHashValue();
-        }
-    };
-
-    struct KeyEqual
-    {
-        bool operator()(const Node<GridSize>& lhs, const Node<GridSize>& rhs) const
-        {
-            return lhs.GetHashValue() == rhs.GetHashValue();
-        }
-    };
-
     void Backtracking();
 
     /// @brief the cache that stores all visited nodes
     std::unordered_set<std::size_t> visited;
 
     /// @brief the map that contains nodes' parents
-    std::unordered_map<Node<GridSize>, Node<GridSize>, KeyHash, KeyEqual> parents;
+    std::unordered_map<Node<GridSize>, Node<GridSize>, KeyHash<GridSize>, KeyEqual<GridSize>> parents;
 
     /// @brief the priority queue that stores all candidate nodes
-    std::priority_queue<Node<GridSize>, std::vector<Node<GridSize>>, NodeCmp> pq;
+    std::priority_queue<Node<GridSize>, std::vector<Node<GridSize>>, NodeCmp<GridSize>> pq;
 
     /// @brief the start node
     Node<GridSize> startNode;
