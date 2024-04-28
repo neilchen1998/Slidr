@@ -315,18 +315,15 @@ bool Node<constants::EIGHT_PUZZLE_SIZE>::Insolvable() const
 template <>
 bool Node<constants::FIFTEEN_PUZZLE_SIZE>::Insolvable() const
 {
-    // source: https://www.maplesoft.com/support/help/maple/view.aspx?path=MathApps%2FFifteenPuzzle
+    // source: https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/#
 
-    // whether the parity of the inversion is even
+    // whether the number of the inversion is even
     bool condition1 = GetInversion() % 2;
 
-    // whether the parity of the Manhattan distance between the empty puzzle and the most bottom right is even
+    // whether the empty puzzle is located in the an even row (counted from the bottom)
     int ptr = std::ranges::find(state, constants::EMPTY) - state.begin();
-    auto curDv = std::div(ptr, constants::FIFTEEN_PUZZLE_SIZE);
-    int curRow = curDv.quot;
-    int curCol = curDv.rem;
-    int diff = std::abs(constants::FIFTEEN_PUZZLE_SIZE - 1 - curCol) + std::abs(constants::FIFTEEN_PUZZLE_SIZE - 1 - curRow);
-    bool condition2 = diff % 2;
+    int curRow = std::div(ptr, constants::FIFTEEN_PUZZLE_SIZE).quot;
+    bool condition2 = (constants::EMPTY - curRow) % 2;
 
     return condition1 ^ condition2;
 }
