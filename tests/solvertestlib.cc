@@ -156,9 +156,9 @@ const std::vector<int> FIFTEEN_GOAL_STATE {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
 //     }
 // }
 
-TEST_CASE( "Can Solve the 8 Puzzle Problem", "[main]" )
+TEST_CASE( "Trivial 8 Puzzle Problems", "[main]" )
 {
-    SECTION("Puzzle 0", "[trivial case]")
+    SECTION("Puzzle 1", "[finished]")
     {
         Solver<constants::EIGHT_PUZZLE_SIZE> s = Solver<constants::EIGHT_PUZZLE_SIZE>(EIGHT_GOAL_STATE);
         auto [isSolved, totalIterations] = s.SolvePuzzle();
@@ -167,25 +167,7 @@ TEST_CASE( "Can Solve the 8 Puzzle Problem", "[main]" )
         REQUIRE (totalIterations == 0);
     }
 
-    SECTION("Puzzle 1", "[general case]")
-    {
-        std::vector<int> initialState {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
-        Solver<constants::EIGHT_PUZZLE_SIZE> s = Solver<constants::EIGHT_PUZZLE_SIZE>(initialState);
-        auto [isSolved, totalIterations] = s.SolvePuzzle();
-
-        REQUIRE (isSolved);
-    }
-
-    SECTION("Puzzle 2", "[general case]")
-    {
-        std::vector<int> initialState {5, 3, 6, 2, constants::EMPTY, 8, 4, 1, 7};
-        Solver<constants::EIGHT_PUZZLE_SIZE> s = Solver<constants::EIGHT_PUZZLE_SIZE>(initialState);
-        auto [isSolved, totalIterations] = s.SolvePuzzle();
-
-        REQUIRE (isSolved);
-    }
-
-    SECTION("Puzzle 3 (Unsolvable)", "[trivial case]")
+    SECTION("Puzzle 2", "[unsolvable]")
     {
         std::vector<int> initialState {8, 1, 2, constants::EMPTY, 4, 3, 7, 6, 5};
         Solver<constants::EIGHT_PUZZLE_SIZE> s = Solver<constants::EIGHT_PUZZLE_SIZE>(initialState);
@@ -196,9 +178,9 @@ TEST_CASE( "Can Solve the 8 Puzzle Problem", "[main]" )
     }
 }
 
-TEST_CASE( "Can Solve the 15 Puzzle Problem", "[main]" )
+TEST_CASE( "Trivial 15 Puzzle Problems", "[main]" )
 {
-    SECTION("Puzzle 0", "[trivial case]")
+    SECTION("Puzzle 1", "[finished]")
     {
         Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(FIFTEEN_GOAL_STATE);
         auto [isSolved, totalIterations] = s.SolvePuzzle();
@@ -207,25 +189,7 @@ TEST_CASE( "Can Solve the 15 Puzzle Problem", "[main]" )
         REQUIRE (totalIterations == 0);
     }
 
-    SECTION("Puzzle 1", "[general case]")
-    {
-        std::vector<int> initialState {7, 2, 9, 6, 8, constants::EMPTY, 3, 13, 4, 1, 10, 5, 14, 15, 11, 12};
-        Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
-        auto [isSolved, totalIterations] = s.SolvePuzzle();
-
-        REQUIRE (isSolved);
-    }
-
-    SECTION("Puzzle 2", "[general case]")
-    {
-        std::vector<int> initialState {13, 4, 2, 3, 12, 6, 5, 9, 14, 10, 1, 8, constants::EMPTY, 7, 11, 15};
-        Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
-        auto [isSolved, totalIterations] = s.SolvePuzzle();
-
-        REQUIRE (isSolved);
-    }
-
-    SECTION("Puzzle 3 (Unsolvable)", "[trivial case]")
+    SECTION("Puzzle 2", "[unsolvable]")
     {
         std::vector<int> initialState {15, 14, 8, 12, 10, 11, 9, 13, 2, 6, 5, 1, 3, 7, 4, constants::EMPTY};
         Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
@@ -239,14 +203,6 @@ TEST_CASE( "Can Solve the 15 Puzzle Problem", "[main]" )
 TEST_CASE( "Solve 8 Puzzle Problem with Least Steps", "[main]" )
 {
     // source: https://deniz.co/8-puzzle-solver/
-    SECTION("Puzzle 0", "[trivial case]")
-    {
-        Solver<constants::EIGHT_PUZZLE_SIZE> s = Solver<constants::EIGHT_PUZZLE_SIZE>(EIGHT_GOAL_STATE);
-        auto [isSolved, totalIterations] = s.SolvePuzzle();
-
-        REQUIRE (isSolved);
-        REQUIRE (totalIterations == 0);
-    }
 
     SECTION("Puzzle 1", "[general case]")
     {
@@ -323,11 +279,13 @@ TEST_CASE( "Solve 15 Puzzle Problem with Least Steps", "[main]" )
     SECTION("Puzzle 1", "[general case]")
     {
         std::vector<int> initialState {7, 2, 9, 6, 8, constants::EMPTY, 3, 13, 4, 1, 10, 5, 14, 15, 11, 12};
+        auto n = Node<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
         Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
         auto [isSolved, _] = s.SolvePuzzle();
 
         std::vector<Node<constants::FIFTEEN_PUZZLE_SIZE>> solution = s.GetSolution();
 
+        REQUIRE (n.GetManhattanDistance() == 36);
         REQUIRE (isSolved);
         bool solutionStart = isSolved && solution.front() == Node<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
         REQUIRE (solutionStart);
@@ -345,6 +303,7 @@ TEST_CASE( "Solve 15 Puzzle Problem with Least Steps", "[main]" )
 
         std::vector<Node<constants::FIFTEEN_PUZZLE_SIZE>> solution = s.GetSolution();
 
+        REQUIRE (n.GetManhattanDistance() == 41);
         REQUIRE (isSolved);
         bool solutionStart = isSolved && solution.front() == Node<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
         REQUIRE (solutionStart);
@@ -352,6 +311,76 @@ TEST_CASE( "Solve 15 Puzzle Problem with Least Steps", "[main]" )
         REQUIRE (solutionEnd);
         REQUIRE (s.GetDepth() == 51);
     }
+
+    SECTION("Puzzle 3", "[general case]")
+    {
+        std::vector<int> initialState {3, 1, 11, 10, 13, 8, 5, 12, 15, 2, 7, 9, 6, constants::EMPTY, 4, 14};
+        auto n = Node<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
+        Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
+        auto [isSolved, _] = s.SolvePuzzle();
+
+        std::vector<Node<constants::FIFTEEN_PUZZLE_SIZE>> solution = s.GetSolution();
+
+        REQUIRE (n.GetManhattanDistance() == 34);
+        REQUIRE (isSolved);
+        bool solutionStart = isSolved && solution.front() == Node<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
+        REQUIRE (solutionStart);
+        bool solutionEnd = isSolved && solution.back() == Node<constants::FIFTEEN_PUZZLE_SIZE>(FIFTEEN_GOAL_STATE);
+        REQUIRE (solutionEnd);
+        REQUIRE (s.GetDepth() == 52);
+    }
+
+    SECTION("Puzzle 4", "[general case]")
+    {
+        std::vector<int> initialState {13, 4, 2, 3, 12, 6, 5, 9, 14, 10, 1, 8, constants::EMPTY, 7, 11, 15};
+        auto n = Node<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
+        Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
+        auto [isSolved, _] = s.SolvePuzzle();
+
+        std::vector<Node<constants::FIFTEEN_PUZZLE_SIZE>> solution = s.GetSolution();
+
+        REQUIRE (n.GetManhattanDistance() == 29);
+        REQUIRE (isSolved);
+        bool solutionStart = isSolved && solution.front() == Node<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
+        REQUIRE (solutionStart);
+        bool solutionEnd = isSolved && solution.back() == Node<constants::FIFTEEN_PUZZLE_SIZE>(FIFTEEN_GOAL_STATE);
+        REQUIRE (solutionEnd);
+        REQUIRE (s.GetDepth() == 47);
+    }
+
+    // SECTION("Puzzle 4", "[general case]")
+    // {
+    //     std::vector<int> initialState {8, 9, 13, 4, 15, 14, 6, 11, 7, 2, constants::EMPTY, 12, 5, 3, 10, 1};
+    //     auto n = Node<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
+    //     Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
+    //     auto [isSolved, _] = s.SolvePuzzle();
+
+    //     std::vector<Node<constants::FIFTEEN_PUZZLE_SIZE>> solution = s.GetSolution();
+
+    //     REQUIRE (isSolved);
+    //     bool solutionStart = isSolved && solution.front() == Node<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
+    //     REQUIRE (solutionStart);
+    //     bool solutionEnd = isSolved && solution.back() == Node<constants::FIFTEEN_PUZZLE_SIZE>(FIFTEEN_GOAL_STATE);
+    //     REQUIRE (solutionEnd);
+    //     REQUIRE (s.GetDepth() == 58);
+    // }
+
+    // SECTION("Puzzle 5", "[general case]")
+    // {
+    //     std::vector<int> initialState {10, 13, 5, 4, 6, constants::EMPTY, 15, 14, 3, 11, 9, 8, 7, 1, 12, 2};
+    //     auto n = Node<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
+    //     Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
+    //     auto [isSolved, _] = s.SolvePuzzle();
+
+    //     std::vector<Node<constants::FIFTEEN_PUZZLE_SIZE>> solution = s.GetSolution();
+
+    //     REQUIRE (isSolved);
+    //     bool solutionStart = isSolved && solution.front() == Node<constants::FIFTEEN_PUZZLE_SIZE>(initialState);
+    //     REQUIRE (solutionStart);
+    //     bool solutionEnd = isSolved && solution.back() == Node<constants::FIFTEEN_PUZZLE_SIZE>(FIFTEEN_GOAL_STATE);
+    //     REQUIRE (solutionEnd);
+    //     REQUIRE (s.GetDepth() == 51);
+    // }
 
     // SECTION("Puzzle 3", "[general case]")
     // {
