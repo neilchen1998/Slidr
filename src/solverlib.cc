@@ -68,7 +68,7 @@ std::tuple<bool, int> Solver<GridSize>::SolvePuzzle()
             else if (child.GetDepth() > curDepth + 1)
             {
                 child.UpdateDepth(curDepth + 1);
-                pq.push(child);
+                // pq.push(child);
                 parents[child] = curNode;
             }
         }
