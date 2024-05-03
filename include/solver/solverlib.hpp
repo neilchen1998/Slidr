@@ -85,6 +85,8 @@ protected:
     /// @brief the depth (the least steps) to solve the puzzle
     int depth;
 
+    std::unordered_map<std::size_t, int> depths;
+
     std::vector<Node<GridSize>> solution;
 };
 

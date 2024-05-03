@@ -56,8 +56,8 @@ int main(int argc, char* argv[])
     {
         // the 15 puzzle problem
         std::cout << "=== 15 Puzzle Problem ===\n";
-        std::vector<int> state {2, 6, 1, 11, 12, 13, constants::EMPTY, 8, 3, 14, 15, 10, 4, 5, 7, 9};
-        Node<constants::FIFTEEN_PUZZLE_SIZE> n(state);
+        std::vector<int> initialState {10, 13, 5, 4, 6, constants::EMPTY, 15, 14, 3, 11, 9, 8, 7, 1, 12, 2};
+        Node<constants::FIFTEEN_PUZZLE_SIZE> n(initialState);
         Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver(n);
 
         auto [isSolved, iterations] = s.SolvePuzzle();

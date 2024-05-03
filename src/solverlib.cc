@@ -48,10 +48,17 @@ std::tuple<bool, int> Solver<GridSize>::SolvePuzzle()
             return std::tuple{curNode.IsSolved(), iterations};
         }
 
-        visited.insert(curNode.GetHashValue());
+        // gets the hash value of the current node
+        std::size_t curNodeHashValue = curNode.GetHashValue();
+
+        // prevents from visiting again and again
+        if (visited.count(curNodeHashValue) != 0)   continue;
+
+        // adds current node to the closed list
+        visited.insert(curNodeHashValue);
 
         // gets current depth
-        int curDepth = depths[curNode.GetHashValue()];
+        int curDepth = depths[curNodeHashValue];
 
         // gets all fessible children
         std::vector<Node<GridSize>> children = curNode.GetChildrenNodes();
@@ -62,14 +69,13 @@ std::tuple<bool, int> Solver<GridSize>::SolvePuzzle()
             auto childHashValue = child.GetHashValue();
             if (visited.count(childHashValue) == 0)
             {
-                pq.push(child);
-                parents[child] = curNode;
-                depths[child.GetHashValue()] = curDepth + 1;
-            }
-            else if (depths[child.GetHashValue()] > curDepth + 1)
-            {
-                depths[child.GetHashValue()] = curDepth + 1;
-                parents[child] = curNode;
+                if (depths.count(childHashValue) == 0 // checks if the child is in the open list
+                    || curDepth + 1 < depths[child.GetHashValue()]) // checks if we need to update the open list
+                {
+                    pq.push(child);
+                    parents[child] = curNode;
+                    depths[child.GetHashValue()] = curDepth + 1;
+                }
             }
         }
 
