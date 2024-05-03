@@ -279,27 +279,6 @@ int Node<constants::FIFTEEN_PUZZLE_SIZE>::GetTotalCost() const
 {
     int ret = (GetManhattanDistance() + GetDepth());
 
-    // // approach 1
-    // constexpr std::array cache {1, 2, 3, 4, 5, 6, 7, 8};
-    // if (std::ranges::equal(state | std::ranges::views::take(8), cache))
-    // {
-    //     ret -= 10;
-    // }
-    // else if (std::ranges::equal(state | std::ranges::views::take(4), cache | std::ranges::views::take(4)))
-    // {
-    //     ret -= 5;
-    // }
-
-    // // // approach 2
-    // // if (SecondStageCompleted())
-    // // {
-    // //     ret -= 10;
-    // // }
-    // // else if (FirstStageCompleted())
-    // // {
-    // //     ret -= 5;
-    // // }
-
     return ret;
 }
 

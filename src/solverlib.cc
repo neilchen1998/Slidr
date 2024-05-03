@@ -48,8 +48,10 @@ std::tuple<bool, int> Solver<GridSize>::SolvePuzzle()
             return std::tuple{curNode.IsSolved(), iterations};
         }
 
+        visited.insert(curNode.GetHashValue());
+
         // gets current depth
-        int curDepth = curNode.GetDepth();
+        int curDepth = depths[curNode.GetHashValue()];
 
         // gets all fessible children
         std::vector<Node<GridSize>> children = curNode.GetChildrenNodes();
@@ -62,13 +64,11 @@ std::tuple<bool, int> Solver<GridSize>::SolvePuzzle()
             {
                 pq.push(child);
                 parents[child] = curNode;
-
-                visited.insert(childHashValue);
+                depths[child.GetHashValue()] = curDepth + 1;
             }
-            else if (child.GetDepth() > curDepth + 1)
+            else if (depths[child.GetHashValue()] > curDepth + 1)
             {
-                child.UpdateDepth(curDepth + 1);
-                // pq.push(child);
+                depths[child.GetHashValue()] = curDepth + 1;
                 parents[child] = curNode;
             }
         }
