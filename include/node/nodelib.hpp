@@ -36,13 +36,13 @@ public:
 
     int GetDepth() const;
 
-    int GetInversion() const;
+    int GetInversion();
 
     void UpdateDepth(int newDepth);
 
     int GetTotalCost() const;
 
-    bool Insolvable() const;
+    bool Insolvable();
 
 private:
     void CalculateManhattanDistance();

@@ -16,7 +16,6 @@ Node<GameType>::Node(std::vector<int> input) : state(input), depth(0), inversion
     hashValue = hash_range(std::span(state));
     posX = std::ranges::find(input, constants::EMPTY) - input.begin();
     CalculateManhattanDistance();
-    CalculateInversion();
 }
 
 template <int GameType>
@@ -24,7 +23,6 @@ Node<GameType>::Node(std::vector<int> input, int posX, int depth) : state(input)
 {
     hashValue = hash_range(std::span(input));
     CalculateManhattanDistance();
-    CalculateInversion();
 }
 
 template <int GameType>
@@ -258,8 +256,9 @@ int Node<GameType>::GetDepth() const
 }
 
 template <int GameType>
-int Node<GameType>::GetInversion() const
+int Node<GameType>::GetInversion()
 {
+    CalculateInversion();
     return inversion;
 }
 
@@ -305,7 +304,7 @@ int Node<constants::FIFTEEN_PUZZLE_SIZE>::GetTotalCost() const
 }
 
 template <>
-bool Node<constants::EIGHT_PUZZLE_SIZE>::Insolvable() const
+bool Node<constants::EIGHT_PUZZLE_SIZE>::Insolvable()
 {
     return (GetInversion() % 2) ? true : false;
 }
@@ -313,7 +312,7 @@ bool Node<constants::EIGHT_PUZZLE_SIZE>::Insolvable() const
 /// @brief Checks whether the given puzzle is insolvable or not
 /// @return the puzzle is insolvable
 template <>
-bool Node<constants::FIFTEEN_PUZZLE_SIZE>::Insolvable() const
+bool Node<constants::FIFTEEN_PUZZLE_SIZE>::Insolvable()
 {
     // source: https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/#
 
