@@ -7,7 +7,7 @@
 #include "math/mathlib.hpp"
 #include "constants/constantslib.hpp"   // constants::EMPTY
 
-TEST_CASE( "Hash Range Function", "[main]" )
+TEST_CASE( "Hash Range Function <8>", "[main]" )
 {
     std::vector<int> v1 {constants::EMPTY, 1, 2, 3, 4, 5, 6, 7, 8};
     std::vector<int> v2 {3, 1, constants::EMPTY, 2, 8, 7, 6, 5, 4};
@@ -25,5 +25,32 @@ TEST_CASE( "Hash Range Function", "[main]" )
     SECTION ( "Same Node", "[main]")
     {
         REQUIRE (hashV2 == hashV3);
+    }
+}
+
+TEST_CASE( "Hash Range Function <16>", "[main]" )
+{
+    std::vector<int> v1 {3, 1, 11, 10, 13, 9, 5, 4, 15, 8, constants::EMPTY, 7, 6, 2, 14, 12};
+    std::vector<int> v2 {3, 1, 11, 10, 13, 9, 5, 4, 15, constants::EMPTY, 8, 7, 6, 2, 14, 12};
+    std::vector<int> v3 {3, 1, 11, 10, 13, constants::EMPTY, 5, 4, 15, 9, 8, 7, 6, 2, 14, 12};
+
+    std::size_t hash1 = hash_range(std::span(v1.begin(), v1.end()));
+    std::size_t hash11 = hash_range(std::span(v1.begin(), v1.end()));
+    std::size_t hash2 = hash_range(std::span(v2.begin(), v2.end()));
+    std::size_t hash3 = hash_range(std::span(v3.begin(), v3.end()));
+
+    SECTION ( "Different Node", "[main]")
+    {
+        REQUIRE (hash2 != hash1);
+    }
+
+    SECTION ( "Different Node", "[main]")
+    {
+        REQUIRE (hash3 != hash1);
+    }
+
+    SECTION ( "Same Node", "[main]")
+    {
+        REQUIRE (hash11 == hash1);
     }
 }
