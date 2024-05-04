@@ -5,14 +5,17 @@
 #include <string>   // std::string
 #include <sstream>  // std::ostringstream
 #include <iomanip>  // std::setfill, std::setw
+#include <concepts> // std::integral
 
 #include "constants/constantslib.hpp"
 
-typedef unsigned long uint64_t;
-
 namespace pattern
 {
-    template <typename T>
+    /// @brief Serialize a vector of integers to string form (in hex)
+    /// @tparam T the data type (has to be integral)
+    /// @param vec the input vector
+    /// @return a string
+    template <std::integral T>
     std::string serialize(const std::vector<T>& vec)
     {
         std::ostringstream oss;
