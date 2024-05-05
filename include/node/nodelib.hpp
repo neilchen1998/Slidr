@@ -44,6 +44,11 @@ public:
 
     bool Insolvable();
 
+    /// @brief Find the move that the parent has to take to reach the current node
+    /// @param parent the parent node
+    /// @return the move the parent needs to take
+    int FindUndoMove(const Node<GameType>& parent);
+
 private:
     void CalculateManhattanDistance();
 

@@ -522,3 +522,40 @@ TEST_CASE( "Get Total Cost <4>", "[main]" )
         REQUIRE (n.GetTotalCost() == n.GetManhattanDistance() + n.GetDepth());
     }
 }
+
+TEST_CASE( "Find the Move Between Two States <3>", "[main]" )
+{
+    constexpr int GridSize = constants::EIGHT_PUZZLE_SIZE;
+    std::vector<int> layout {8, 1, 2, 4, constants::EMPTY, 3, 7, 6, 5};
+    Node<GridSize> n(layout);
+
+    std::vector<Node<GridSize>> children = n.GetChildrenNodes();
+    auto itr = children.begin();
+
+    SECTION("Right", "[some_details]")
+    {
+        int dir = itr->FindUndoMove(n);
+        REQUIRE(dir == constants::RIGHT);
+    }
+
+    ++itr;
+    SECTION("Up", "[some_details]")
+    {
+        int dir = itr->FindUndoMove(n);
+        REQUIRE(dir == constants::UP);
+    }
+
+    ++itr;
+    SECTION("Left", "[some_details]")
+    {
+        int dir = itr->FindUndoMove(n);
+        REQUIRE(dir == constants::LEFT);
+    }
+
+    ++itr;
+    SECTION("Down", "[some_details]")
+    {
+        int dir = itr->FindUndoMove(n);
+        REQUIRE(dir == constants::DOWN);
+    }
+}

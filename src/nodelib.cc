@@ -305,3 +305,48 @@ bool Node<constants::FIFTEEN_PUZZLE_SIZE>::Insolvable()
 
     return condition1 ^ condition2;
 }
+
+template <int GameType>
+int Node<GameType>::FindUndoMove(const Node<GameType>& parent)
+{
+    // first: the iterator that points to the first argument
+    // second: the iterator that points to the second argument
+    std::pair<std::vector<int>::iterator, std::vector<int>::const_iterator> ptrs;
+
+    // finds the first mismatch
+    ptrs = std::mismatch(state.begin(), state.end(), parent.state.begin());
+    int posFirst = std::distance(state.begin(), ptrs.first);
+
+    // finds the second mismatch
+    ++ptrs.first, ++ptrs.second;
+    ptrs = std::mismatch(ptrs.first, state.end(), ptrs.second);
+    int posSecond = std::distance(state.begin(), ptrs.first);
+
+    int diff = (*ptrs.first == constants::EMPTY) ? (posSecond - posFirst) : (posFirst - posSecond);
+
+    int ret;
+    switch (diff)
+    {
+    case -1:
+        ret = constants::LEFT;
+        break;
+
+    case 1:
+        ret = constants::RIGHT;
+        break;
+
+    case -GameType:
+        ret = constants::UP;
+        break;
+
+    case GameType:
+        ret = constants::DOWN;
+        break;
+
+    default:
+        ret = -1;
+        break;
+    }
+
+    return ret;
+}
