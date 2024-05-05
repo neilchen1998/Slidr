@@ -111,17 +111,23 @@ int Solver<GridSize>::GetDepth() const
 template <int GridSize>
 std::vector<Node<GridSize>> Solver<GridSize>::GetSolution() const
 {
-    // // DEBUG
-    // int i = 0;
-    // auto itr = solution.cbegin();
-    // while (itr != solution.cend())
-    // {
-    //     std::cout << "Step " << i << ":\n";
-    //     itr->Print();
-
-    //     ++itr;
-    //     ++i;
-    // }
-
     return solution;
+}
+
+template <int GridSize>
+std::vector<int> Solver<GridSize>::GetSequence()
+{
+    std::vector<int> ret(depth);
+    int i = 0;
+    auto cur = solution.begin();
+    auto next = cur + 1;
+    while (next != solution.end())
+    {
+        ret[i] = next->FindUndoMove(*cur);
+
+        ++cur, ++next;
+        ++i;
+    }
+
+    return ret;
 }

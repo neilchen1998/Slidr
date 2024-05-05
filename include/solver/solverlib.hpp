@@ -60,6 +60,10 @@ public:
 
     std::vector<Node<GridSize>> GetSolution() const;
 
+    /// @brief Get the move sequence of 'x'
+    /// @return the move sequence
+    std::vector<int> GetSequence();
+
 protected:
 
     void Backtracking();
