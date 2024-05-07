@@ -69,6 +69,8 @@ public:
     /// @return the depth of the node
     int GetDepth() const;
 
+    /// @brief Get the step-by-step solution to the problem
+    /// @return the step-by-step solution (in node format)
     std::vector<Node<GridSize>> GetSolution() const;
 
     /// @brief Gets the move sequence of 'x'
