@@ -17,7 +17,7 @@ target_compile_features(nodetestlib PRIVATE cxx_std_20)
 target_compile_features(solvertestlib PRIVATE cxx_std_20)
 
 target_link_libraries(mathtestlib PRIVATE Catch2::Catch2 math_library)
-target_link_libraries(patterntestlib PRIVATE Catch2::Catch2 math_library)
+target_link_libraries(patterntestlib PRIVATE Catch2::Catch2 pattern_library)
 target_link_libraries(constantstestlib PRIVATE Catch2::Catch2 constants_library)
 target_link_libraries(nodetestlib PRIVATE Catch2::Catch2 node_library)
 target_link_libraries(solvertestlib PRIVATE Catch2::Catch2 math_library solver_library)
