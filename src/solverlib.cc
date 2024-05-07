@@ -8,6 +8,7 @@
 #include <iostream> // std::cout
 
 #include "constants/constantslib.hpp"
+#include "pattern/patternlib.hpp"
 #include "math/mathlib.hpp"
 #include "node/nodelib.hpp"
 #include "solver/solverlib.hpp"
@@ -86,6 +87,75 @@ std::tuple<bool, int> Solver<GridSize>::SolvePuzzle()
 }
 
 template <int GridSize>
+std::tuple<bool, int> Solver<GridSize>::SolvePuzzleWithPatterns()
+{
+    // first checks if the puzzle is solvable or not
+    if (startNode.Insolvable())   return {false, INT_MAX};
+
+    // loads patterns
+    patterns = pattern::LoadSolution("/home/neil_poseidon/C++/8-Puzzle/fifteen-puzzle-patterns.txt");
+
+    // keep solving until the priority queue is empty
+    while (!pq.empty())
+    {
+        // gets the top node
+        curNode = pq.top();
+        pq.pop();
+
+        // checks if we have solved the problem
+        if (curNode.IsSolved())
+        {
+            Backtracking();
+
+            return std::tuple{curNode.IsSolved(), iterations};
+        }
+
+        // gets the hash value of the current node
+        std::size_t curNodeHashValue = curNode.GetHashValue();
+
+        // checks if it exists in the patterns
+        if (patterns.count(curNodeHashValue) != 0)
+        {
+            BacktrackingWithPatterns();
+
+            return std::tuple{true, iterations};
+        }
+
+        // prevents from visiting again and again
+        if (visited.count(curNodeHashValue) != 0)   continue;
+
+        // adds current node to the closed list
+        visited.insert(curNodeHashValue);
+
+        // gets current depth
+        int curDepth = depths[curNodeHashValue];
+
+        // gets all fessible children
+        std::vector<Node<GridSize>> children = curNode.GetChildrenNodes();
+
+        // starts from the beginning and checks if we have visited it before
+        for(Node<GridSize>& child : children)
+        {
+            auto childHashValue = child.GetHashValue();
+            if (visited.count(childHashValue) == 0)
+            {
+                if (depths.count(childHashValue) == 0 // checks if the child is in the open list
+                    || curDepth + 1 < depths[child.GetHashValue()]) // checks if we need to update the open list
+                {
+                    pq.push(child);
+                    parents[child] = curNode;
+                    depths[child.GetHashValue()] = curDepth + 1;
+                }
+            }
+        }
+
+        ++iterations;
+    }
+
+    return std::tuple{false, INT_MAX};
+}
+
+template <int GridSize>
 void Solver<GridSize>::Backtracking()
 {
     Node<GridSize> cur = curNode;
@@ -100,6 +170,35 @@ void Solver<GridSize>::Backtracking()
     }
 
     std::reverse(solution.begin(), solution.end());
+}
+
+template <int GridSize>
+void Solver<GridSize>::BacktrackingWithPatterns()
+{
+    Node<GridSize> cur = curNode;
+    std::size_t queryHash = curNode.GetHashValue();
+    solution.push_back(cur);
+
+    depth = 0;
+    while (cur != startNode)
+    {
+        cur = parents[cur];
+        solution.push_back(cur);
+        ++depth;
+    }
+
+    std::reverse(solution.begin(), solution.end());
+
+    std::vector<int> sol = patterns[queryHash];
+
+    cur = curNode;
+    for(const int& move : sol)
+    {
+        auto [childState, childPosX] = cur.GetNextState(move);
+        solution.emplace_back(childState, childPosX, depth + 1);
+        cur = Node<GridSize>(childState, childPosX, depth + 1);
+        ++depth;
+    }
 }
 
 template <int GridSize>

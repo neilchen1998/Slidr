@@ -10,7 +10,8 @@
 
 #include "node/nodelib.hpp"
 
-/// @brief the compare function for the priority queue
+/// @brief The compare function for the priority queue
+/// @tparam GridSize the size of the node
 template <int GridSize>
 struct NodeCmp
 {
@@ -20,6 +21,8 @@ struct NodeCmp
     }
 };
 
+/// @brief Gets the hash of the node
+/// @tparam GridSize the size of the node
 template <int GridSize>
 struct KeyHash
 {
@@ -29,6 +32,8 @@ struct KeyHash
     }
 };
 
+/// @brief Checks if two nodes are identical
+/// @tparam GridSize the size of the node
 template <int GridSize>
 struct KeyEqual
 {
@@ -52,21 +57,31 @@ public:
 
     ~Solver() = default;
 
-    /// @brief Solve the puzzle
+    /// @brief Solves the puzzle
     /// @return { whether the puzzle is solved, the number of iterations the Solver took }
     std::tuple<bool, int> SolvePuzzle();
 
+    /// @brief Solves the puzzle with help from patterns
+    /// @return { whether the puzzle is solved, the number of iterations the Solver took }
+    std::tuple<bool, int> SolvePuzzleWithPatterns();
+
+    /// @brief Gets the depth of the node
+    /// @return the depth of the node
     int GetDepth() const;
 
     std::vector<Node<GridSize>> GetSolution() const;
 
-    /// @brief Get the move sequence of 'x'
+    /// @brief Gets the move sequence of 'x'
     /// @return the move sequence
     std::vector<int> GetSequence();
 
 protected:
 
+    /// @brief Simple backtrack
     void Backtracking();
+
+    /// @brief Backtrack with the help of patterns
+    void BacktrackingWithPatterns();
 
     /// @brief the cache that stores all visited nodes
     std::unordered_set<std::size_t> visited;
@@ -89,9 +104,14 @@ protected:
     /// @brief the depth (the least steps) to solve the puzzle
     int depth;
 
+    /// @brief The depths of all nodes (it also serves as the OPEN list)
     std::unordered_map<std::size_t, int> depths;
 
+    /// @brief The step-by-step solution to the problem
     std::vector<Node<GridSize>> solution;
+
+    /// @brief Patterns {node hash, solution (in move direction format)}
+    std::unordered_map<std::size_t, std::vector<int>> patterns;
 };
 
 #endif // INCLUDE_SOLVER_SOLVERLIB_H_
