@@ -46,7 +46,7 @@ std::tuple<bool, int> Solver<GridSize>::SolvePuzzle()
         {
             Backtracking();
 
-            return std::tuple{curNode.IsSolved(), iterations};
+            return std::tuple {curNode.IsSolved(), iterations};
         }
 
         // gets the hash value of the current node
@@ -83,17 +83,17 @@ std::tuple<bool, int> Solver<GridSize>::SolvePuzzle()
         ++iterations;
     }
 
-    return std::tuple{false, INT_MAX};
+    return std::tuple {false, INT_MAX};
 }
 
 template <int GridSize>
-std::tuple<bool, int> Solver<GridSize>::SolvePuzzleWithPatterns()
+std::tuple<bool, int> Solver<GridSize>::SolvePuzzleWithPatterns(const std::string& filename)
 {
     // first checks if the puzzle is solvable or not
     if (startNode.Insolvable())   return {false, INT_MAX};
 
     // loads patterns
-    patterns = pattern::LoadSolution("/home/neil_poseidon/C++/8-Puzzle/fifteen-puzzle-patterns.txt");
+    patterns = pattern::LoadSolution(filename);
 
     // keep solving until the priority queue is empty
     while (!pq.empty())
@@ -107,7 +107,7 @@ std::tuple<bool, int> Solver<GridSize>::SolvePuzzleWithPatterns()
         {
             Backtracking();
 
-            return std::tuple{curNode.IsSolved(), iterations};
+            return std::tuple {curNode.IsSolved(), iterations};
         }
 
         // gets the hash value of the current node
@@ -219,7 +219,7 @@ std::vector<int> Solver<GridSize>::GetSequence()
     std::vector<int> ret(depth);
     int i = 0;
     auto cur = solution.begin();
-    auto next = cur + 1;
+    auto next = solution.begin() + 1;
     while (next != solution.end())
     {
         ret[i] = next->FindUndoMove(*cur);

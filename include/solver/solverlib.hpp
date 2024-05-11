@@ -63,7 +63,7 @@ public:
 
     /// @brief Solves the puzzle with help from patterns
     /// @return { whether the puzzle is solved, the number of iterations the Solver took }
-    std::tuple<bool, int> SolvePuzzleWithPatterns();
+    std::tuple<bool, int> SolvePuzzleWithPatterns(const std::string& filename);
 
     /// @brief Gets the depth of the node
     /// @return the depth of the node
