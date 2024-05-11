@@ -8,19 +8,23 @@
 
 namespace pattern
 {
-    void ExportSolution(std::size_t hash, std::vector<int>& vec, const std::string& filename, bool append)
+    void ExportSolution(std::size_t hash, const std::vector<int>& vec, const std::string& filename, bool append)
     {
+        // checks whether to append or rewrite the file
         std::ofstream outfile;
         if (append)
             outfile.open(filename, std::ios_base::app | std::ofstream::binary);
         else
             outfile.open(filename, std::ofstream::binary);
 
+        // writes the hash of the state
         outfile.write(reinterpret_cast<const char*>(&hash), sizeof(std::size_t));
 
+        // writes the ':' to seperate the hash of the state and its solution
         constexpr char sep (':');
         outfile.write((&sep), sizeof(char));
-    
+
+        // writes the solution of the state
         auto itr = vec.begin();
         while (itr != vec.end())
         {
@@ -31,6 +35,7 @@ namespace pattern
             ++itr;
             data <<= 4;
 
+            // pads 0xF if the number of solution is odd
             if (itr != vec.end())
             {
                 
@@ -45,6 +50,7 @@ namespace pattern
             outfile.write(reinterpret_cast<const char*>(&data), sizeof(char));
         }
 
+        // writes the '\n' to seperate two entries
         constexpr char br ('\n');
         outfile.write((&br), sizeof(char));
 

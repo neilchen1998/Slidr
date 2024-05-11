@@ -15,7 +15,7 @@ namespace pattern
     /// @param vec the solution
     /// @param filename the export file name
     /// @param append whether to append the exsiting file
-    void ExportSolution(std::size_t hash, std::vector<int>& vec, const std::string& filename, bool append = true);
+    void ExportSolution(std::size_t hash, const std::vector<int>& vec, const std::string& filename, bool append = true);
 
     /// @brief Load solutions 
     /// @param filename the name of the file
