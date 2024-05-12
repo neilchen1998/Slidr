@@ -47,7 +47,7 @@ void SolveEightPuzzleProblem()
 
     std::cout << "Start:\n";
     n.Print();
-    std::cout << "*****\n";
+    std::cout << "************" << std::endl;
 
     // only show the solution is the puzzle was solved
     if (isSolved)
@@ -64,7 +64,7 @@ void SolveEightPuzzleProblem()
     }
 }
 
-void SolveFifteenPuzzleProblem(const std::vector<int>& initialState, const std::string filename = "/home/neil_poseidon/C++/8-Puzzle/fifteen-puzzle-patterns.txt", bool write = false)
+void SolveFifteenPuzzleProblem(const std::vector<int>& initialState, const std::string& filename = "/home/neil_poseidon/C++/8-Puzzle/fifteen-puzzle-patterns.txt", bool write = false)
 {
     // the 15 puzzle problem
     std::cout << "=== 15 Puzzle Problem ===\n";
@@ -88,7 +88,7 @@ void SolveFifteenPuzzleProblem(const std::vector<int>& initialState, const std::
 
     std::cout << "Start:\n";
     n.Print();
-    std::cout << "************\n";
+    std::cout << "************" << std::endl;
 
     // only show the solution is the puzzle was solved
     if (isSolved)
@@ -124,7 +124,7 @@ void SolveFifteenPuzzleProblem(const std::vector<int>& initialState, const std::
     }
 }
 
-void GeneratePatternsForFifteenPuzzleProblem(int low, int high, const std::string filename = "/home/neil_poseidon/C++/8-Puzzle/fifteen-puzzle-patterns.txt")
+void GeneratePatternsForFifteenPuzzleProblem(int low, int high, const std::string& filename = "/home/neil_poseidon/C++/8-Puzzle/fifteen-puzzle-patterns.txt")
 {
     // auto generating patterns
     std::random_device rd;
@@ -145,6 +145,8 @@ void GeneratePatternsForFifteenPuzzleProblem(int low, int high, const std::strin
     
     std::cout << "Result (" << N << "):\n";
     cur.Print();
+    std::cout << std::flush;
+
     Solver<constants::FIFTEEN_PUZZLE_SIZE> s = Solver(cur);
 
     auto [isSolved, iterations] = s.SolvePuzzleWithPatterns(filename);
@@ -157,7 +159,7 @@ void GeneratePatternsForFifteenPuzzleProblem(int low, int high, const std::strin
     }
 }
 
-void SolveFifteenPuzzleProblemsWithPattern(const std::vector<int>& initialState, const std::string filename = "/home/neil_poseidon/C++/8-Puzzle/fifteen-puzzle-patterns.txt", bool write = false)
+void SolveFifteenPuzzleProblemsWithPattern(const std::vector<int>& initialState, const std::string& filename = "/home/neil_poseidon/C++/8-Puzzle/fifteen-puzzle-patterns.txt", bool write = false)
 {
     // the 15 puzzle problem
     std::cout << "=== 15 Puzzle Problem (With Pattern) ===\n";
@@ -180,7 +182,7 @@ void SolveFifteenPuzzleProblemsWithPattern(const std::vector<int>& initialState,
 
     std::cout << "Start:\n";
     n.Print();
-    std::cout << "************\n";
+    std::cout << "************" << std::endl;
 
     // only show the solution is the puzzle was solved
     if (isSolved)
@@ -194,7 +196,6 @@ void SolveFifteenPuzzleProblemsWithPattern(const std::vector<int>& initialState,
 
             ++i;
         }
-
         std::cout << "Move sequence:\n";
         std::vector<int> sequence = s.GetSequence();
         if (write)
@@ -216,13 +217,13 @@ void SolveFifteenPuzzleProblemsWithPattern(const std::vector<int>& initialState,
     }
 }
 
-const std::string filename("/home/neil_poseidon/C++/8-Puzzle/tmp.txt");
+const std::string filename("/home/neil_poseidon/C++/8-Puzzle/training-patterns");
 
 int main(int argc, char* argv[])
 {
-    // SolveFifteenPuzzleProblem({1, 2, 4, 12, 5, 3, 8, 7, 9, 10, 11, constants::EMPTY, 14, 6, 15, 13}, filename, true);
-    GeneratePatternsForFifteenPuzzleProblem(400, 600, filename);
-    // SolveFifteenPuzzleProblemsWithPattern({1, 2, 12, 15, 3, 9, 7, 4, 10, 5, constants::EMPTY, 8, 14, 6, 11, 13});   // munmap_chunk(): invalid pointer
+    GeneratePatternsForFifteenPuzzleProblem(500, 1200, filename);
+    // SolveFifteenPuzzleProblem({12, 11, 2, 15, 4, 1, 14, 3, 9, 6, 13, 7, 10, constants::EMPTY, 8, 5}, filename);
+    // SolveFifteenPuzzleProblemsWithPattern({12, 11, 2, 15, 4, 1, 14, 3, 9, 6, 13, 7, 10, constants::EMPTY, 8, 5}, filename);
 
     return EXIT_SUCCESS;
 }
