@@ -147,6 +147,9 @@ void Node<constants::EIGHT_PUZZLE_SIZE>::Print() const
             std::cout << "\n";
         }
     }
+
+    // immediately flushes the buffer to the terminal
+    std::cout << std::flush;
 }
 
 template <>
