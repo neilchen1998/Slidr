@@ -21,6 +21,10 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     # NOTE: this needs to be done in the main CMakeLists
     include(CTest)
 
+    # debug flag
+    # set(DEBUG "1")
+    # add_definitions(-DDEBUG=${DEBUG})
+
     # Docs only available in the main app
     find_package(Doxygen)
     if(Doxygen_FOUND)
