@@ -4,7 +4,7 @@
 BINARY="./build/apps/app"
 DB="./training-patterns"
 BACKUP="${DB}-backup"
-COUNT=10
+COUNT=5
 BAD_CNT=0
 TIMEOUT_CNT=0
 RESULT_FILE="result.txt"
@@ -14,6 +14,9 @@ echo "*** Current date: $(date) ***" &>> $RESULT_FILE
 
 # first compiles the code
 cmake --build build
+
+# starts the timer
+start_time=$(date +%s)
 
 for ((i = 0; i < $COUNT; ++i)); do
 
@@ -49,6 +52,12 @@ for ((i = 0; i < $COUNT; ++i)); do
 
 done
 
+# ends the timer
+end_time=$(date +%s)
+
+duration=$((end_time - start_time))
+
 # prints the stats
 echo Number of timeouts: $TIMEOUT_CNT &>> $RESULT_FILE
 echo Number of bad counts: $BAD_CNT &>> $RESULT_FILE
+echo "*** Took $duration seconds for $COUNT trainings ***" &>> $RESULT_FILE
