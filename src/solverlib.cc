@@ -105,6 +105,10 @@ std::tuple<bool, int> Solver<GridSize>::SolvePuzzleWithPatterns(const std::strin
         // checks if we have solved the problem
         if (curNode.IsSolved())
         {
+            #if DEBUG
+                std::cout << "Found a solution. Start backtracking..." << std::endl;
+            #endif
+
             Backtracking();
 
             return std::tuple {curNode.IsSolved(), iterations};
@@ -116,6 +120,11 @@ std::tuple<bool, int> Solver<GridSize>::SolvePuzzleWithPatterns(const std::strin
         // checks if it exists in the patterns
         if (patterns.count(curNodeHashValue) != 0)
         {
+            #if DEBUG
+                std::cout << std::hex << curNodeHashValue << "\n";
+                std::cout << "Found a solution using patterns. Start backtracking..." << std::endl;
+            #endif
+
             BacktrackingWithPatterns();
 
             return std::tuple{true, iterations};
@@ -190,6 +199,19 @@ void Solver<GridSize>::BacktrackingWithPatterns()
     std::reverse(solution.begin(), solution.end());
 
     std::vector<int> sol = patterns[queryHash];
+
+    #if DEBUG
+        std::cout << "Retrieving solution from patterns..." << std::endl;
+
+        int cnt = 0;
+        std::for_each(sol.cbegin(), sol.cend(), [&](const auto& s)
+        {
+            ++cnt;
+            std::cout << s;
+            if (cnt % 5 == 0)   std::cout << "\n";
+        });
+        std::cout << std::flush;
+    #endif
 
     cur = curNode;
     for(const int& move : sol)
