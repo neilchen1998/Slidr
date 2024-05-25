@@ -1,11 +1,12 @@
 #include <cstdlib>  // std::size_t
 #include <vector>   // std::vector
-#include <unordered_set>    // std::unordered_set
-#include <queue>    // std::priority_queue
 #include <tuple>    // std::tuple
 #include <climits>  // INT_MAX
-#include <algorithm>  // std::ranges::reverse
+#include <algorithm>  // std::reverse
+
+#if DEBUG
 #include <iostream> // std::cout
+#endif
 
 #include "constants/constantslib.hpp"
 #include "pattern/patternlib.hpp"

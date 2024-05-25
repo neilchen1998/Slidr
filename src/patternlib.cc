@@ -1,7 +1,6 @@
 #include <vector>   // std::vector
 #include <string>   // std::string
 #include <fstream>  // std::ofstream
-#include <utility>  // std::pair
 #include <unordered_map>  // std::unordered_map
 
 #include "pattern/patternlib.hpp"

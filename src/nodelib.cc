@@ -1,8 +1,6 @@
 #include <iostream> // std::cout
 #include <span> // std::span
 #include <algorithm> // std::ranges::find
-#include <ranges> // std::ranges
-#include <numeric>  // std::accumulate
 
 #include "node/nodelib.hpp"
 #include "constants/constantslib.hpp"

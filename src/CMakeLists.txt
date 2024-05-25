@@ -17,7 +17,7 @@ target_include_directories(node_library PUBLIC ../include)
 target_include_directories(solver_library PUBLIC ../include)
 
 target_link_libraries(node_library PUBLIC math_library pattern_library constants_library)
-target_link_libraries(solver_library PUBLIC math_library pattern_library constants_library node_library)
+target_link_libraries(solver_library PUBLIC node_library)
 
 target_compile_features(math_library PUBLIC cxx_std_20)  # requires C++20 for concept
 target_compile_features(pattern_library PUBLIC cxx_std_20)
