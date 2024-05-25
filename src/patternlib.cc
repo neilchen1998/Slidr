@@ -37,7 +37,6 @@ namespace pattern
             // pads 0xF if the number of solution is odd
             if (itr != vec.end())
             {
-                
                 data |= (*itr & 0xF);
                 ++itr;
             }
@@ -69,7 +68,7 @@ namespace pattern
             return { };
         }
 
-        // 
+        // reads the file
         char buffer[128];
         int readPtr = 0;
         while (infile.read(&buffer[readPtr], sizeof(char)))
@@ -101,7 +100,7 @@ namespace pattern
                     sol.pop_back();
                 }
 
-                // inserts 
+                // inserts
                 ret.insert({hash, sol});
 
                 readPtr = 0;

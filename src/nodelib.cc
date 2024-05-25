@@ -242,7 +242,7 @@ void Node<GameType>::CalculateInversion()
                 return i > *right && i != constants::EMPTY;
             });
         }
-        
+
         ++right;
     }
 }

@@ -90,7 +90,7 @@ const std::vector<int> FIFTEEN_GOAL_STATE {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
 //         REQUIRE (pq.empty() == false);
 
 //         std::vector<Node<constants::EIGHT_PUZZLE_SIZE>> vec = GetContainer(pq);
-        
+
 //         REQUIRE (vec.size() == 1);
 //         REQUIRE (vec.front() == actualNode);
 //     }
@@ -365,7 +365,7 @@ TEST_CASE( "Solve 15 Puzzle Problem with Least Steps", "[main]" )
     //     REQUIRE (s.GetDepth() == 58);
     // }
 
-    SECTION("Puzzle 6", "[general case]")   
+    SECTION("Puzzle 6", "[general case]")
     {
         std::vector<int> initialState {10, 13, 5, 4, 6, constants::EMPTY, 15, 14, 3, 11, 9, 8, 7, 1, 12, 2};
         auto n = Node<constants::FIFTEEN_PUZZLE_SIZE>(initialState);

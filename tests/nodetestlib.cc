@@ -242,7 +242,7 @@ TEST_CASE( "Get Next State <3>", "[main]" )
 TEST_CASE( "Get Next State <4>", "[main]" )
 {
     constexpr int GridSize = constants::FIFTEEN_PUZZLE_SIZE;
-    
+
     // initializes the start state
     Node<GridSize> middle({1, 2, 3, 4, 5, constants::EMPTY, 7, 8, 9, 10, 11, 12, 13, 14, 15, 6});
     constexpr int acutalPosX = 5;

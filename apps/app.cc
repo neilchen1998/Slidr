@@ -142,7 +142,7 @@ void GeneratePatternsForFifteenPuzzleProblem(int low, int high, const std::strin
         cur = Node<constants::FIFTEEN_PUZZLE_SIZE>(state, posX, i);
         ++i;
     }
-    
+
     std::cout << "Result (" << N << "):\n";
     cur.Print();
     std::cout << std::flush;
