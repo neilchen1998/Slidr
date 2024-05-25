@@ -14,8 +14,14 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     # ensures -std=c++xx instead of -std=g++xx for protability purposes
     set(CMAKE_CXX_EXTENSIONS OFF)
 
+    # exports compile commands
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
     # compiler flags
-    add_compile_options(-Wall -Wextra -pedantic -O3)
+    add_compile_options(-Wall -Wextra -pedantic -O3 -pg)
+
+    # linker flags
+    add_link_options(-pg)
 
     # uses CTest
     # NOTE: this needs to be done in the main CMakeLists
