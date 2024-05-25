@@ -221,7 +221,8 @@ const std::string filename("/home/neil_poseidon/C++/8-Puzzle/training-patterns")
 
 int main(int argc, char* argv[])
 {
-    GeneratePatternsForFifteenPuzzleProblem(500, 1200, filename);
+    // GeneratePatternsForFifteenPuzzleProblem(200, 1200, filename);
+    SolveFifteenPuzzleProblem({7, 2, 9, 6, 8, constants::EMPTY, 3, 13, 4, 1, 10, 5, 14, 15, 11, 12});
     // SolveFifteenPuzzleProblem({12, 11, 2, 15, 4, 1, 14, 3, 9, 6, 13, 7, 10, constants::EMPTY, 8, 5}, filename);
     // SolveFifteenPuzzleProblemsWithPattern({12, 11, 2, 15, 4, 1, 14, 3, 9, 6, 13, 7, 10, constants::EMPTY, 8, 5}, filename);
 
