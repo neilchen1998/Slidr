@@ -199,13 +199,17 @@ bool Node<GameType>::IsSolved() const
 template <int GameType>
 void Node<GameType>::CalculateManhattanDistance()
 {
+    // initializes the total Manhattan distance
     manhattanDistance = 0;
+
+    // finds the distance of each element
     auto itr = state.cbegin();
     while (itr != state.cend())
     {
         // checks if the element is not EMPTY
         if (*itr != constants::EMPTY)
         {
+            // finds the goal of the element
             auto goalDv = std::div(*itr - 1, GameType);
             int goalRow = goalDv.quot;
             int goalCol = goalDv.rem;
@@ -215,7 +219,7 @@ void Node<GameType>::CalculateManhattanDistance()
             int curRow = curDv.quot;
             int curCol = curDv.rem;
 
-            // find the Manhattan distance of the two
+            // finds the Manhattan distance of the two
             manhattanDistance += std::abs(goalCol - curCol) + std::abs(goalRow - curRow);
         }
 
