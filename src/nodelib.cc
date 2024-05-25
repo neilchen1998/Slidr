@@ -2,6 +2,7 @@
 #include <span> // std::span
 #include <algorithm> // std::ranges::find
 #include <ranges> // std::ranges
+#include <numeric>  // std::accumulate
 
 #include "node/nodelib.hpp"
 #include "constants/constantslib.hpp"
@@ -198,33 +199,28 @@ bool Node<GameType>::IsSolved() const
 template <int GameType>
 void Node<GameType>::CalculateManhattanDistance()
 {
-    int ptr = 0;
-    manhattanDistance = std::accumulate(state.begin(), state.end(), 0,
-        [&](int s, int v)
+    manhattanDistance = 0;
+    auto itr = state.cbegin();
+    while (itr != state.cend())
+    {
+        // checks if the element is not EMPTY
+        if (*itr != constants::EMPTY)
         {
-            int diff = 0;
+            auto goalDv = std::div(*itr - 1, GameType);
+            int goalRow = goalDv.quot;
+            int goalCol = goalDv.rem;
 
-            // checks if the element is valid
-            if (v != constants::EMPTY)
-            {
-                // finds the goal coordinate of the element
-                auto goalDv = std::div(v - 1, GameType);
-                int goalRow = goalDv.quot;
-                int goalCol = goalDv.rem;
+            // finds the current coordinate of the element
+            auto curDv = std::div(static_cast<int>(std::distance(state.cbegin(), itr)), GameType);
+            int curRow = curDv.quot;
+            int curCol = curDv.rem;
 
-                // finds the current coordinate of the element
-                auto curDv = std::div(ptr, GameType);
-                int curRow = curDv.quot;
-                int curCol = curDv.rem;
+            // find the Manhattan distance of the two
+            manhattanDistance += std::abs(goalCol - curCol) + std::abs(goalRow - curRow);
+        }
 
-                // find the Manhattan distance of the two
-                diff = std::abs(goalCol - curCol) + std::abs(goalRow - curRow);
-            }
-
-            ++ptr;
-
-            return s += diff;
-        });
+        ++itr;
+    }
 }
 
 template <int GameType>

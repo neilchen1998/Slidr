@@ -3,7 +3,6 @@
 
 #include <cstdlib>  // std::size_t
 #include <span> // std::span
-#include <numeric>   // std::accumulate, std::reduce
 #include <concepts> // std::integral
 
 template <std::integral T>
