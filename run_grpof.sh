@@ -11,4 +11,4 @@ gprof ./build/apps/app gmon.out > app-gprof.txt
 # -sw: strip function parameters & wrap function names
 # -Gdpi: the resolution of the output file
 # -Tpng: the output format
-gprof ./build/apps/app gmon.out | python3 -m  gprof2dot -sw | dot -Gdpi=250  -Tpng -o app-gprof-graph.png
+gprof ./build/apps/app gmon.out | python3 -m  gprof2dot | dot -Gdpi=250  -Tpng -o app-gprof-graph.png
