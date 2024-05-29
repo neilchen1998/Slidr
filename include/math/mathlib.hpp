@@ -2,11 +2,11 @@
 #define INCLUDE_MATH_MATHLIB_H_
 
 #include <cstdlib>  // std::size_t
-#include <span> // std::span
+#include <vector> // std::vector
 #include <concepts> // std::integral
 
 template <std::integral T>
-std::size_t hash_range(std::span<T> vec)
+std::size_t hash_range(const std::vector<T>& vec)
 {
     // uses FNV-1a hash algorithm
     // FNV offset basis: 0xcbf29ce484222325

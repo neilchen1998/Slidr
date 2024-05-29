@@ -13,9 +13,9 @@ TEST_CASE( "Hash Range Function <8>", "[main]" )
     std::vector<int> v2 {3, 1, constants::EMPTY, 2, 8, 7, 6, 5, 4};
     std::vector<int> v3 {3, 1, constants::EMPTY, 2, 8, 7, 6, 5, 4};
 
-    std::size_t hashV1 = hash_range(std::span(v1.begin(), v1.end()));
-    std::size_t hashV2 = hash_range(std::span(v2.begin(), v2.end()));
-    std::size_t hashV3 = hash_range(std::span(v3.begin(), v3.end()));
+    std::size_t hashV1 = hash_range(v1);
+    std::size_t hashV2 = hash_range(v2);
+    std::size_t hashV3 = hash_range(v3);
 
     SECTION ( "Different Node", "[main]")
     {
@@ -34,10 +34,10 @@ TEST_CASE( "Hash Range Function <16>", "[main]" )
     std::vector<int> v2 {3, 1, 11, 10, 13, 9, 5, 4, 15, constants::EMPTY, 8, 7, 6, 2, 14, 12};
     std::vector<int> v3 {3, 1, 11, 10, 13, constants::EMPTY, 5, 4, 15, 9, 8, 7, 6, 2, 14, 12};
 
-    std::size_t hash1 = hash_range(std::span(v1.begin(), v1.end()));
-    std::size_t hash11 = hash_range(std::span(v1.begin(), v1.end()));
-    std::size_t hash2 = hash_range(std::span(v2.begin(), v2.end()));
-    std::size_t hash3 = hash_range(std::span(v3.begin(), v3.end()));
+    std::size_t hash1 = hash_range(v1);
+    std::size_t hash11 = hash_range(v1);
+    std::size_t hash2 = hash_range(v2);
+    std::size_t hash3 = hash_range(v3);
 
     SECTION ( "Different Node", "[main]")
     {

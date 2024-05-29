@@ -12,7 +12,7 @@ template class Node<constants::FIFTEEN_PUZZLE_SIZE>;
 template <int GameType>
 Node<GameType>::Node(std::vector<int> input) : state(input), depth(0), inversion(0)
 {
-    hashValue = hash_range(std::span(state));
+    hashValue = hash_range(input);
     posX = std::ranges::find(input, constants::EMPTY) - input.begin();
     CalculateManhattanDistance();
 }
@@ -20,7 +20,7 @@ Node<GameType>::Node(std::vector<int> input) : state(input), depth(0), inversion
 template <int GameType>
 Node<GameType>::Node(std::vector<int> input, int posX, int depth) : state(input), posX(posX), depth(depth), inversion(0)
 {
-    hashValue = hash_range(std::span(input));
+    hashValue = hash_range(input);
     CalculateManhattanDistance();
 }
 

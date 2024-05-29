@@ -30,7 +30,7 @@ TEST_CASE( "Node<3> Initialization", "[main]" )
         REQUIRE (std::ranges::equal(static_cast<const Tester<GridSize>&>(n).GetState(), state));
         REQUIRE (static_cast<const Tester<GridSize>&>(n).GetPosX() == 2);
         REQUIRE (n.GetManhattanDistance() == 2);
-        REQUIRE (n.GetHashValue() == hash_range(std::span(state)));
+        REQUIRE (n.GetHashValue() == hash_range(state));
         REQUIRE (n.IsSolved() == false);
     }
 
@@ -43,7 +43,7 @@ TEST_CASE( "Node<3> Initialization", "[main]" )
         REQUIRE (std::ranges::equal(static_cast<const Tester<GridSize>&>(n).GetState(), state));
         REQUIRE (static_cast<const Tester<GridSize>&>(n).GetPosX() == 8);
         REQUIRE (n.GetManhattanDistance() == 0);
-        REQUIRE (n.GetHashValue() == hash_range(std::span(state)));
+        REQUIRE (n.GetHashValue() == hash_range(state));
         REQUIRE (n.IsSolved());
     }
 }
@@ -60,7 +60,7 @@ TEST_CASE( "Node<4> Initialization", "[main]" )
         REQUIRE (std::ranges::equal(static_cast<const Tester<GridSize>&>(n).GetState(), state));
         REQUIRE (static_cast<const Tester<GridSize>&>(n).GetPosX() == 7);
         REQUIRE (n.GetManhattanDistance() == 36);
-        REQUIRE (n.GetHashValue() == hash_range(std::span(state)));
+        REQUIRE (n.GetHashValue() == hash_range(state));
         REQUIRE (n.IsSolved() == false);
     }
 
@@ -73,7 +73,7 @@ TEST_CASE( "Node<4> Initialization", "[main]" )
         REQUIRE (std::ranges::equal(static_cast<const Tester<GridSize>&>(n).GetState(), state));
         REQUIRE (static_cast<const Tester<GridSize>&>(n).GetPosX() == 15);
         REQUIRE (n.GetManhattanDistance() == 0);
-        REQUIRE (n.GetHashValue() == hash_range(std::span(state)));
+        REQUIRE (n.GetHashValue() == hash_range(state));
         REQUIRE (n.IsSolved());
     }
 }
