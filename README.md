@@ -14,10 +14,22 @@ The requirements are:
 
 ## Instructions
 
-To configure:
+To configure (Debug):
 
 ```bash
-cmake -S . -B build
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+```
+
+To configure (Release):
+
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+```
+
+To configure (Gprof):
+
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Gprof
 ```
 
 Add `-GNinja` if you have Ninja.
