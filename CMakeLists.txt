@@ -57,6 +57,7 @@ endif()
 include(FetchContent)
 
 # all required packages
+find_package(Boost REQUIRED)
 
 # the compiled library code
 add_subdirectory(src)

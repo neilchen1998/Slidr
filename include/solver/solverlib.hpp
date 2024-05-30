@@ -5,6 +5,8 @@
 #include <vector>   // std::vector
 #include <unordered_set>    // std::unordered_set
 #include <unordered_map>    // std::unordered_map
+#include <boost/unordered_map.hpp>  // boost::unordered::unordered_map
+#include <boost/unordered_set.hpp>  // boost::unordered::unordered_set
 #include <queue>    // std::priority_queue
 #include <tuple>    // std::tuple
 
@@ -86,10 +88,10 @@ protected:
     void BacktrackingWithPatterns();
 
     /// @brief the cache that stores all visited nodes
-    std::unordered_set<std::size_t> visited;
+    boost::unordered::unordered_set<std::size_t> visited;
 
     /// @brief the map that contains nodes' parents
-    std::unordered_map<Node<GridSize>, Node<GridSize>, KeyHash<GridSize>, KeyEqual<GridSize>> parents;
+    boost::unordered::unordered_map<Node<GridSize>, Node<GridSize>, KeyHash<GridSize>, KeyEqual<GridSize>> parents;
 
     /// @brief the priority queue that stores all candidate nodes
     std::priority_queue<Node<GridSize>, std::vector<Node<GridSize>>, NodeCmp<GridSize>> pq;
@@ -107,7 +109,7 @@ protected:
     int depth;
 
     /// @brief The depths of all nodes (it also serves as the OPEN list)
-    std::unordered_map<std::size_t, int> depths;
+    boost::unordered::unordered_map<std::size_t, int> depths;
 
     /// @brief The step-by-step solution to the problem
     std::vector<Node<GridSize>> solution;
