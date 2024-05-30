@@ -10,7 +10,10 @@ TIMEOUT_CNT=0
 RESULT_FILE="result.txt"
 
 echo "" &>> $RESULT_FILE # new line
-echo "*** Current date: $(date) on $(hostname)***" &>> $RESULT_FILE
+echo "*** Current date: $(date) ***" &>> $RESULT_FILE
+
+# configures the repo
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 
 # first compiles the code
 cmake --build build
