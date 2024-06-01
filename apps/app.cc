@@ -90,13 +90,12 @@ void SolveFifteenPuzzleProblem(const std::vector<int>& initialState, const std::
         std::cout << "No solution was found. The given puzzle have odd number of inversions.\n";
     }
 
-    std::cout << "Start:\n";
-    n.Print();
-    std::cout << "************" << std::endl;
-
     // only show the solution is the puzzle was solved
-    if (isSolved)
+    if (isSolved && s.GetDepth())
     {
+        std::cout << "Start:\n";
+        n.Print();
+        std::cout << "************" << std::endl;
         // int i = 1;
         // for (const auto& sol : solution | std::views::drop(1))  // drop the start state
         // {
@@ -221,26 +220,67 @@ void SolveFifteenPuzzleProblemsWithPattern(const std::vector<int>& initialState,
     }
 }
 
-const std::string filename("/home/neil_poseidon/C++/8-Puzzle/training-patterns");
-
 int main(int argc, char* argv[])
 {
+    // variables
+    std::string input;
+    std::string filename;
+    unsigned int puzzleType;
+    std::string feature;
+
+
+    // creates options descriptions and default values
+    po::options_description desc("Options:");
+    desc.add_options()
+        ("help,h", "Display this information")
+        ("input,i", po::value<std::string>(&input)->value_name("<INPUT_LAYOUT>")->default_value(""), "the layout of the puzzle")
+        ("filename,fn", po::value<std::string>(&filename)->value_name("<PATTERN_FILENAME>")->default_value("/home/neil_poseidon/C++/8-Puzzle/training-patterns"), "the filename for the pattern library")
+        ("feature,f", po::value<std::string>(&feature)->value_name("<FEATURE>")->default_value("solver"), "the feature of desired")
+        ("puzzle-type,pt", po::value<unsigned int>(&puzzleType)->value_name("<PUZZLE_TYPE>")->default_value(0), "the type of puzzle"); // (<long name>,<short name>, <argument(s)>, <description>)
+
+    // creates the variables map and stores the inputs to the map
+    po::variables_map vm;
+
+    // makes "input" token be the positional option, i.e., token with no option name
+    po::positional_options_description p;
+    p.add("input", -1);
+
+    // checks if the user inputs are valid
+    try
+    {
+        // parses the arguments and writes the variables according to the variables map
+        po::store(po::command_line_parser(argc, argv).options(desc).positional(p).run(), vm);
+        po::notify(vm);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return EXIT_FAILURE;
+    }
+
+    // checks if the user selects --help
+    if (vm.count("help"))
+    {
+        std::cout << desc << "\n";
+        return EXIT_FAILURE;
+    }
+
+    if (feature == "solver")
+    {
+        auto layout = parse_string_for_15(input);
+        if (!layout.has_value())
+        {
+            std::cerr << "Invalid input!\n" << std::endl;
+            return EXIT_FAILURE;
+        }
+
+        SolveFifteenPuzzleProblem(layout.value());
+    }
+
     // GeneratePatternsForFifteenPuzzleProblem(200, 1200, filename);
     // SolveFifteenPuzzleProblem({7, 2, 9, 6, 8, constants::EMPTY, 3, 13, 4, 1, 10, 5, 14, 15, 11, 12});
     // SolveFifteenPuzzleProblem({12, 11, 2, 15, 4, 1, 14, 3, 9, 6, 13, 7, 10, constants::EMPTY, 8, 5}, filename);
     // SolveFifteenPuzzleProblemsWithPattern({12, 11, 2, 15, 4, 1, 14, 3, 9, 6, 13, 7, 10, constants::EMPTY, 8, 5}, filename);
-
-    std::cout << "Please enter the pieces from the top left to the bottom right:" << std::endl;
-    auto inputLayout = try_read_from_terminal_for_15();
-    if (inputLayout.has_value())
-    {
-        std::cout << "Input is valid!" << std::endl;
-    }
-    else
-    {
-        std::cerr << "Error: the input is invalid!" << std::endl;
-        return EXIT_FAILURE;
-    }
 
 
 
