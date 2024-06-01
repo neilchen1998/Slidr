@@ -46,12 +46,17 @@ To test (`--target` can be written as `-t` in CMake 3.15+):
 cmake --build build --target test
 ```
 
-To run exe
+To test by tag
+```
+cd build && ctest -R <tag>
+```
+
+To run
 ```
 ./build/apps/app
 ```
 
-To build and run exe
+To build and run
 ```
 cmake --build build && ./build/apps/app
 ```

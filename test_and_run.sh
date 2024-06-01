@@ -1,10 +1,13 @@
 #!/bin/bash
 
 # configures the repo
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Test
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Test &&
 
 # builds the repo
-cmake --build build
+cmake --build build &&
 
-# runs the tests
-cmake --build build --target test
+# runs all the tests
+# cmake --build build --target test
+
+# runs a specific test
+cd build && ctest -R terminal

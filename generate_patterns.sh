@@ -4,7 +4,7 @@
 BINARY="./build/apps/app"
 DB="./training-patterns"
 BACKUP="${DB}-backup"
-COUNT=5
+COUNT=50
 BAD_CNT=0
 TIMEOUT_CNT=0
 RESULT_FILE="result.txt"
