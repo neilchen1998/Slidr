@@ -28,9 +28,35 @@ TEST_CASE( "Test Inputs from the Terminal <3>", "[terminal]" )
         REQUIRE(ret.value() == std::vector<int>({1, 2, constants::EMPTY, 3, 4, 5, 6, 7, 8}));
     }
 
+    SECTION("A valid input (ignore newlines)", "[foo]")
+    {
+        std::string test_input("1 2 # \n 3 4 5 6 7 8");
+        auto ret = parse_string_for_8(test_input);
+
+        REQUIRE(ret != std::nullopt);
+        REQUIRE(ret.value() == std::vector<int>({1, 2, constants::EMPTY, 3, 4, 5, 6, 7, 8}));
+    }
+
+    SECTION("A valid input (ignore tabs)", "[foo]")
+    {
+        std::string test_input("1 2 # \t 3 4 5 \t 6 7 8");
+        auto ret = parse_string_for_8(test_input);
+
+        REQUIRE(ret != std::nullopt);
+        REQUIRE(ret.value() == std::vector<int>({1, 2, constants::EMPTY, 3, 4, 5, 6, 7, 8}));
+    }
+
     SECTION("An invalid input (missing pieces)", "[foo]")
     {
         std::string test_input("1 2 3 4 5 6 7 x");
+        auto ret = parse_string_for_8(test_input);
+
+        REQUIRE(ret == std::nullopt);
+    }
+
+    SECTION("An invalid input (incorrect empty piece symbol)", "[foo]")
+    {
+        std::string test_input("1 2 3 4 5 6 7 ^");
         auto ret = parse_string_for_8(test_input);
 
         REQUIRE(ret == std::nullopt);
@@ -106,6 +132,24 @@ TEST_CASE( "Test Inputs from the Terminal <4>", "[terminal]" )
         REQUIRE(ret.value() == std::vector<int>({1, 2, 3, 4, 5, constants::EMPTY, 7, 8, 9, 10, 11, 12, 13, 14, 15, 6}));
     }
 
+    SECTION("A valid input (ignore newlines)", "[foo]")
+    {
+        std::string test_input("1 2 3 \n 4 5 # 7 \n 8 9 10 11 12 \n 13 14 15 6");
+        auto ret = parse_string_for_15(test_input);
+
+        REQUIRE(ret != std::nullopt);
+        REQUIRE(ret.value() == std::vector<int>({1, 2, 3, 4, 5, constants::EMPTY, 7, 8, 9, 10, 11, 12, 13, 14, 15, 6}));
+    }
+
+    SECTION("A valid input (ignore tabs)", "[foo]")
+    {
+        std::string test_input("1 2 3 \t 4 5 # 7 \t 8 9 10 11 12 \t 13 14 15 6");
+        auto ret = parse_string_for_15(test_input);
+
+        REQUIRE(ret != std::nullopt);
+        REQUIRE(ret.value() == std::vector<int>({1, 2, 3, 4, 5, constants::EMPTY, 7, 8, 9, 10, 11, 12, 13, 14, 15, 6}));
+    }
+
     SECTION("An invalid input (missing pieces)", "[foo]")
     {
         std::string test_input("1 2 3 4 5 6 7 8 9 10");
@@ -117,6 +161,14 @@ TEST_CASE( "Test Inputs from the Terminal <4>", "[terminal]" )
     SECTION("A valid input (an invalid piece)", "[foo]")
     {
         std::string test_input("1 2 3 4 5 6 7 8 9 10 11 255 13 14 15 x");
+        auto ret = parse_string_for_15(test_input);
+
+        REQUIRE(ret == std::nullopt);
+    }
+
+    SECTION("A valid input (incorrect empty piece symbol)", "[foo]")
+    {
+        std::string test_input("1 2 3 4 5 6 7 8 9 10 11 255 13 14 15 $");
         auto ret = parse_string_for_15(test_input);
 
         REQUIRE(ret == std::nullopt);

@@ -32,9 +32,18 @@ std::optional<std::vector<int>> parse_string_for_8(const std::string& str)
         }
         catch(const std::exception& e)
         {
+            if (s == "\n" || s == "\t")  continue;
             if (emptyFound == true) return std::nullopt;
-            inputState.emplace_back(constants::EMPTY);
-            emptyFound = true;
+            if (s == "#" || s == "x" || s == "*" || s == "X")
+            {
+                inputState.emplace_back(constants::EMPTY);
+                emptyFound = true;
+            }
+            else
+            {
+                std::cout << "Encounter an invalid symbol: " << s << ".\nPlease only use: #, x, or, X to represent an empty space." << std::endl;
+                return std::nullopt;
+            }
         }
     }
 
