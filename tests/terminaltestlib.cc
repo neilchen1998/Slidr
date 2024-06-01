@@ -60,6 +60,14 @@ TEST_CASE( "Test Inputs from the Terminal <3>", "[terminal]" )
         REQUIRE(ret == std::nullopt);
     }
 
+    SECTION("An invalid input (duplicated empty pieces)", "[foo]")
+    {
+        std::string test_input("1 2 3 4 5 6 7 8 x #");
+        auto ret = parse_string_for_8(test_input);
+
+        REQUIRE(ret == std::nullopt);
+    }
+
     SECTION("An invalid input (no pieces)", "[foo]")
     {
         std::string test_input("");
@@ -125,6 +133,14 @@ TEST_CASE( "Test Inputs from the Terminal <4>", "[terminal]" )
     SECTION("An invalid input (duplicated pieces)", "[foo]")
     {
         std::string test_input("1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 1");
+        auto ret = parse_string_for_15(test_input);
+
+        REQUIRE(ret == std::nullopt);
+    }
+
+    SECTION("An invalid input (duplicated empty pieces)", "[foo]")
+    {
+        std::string test_input("1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 x !");
         auto ret = parse_string_for_15(test_input);
 
         REQUIRE(ret == std::nullopt);
