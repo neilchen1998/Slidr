@@ -8,13 +8,12 @@
 #include "constants/constantslib.hpp"
 #include "terminal/terminallib.hpp"
 
-std::optional<std::vector<int>> try_read_from_terminal_for_8()
+std::optional<std::vector<int>> parse_string_for_8(const std::string& str)
 {
     bool emptyFound = false;
     std::vector<int> inputState;
     std::string line, s;
-    std::getline(std::cin, line);
-    std::istringstream iss(line);
+    std::istringstream iss(str);
 
     // tries to read the input from the user
     while (iss >> s)
@@ -68,13 +67,12 @@ std::optional<std::vector<int>> try_read_from_terminal_for_8()
     return std::nullopt;
 }
 
-std::optional<std::vector<int>> try_read_from_terminal_for_15()
+std::optional<std::vector<int>> parse_string_for_15(const std::string& str)
 {
     bool emptyFound = false;
     std::vector<int> inputState;
     std::string line, s;
-    std::getline(std::cin, line);
-    std::istringstream iss(line);
+    std::istringstream iss(str);
 
     // tries to read the input from the user
     while (iss >> s)

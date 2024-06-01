@@ -4,7 +4,7 @@
 #include <vector>   // std::vector
 #include <optional> // std::optional
 
-std::optional<std::vector<int>> try_read_from_terminal_for_8();
-std::optional<std::vector<int>> try_read_from_terminal_for_15();
+std::optional<std::vector<int>> parse_string_for_8(const std::string& str);
+std::optional<std::vector<int>> parse_string_for_15(const std::string& str);
 
 #endif // INCLUDE_TERMINAL_TERMINALLIB_H_
