@@ -7,7 +7,4 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=Test &&
 cmake --build build &&
 
 # runs all the tests
-# cmake --build build --target test
-
-# runs a specific test
-cd build && ctest -R terminal
+cmake --build build --target test
