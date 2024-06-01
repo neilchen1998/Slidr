@@ -89,7 +89,6 @@ std::optional<std::vector<int>> try_read_from_terminal_for_15()
         {
             int value = std::stoi(s);
             if (value > 15 || value < 1) return std::nullopt;
-            std::cout << value << std::endl;
             inputState.emplace_back(value);
         }
         catch(const std::exception& e)
