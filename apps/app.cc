@@ -28,43 +28,58 @@ struct Tester : Node<GridSize>
     int GetPosX() const { return this->posX; }
 };
 
-void SolveEightPuzzleProblem()
+void SolveEightPuzzleProblem(const std::vector<int>& initialState)
 {
     // the 8 puzzle problem
     std::cout << "=== 8 Puzzle Problem ===\n";
-    std::vector<int> state {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
-    Node<constants::EIGHT_PUZZLE_SIZE> n(state);
+    Node<constants::EIGHT_PUZZLE_SIZE> n(initialState);
     Solver<constants::EIGHT_PUZZLE_SIZE> s = Solver(n);
 
+    std::cout << "Hash: " << n.GetHashValue() << "\n";
+
     auto [isSolved, iterations] = s.SolvePuzzle();
+    auto solution = s.GetSolution();
 
     if (isSolved)
     {
         std::cout << "Solution found! Took " << iterations << " iteration(s)\n";
+        std::cout << "Depth: " << s.GetDepth() << std::endl;
     }
     else
     {
         std::cout << "No solution was found. The given puzzle have odd number of inversions.\n";
     }
 
-    auto solution = s.GetSolution();
-
-    std::cout << "Start:\n";
-    n.Print();
-    std::cout << "************" << std::endl;
-
     // only show the solution is the puzzle was solved
-    if (isSolved)
+    if (isSolved && s.GetDepth())
     {
+        std::cout << "Start:\n";
+        n.Print();
+        std::cout << "************" << std::endl;
         int i = 1;
         for (const auto& sol : solution | std::views::drop(1))  // drop the start state
         {
             std::cout << "Step " << i << ":\n";
             sol.Print();
-            std::cout << "*****\n";
+            std::cout << "************\n";
 
             ++i;
         }
+
+        std::cout << "Move sequence:\n";
+        std::vector<int> sequence {s.GetSequence()};
+        int cnt = 1;
+        for (const auto& seq : sequence)
+        {
+            std::cout << seq;
+            if (cnt % 5 == 0)
+            {
+                std::cout << "\n";
+            }
+
+            ++cnt;
+        }
+        std::cout << "\n";
     }
 }
 
@@ -96,15 +111,15 @@ void SolveFifteenPuzzleProblem(const std::vector<int>& initialState, const std::
         std::cout << "Start:\n";
         n.Print();
         std::cout << "************" << std::endl;
-        // int i = 1;
-        // for (const auto& sol : solution | std::views::drop(1))  // drop the start state
-        // {
-        //     std::cout << "Step " << i << ":\n";
-        //     sol.Print();
-        //     std::cout << "************\n";
+        int i = 1;
+        for (const auto& sol : solution | std::views::drop(1))  // drop the start state
+        {
+            std::cout << "Step " << i << ":\n";
+            sol.Print();
+            std::cout << "************\n";
 
-        //     ++i;
-        // }
+            ++i;
+        }
 
         std::cout << "Move sequence:\n";
         std::vector<int> sequence {s.GetSequence()};
@@ -227,7 +242,7 @@ int main(int argc, char* argv[])
     std::string filename;
     unsigned int puzzleType;
     std::string feature;
-
+    bool patternLibEnabled;
 
     // creates options descriptions and default values
     po::options_description desc("Options:");
@@ -236,7 +251,8 @@ int main(int argc, char* argv[])
         ("input,i", po::value<std::string>(&input)->value_name("<INPUT_LAYOUT>")->default_value(""), "the layout of the puzzle")
         ("filename,fn", po::value<std::string>(&filename)->value_name("<PATTERN_FILENAME>")->default_value("/home/neil_poseidon/C++/8-Puzzle/training-patterns"), "the filename for the pattern library")
         ("feature,f", po::value<std::string>(&feature)->value_name("<FEATURE>")->default_value("solver"), "the feature of desired")
-        ("puzzle-type,pt", po::value<unsigned int>(&puzzleType)->value_name("<PUZZLE_TYPE>")->default_value(0), "the type of puzzle"); // (<long name>,<short name>, <argument(s)>, <description>)
+        ("pattern,p", po::value<bool>(&patternLibEnabled)->value_name("<FEATURE>")->default_value(false), "use pattern library")
+        ("type,t", po::value<unsigned int>(&puzzleType)->value_name("<PUZZLE_TYPE>")->default_value(0), "the type of puzzle"); // (<long name>,<short name>, <argument(s)>, <description>)
 
     // creates the variables map and stores the inputs to the map
     po::variables_map vm;
@@ -265,16 +281,46 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
+    // determines the feature
     if (feature == "solver")
     {
-        auto layout = parse_string_for_15(input);
-        if (!layout.has_value())
+        // determine the puzzle type
+        if (puzzleType == 8)
         {
-            std::cerr << "Invalid input!\n" << std::endl;
-            return EXIT_FAILURE;
-        }
+            // parses the input
+            auto layout = parse_string_for_8(input);
+            if (!layout.has_value())
+            {
+                std::cerr << "Invalid input!\n" << std::endl;
+                return EXIT_FAILURE;
+            }
 
-        SolveFifteenPuzzleProblem(layout.value());
+            SolveEightPuzzleProblem(layout.value());
+        }
+        else if (puzzleType == 15)
+        {
+            // parses the input
+            auto layout = parse_string_for_15(input);
+            if (!layout.has_value())
+            {
+                std::cerr << "Invalid input!\n" << std::endl;
+                return EXIT_FAILURE;
+            }
+
+            // checks whether or not the pattern library will be used
+            if (patternLibEnabled)
+            {
+                SolveFifteenPuzzleProblemsWithPattern(layout.value(), filename);
+            }
+            else
+            {
+                SolveFifteenPuzzleProblem(layout.value());
+            }
+        }
+    }
+    else if (feature == "generator")
+    {
+        GeneratePatternsForFifteenPuzzleProblem(200, 1200, filename);
     }
 
     // GeneratePatternsForFifteenPuzzleProblem(200, 1200, filename);
