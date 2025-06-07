@@ -7,22 +7,32 @@
 #include <numeric>   // std::accumulate, std::reduce
 #include <concepts> // std::integral
 
-template <std::integral T>
-std::size_t hash_range(std::span<T> vec)
+/// @brief Hashes multiple arguments with an initial hash value using fold expressions
+/// @tparam T The first argument type
+/// @tparam ...Args The second and the rest argument type
+/// @param seed The initial hash value
+/// @param u The first argument
+/// @param ...v The second and the rest argument
+template <std::integral T, std::integral ... Args>
+inline void hash_combine(std::size_t& seed, const T& u, const Args&... v)
 {
-    // creates a hasher
-    std::hash<T> h;
+    // Hash the first argument
+    seed ^= std::hash<T>{}(u) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
 
-    // the position of the element
-    std::size_t pos = 0;
+    // Hash the rest of the arguments
+    (hash_combine(seed, v), ...);
+}
 
-    // iterates through the entire span of the vector, calculates the hash value
-    // and returns the value
-    return std::reduce(vec.begin(), vec.end(), vec.size(),  // std::reduce in theory runs faster than std::accumulate
-        [&](std::size_t s, T v)
-        {
-            return s ^= h(v) + 0x9e3779b9 + (s << 6) + (s >> 2) + (++pos << 7);
-        });
+template <std::integral T>
+inline std::size_t hash_range(std::span<T> vec)
+{
+    std::size_t h {vec.size()};
+    for (std::size_t i {0}; i < vec.size(); ++i)
+    {
+        hash_combine(h, vec[i], i);
+    }
+
+    return h;
 }
 
 #endif // INCLUDE_MATH_MATHLIB_H_
