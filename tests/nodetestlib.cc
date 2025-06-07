@@ -12,7 +12,7 @@
 
 struct Tester : Node
 {
-    std::vector<int> GetLayout() const { return this-> layout; }
+    std::vector<int> GetLayout() const { return this-> state; }
 
     int GetPosX() const { return this->posX; }
 };
@@ -27,8 +27,8 @@ TEST_CASE( "Node Initialization", "[main]" )
         // tests all its members upon initialization
         REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetLayout(), layout));
         REQUIRE (static_cast<const Tester&>(n).GetPosX() == 2);
-        REQUIRE (n.GetCurrentManhattanDistance() == 2);
-        REQUIRE (n.GetCurrentHashValue() == hash_range(std::span(layout)));
+        REQUIRE (n.GetManhattanDistance() == 2);
+        REQUIRE (n.GetHashValue() == hash_range(std::span(layout)));
         REQUIRE (n.IsSolved() == false);
     }
 
@@ -40,8 +40,8 @@ TEST_CASE( "Node Initialization", "[main]" )
         // tests all its members upon initialization
         REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetLayout(), layout));
         REQUIRE (static_cast<const Tester&>(n).GetPosX() == 8);
-        REQUIRE (n.GetCurrentManhattanDistance() == 0);
-        REQUIRE (n.GetCurrentHashValue() == hash_range(std::span(layout)));
+        REQUIRE (n.GetManhattanDistance() == 0);
+        REQUIRE (n.GetHashValue() == hash_range(std::span(layout)));
         REQUIRE (n.IsSolved());
     }
 }
@@ -162,25 +162,14 @@ TEST_CASE( "Operators", "[main]" )
     std::vector<int> layout2 {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
     Node n2(layout2);
 
-    SECTION("Less Than", "[some_details]")
-    {
-        REQUIRE ((n1 < n2) == false);
-        REQUIRE ((n2 < n1));
-    }
-
-    SECTION("Greater Than", "[some_details]")
-    {
-        REQUIRE ((n1 > n2));
-        REQUIRE ((n2 > n1) == false);
-    }
-
     SECTION("Equal To", "[some_details]")
     {
-        REQUIRE ((n2 == n1) == false);
+        REQUIRE (n1 == n1);
+        REQUIRE (n2 == n2);
     }
 
     SECTION("Not Equal To", "[some_details]")
     {
-        REQUIRE ((n2 != n1));
+        REQUIRE (n2 != n1);
     }
 }

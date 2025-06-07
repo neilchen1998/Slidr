@@ -6,14 +6,31 @@
 #include "constants/constantslib.hpp"
 #include "math/mathlib.hpp"
 
-Node::Node(std::vector<int> input) : layout(input)
+Node::Node(std::vector<int> input)
+    : state(input),
+      posX(std::ranges::find(input, constants::EMPTY) - input.begin()),
+      hashValue(hash_range(std::span(state))),
+      depth(0)
 {
-    hashValue = hash_range(std::span(layout));
-    posX = std::ranges::find(input, constants::EMPTY) - input.begin();
     CalculateManhattanDistance();
 }
 
-Node::Node(std::vector<int> input, int posX) : layout(input), posX(posX)
+Node::Node(std::vector<int> input, unsigned long d)
+    : state(input),
+    posX(std::ranges::find(input, constants::EMPTY) - input.begin()),
+    hashValue(hash_range(std::span(state))),
+    depth(d)
+{
+    CalculateManhattanDistance();
+}
+
+Node::Node(std::vector<int> input, int posX) : state(input), posX(posX), depth(0)
+{
+    hashValue = hash_range(std::span(input));
+    CalculateManhattanDistance();
+}
+
+Node::Node(std::vector<int> input, int posX, unsigned long d) : state(input), posX(posX), depth(d)
 {
     hashValue = hash_range(std::span(input));
     CalculateManhattanDistance();
@@ -54,7 +71,7 @@ std::vector<int> Node::AvailableMoves() const
     return ret;
 }
 
-std::vector<Node> Node::GetChildrenNodes() const
+std::vector<Node> Node::GetChildrenNodes(unsigned long curDepth) const
 {
     std::vector<Node> children;
 
@@ -63,7 +80,7 @@ std::vector<Node> Node::GetChildrenNodes() const
     for(const int& move : moves)
     {
         auto [childLayout, childPosX] = GetNextLayout(move);
-        children.emplace_back(childLayout, childPosX);
+        children.emplace_back(childLayout, childPosX, curDepth + 1);
     }
 
     return children;
@@ -71,7 +88,7 @@ std::vector<Node> Node::GetChildrenNodes() const
 
 std::tuple<std::vector<int>, int> Node::GetNextLayout(int dir) const
 {
-    std::vector<int> newLayout = layout;
+    std::vector<int> newLayout = state;
     int newPosX = posX;
 
     // swaps the piece
@@ -104,20 +121,25 @@ std::tuple<std::vector<int>, int> Node::GetNextLayout(int dir) const
     return std::tuple<std::vector<int>, int>{newLayout, newPosX};
 }
 
-int Node::GetCurrentManhattanDistance() const
+int Node::GetManhattanDistance() const
 {
     return manhattanDistance;
 }
 
-std::size_t Node::GetCurrentHashValue() const
+std::size_t Node::GetHashValue() const
 {
     return hashValue;
+}
+
+unsigned long Node::GetDepth() const
+{
+    return depth;
 }
 
 void Node::Print() const
 {
     std::size_t cnt = 0;
-    for (const auto& ele : layout)
+    for (const auto& ele : state)
     {
         // prints "x" if the value if equals to "constants::EMPTY"
         if (ele != constants::EMPTY)
@@ -137,24 +159,14 @@ void Node::Print() const
     }
 }
 
-bool Node::operator<(const Node &rhs) const
-{
-    return manhattanDistance < rhs.GetCurrentManhattanDistance();
-}
-
-bool Node::operator>(const Node &rhs) const
-{
-    return manhattanDistance > rhs.GetCurrentManhattanDistance();
-}
-
 bool Node::operator==(const Node &rhs) const
 {
-    return manhattanDistance == rhs.GetCurrentManhattanDistance();
+    return manhattanDistance == rhs.GetManhattanDistance();
 }
 
 bool Node::operator!=(const Node &rhs) const
 {
-    return manhattanDistance != rhs.GetCurrentManhattanDistance();
+    return manhattanDistance != rhs.GetManhattanDistance();
 }
 
 bool Node::IsSolved() const
@@ -165,7 +177,7 @@ bool Node::IsSolved() const
 void Node::CalculateManhattanDistance()
 {
     int ptr = 0;
-    manhattanDistance = std::accumulate(layout.begin(), layout.end(), 0,
+    manhattanDistance = std::accumulate(state.begin(), state.end(), 0,
         [&](int s, int v)
         {
             int diff = 0;

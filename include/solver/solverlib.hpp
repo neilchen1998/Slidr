@@ -6,6 +6,7 @@
 #include <unordered_set>    // std::unordered_set
 #include <queue>    // std::priority_queue
 #include <tuple>    // std::tuple
+#include <string>    // std::string
 
 #include "node/nodelib.hpp"
 
@@ -22,9 +23,13 @@ public:
 
     ~Solver() = default;
 
-    /// @brief Solve the puzzle
-    /// @return { whether the puzzle is solved, the number of steps the Solver took }
-    std::tuple<bool, int> SolvePuzzle();
+    /// @brief Solves the puzzle
+    /// @return { whether the puzzle is solved, the number of iterations the Solver took }
+    std::tuple<bool, unsigned long> SolvePuzzle();
+
+    /// @brief Gets the optimal number of moves
+    /// @return The move
+    int GetNumOfMoves() const;
 
 protected:
 
@@ -33,23 +38,19 @@ protected:
     {
         bool operator()(const Node& lhs, const Node& rhs)
         {
-            // checks if the two Nodes have different Manhattan value
+            // Check if the two nodes are identical
             if (lhs != rhs)
             {
-                // different Manhattan value, uses their values
-                // since we are using a priority queue,
-                // we prefer the Node with smaller Manhattan value
-                return lhs > rhs;
+                return (lhs.GetManhattanDistance() + lhs.GetDepth()) > (rhs.GetManhattanDistance() + rhs.GetDepth());
             }
-            else
-            {
-                // two Nodes have the same Manhattan value
-                // we prefer the Node with high hash value since that indicates
-                // the Node is closer to finish
-                return lhs.GetCurrentHashValue() < rhs.GetCurrentHashValue();
-            }
+            
+            // If they are identical, then we use the hash value for comparison.
+            // Since this is for the min. priority queue, we return true if the lhs is greater than the rhs.
+            return lhs.GetDepth() > rhs.GetDepth();
         }
     };
+
+protected:
 
     /// @brief the cache that stores all visited nodes
     std::unordered_set<std::size_t> visited;
@@ -60,8 +61,11 @@ protected:
     /// @brief the current node
     Node curNode;
 
-    /// @brief the number of steps
-    int steps;
+    /// @brief the number of iterations
+    unsigned long iter;
+
+    /// @brief the number of depths
+    unsigned long optimalNumOfMoves;
 };
 
 #endif // INCLUDE_SOLVER_SOLVERLIB_H_

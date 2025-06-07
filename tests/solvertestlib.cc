@@ -12,7 +12,7 @@
 #include "node/nodelib.hpp"
 #include "solver/solverlib.hpp"
 
-/// @brief Get the underlying container of an iteralbe type
+/// @brief Gets the underlying container of an iteralbe type
 /// @tparam Adaptor the data type of the input
 /// @param adaptor An iterable data structure
 /// @return The underlying container of the input
@@ -41,7 +41,7 @@ struct Tester : Solver
     /// @return The reference
     std::priority_queue<Node, std::vector<Node>, NodeCmp> &GetPQ() { return this->pq; }
     Node GetCurrentNode () const { return this->curNode; }
-    int GetSteps() const { return this->steps; }
+    int GetSteps() const { return this->iter; }
 };
 
 TEST_CASE( "Solver Constructor", "[main]" )
@@ -104,10 +104,10 @@ TEST_CASE( "Solver Initialization", "[main]" )
 
 TEST_CASE( "Priority Queue", "[main]" )
 {
-    Node actualZero = Node({1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY});
-    Node actualOne1 = Node({1, 2, 3, 4, 5, constants::EMPTY, 7, 8, 6});
-    Node actualOne2 = Node({1, 2, 3, 4, 5, 6, 7, constants::EMPTY, 8});
-    Node actualTwo = Node({1, 2, 3, 4, constants::EMPTY, 6, 7, 5, 8});
+    Node node0 = Node({1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY});
+    Node node1 = Node({1, 2, 3, 4, 5, constants::EMPTY, 7, 8, 6});
+    Node node2 = Node({1, 2, 3, 4, 5, 6, 7, constants::EMPTY, 8});
+    Node node3 = Node({1, 2, 3, 4, constants::EMPTY, 6, 7, 5, 8});
 
     SECTION("Three Nodes with Three Distinct Values", "[some_details]")
     {
@@ -118,15 +118,14 @@ TEST_CASE( "Priority Queue", "[main]" )
         auto& pq = t.GetPQ();
 
         // inject the values directly
-        pq.push(actualOne1);
-        pq.push(actualTwo);
+        pq.push(node1);
+        pq.push(node3);
 
         std::vector<Node> vec = GetContainer(pq);
         REQUIRE (vec.size() == 3);
-        auto itr = vec.begin();
-        REQUIRE (*itr++ == actualZero);
-        REQUIRE (*itr++ == actualOne1);
-        REQUIRE (*itr == actualTwo);
+        REQUIRE (vec.at(0) == node0);
+        REQUIRE (vec.at(1) == node1);
+        REQUIRE (vec.at(2) == node3);
     }
 
     SECTION("Two Nodes with Two Distinct Values", "[some_details]")
@@ -138,15 +137,14 @@ TEST_CASE( "Priority Queue", "[main]" )
         auto& pq = t.GetPQ();
 
         // inject the values directly
-        pq.push(actualOne1);
-        pq.push(actualOne2);
+        pq.push(node1);
+        pq.push(node2);
 
         std::vector<Node> vec = GetContainer(pq);
         REQUIRE (vec.size() == 3);
-        auto itr = vec.begin();
-        REQUIRE (*itr++ == actualZero);
-        REQUIRE (*itr++ == actualOne2);
-        REQUIRE (*itr == actualOne1);
+        REQUIRE (vec.at(0) == node0);
+        REQUIRE (vec.at(1) == node2);
+        REQUIRE (vec.at(2) == node1);
     }
 }
 
@@ -167,8 +165,10 @@ TEST_CASE( "Can Solve Puzzles", "[main]" )
         std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
         Solver s = Solver(layout);
         auto [isSolved, totalSteps] = s.SolvePuzzle();
+        auto depth = s.GetNumOfMoves();
 
         REQUIRE (isSolved);
+        REQUIRE (depth == 2);
     }
 
     SECTION("Puzzle 2", "[general case]")
@@ -176,7 +176,20 @@ TEST_CASE( "Can Solve Puzzles", "[main]" )
         std::vector<int> layout {5, 3, 6, 2, constants::EMPTY, 8, 4, 1, 7};
         Solver s = Solver(layout);
         auto [isSolved, totalSteps] = s.SolvePuzzle();
+        auto depth = s.GetNumOfMoves();
 
         REQUIRE (isSolved);
+        REQUIRE (depth == 14);
+    }
+
+    SECTION("Puzzle 3", "[general case]")
+    {
+        std::vector<int> layout {3, 1, 8, 6, 5, 2, 4, 7, constants::EMPTY};
+        Solver s = Solver(layout);
+        auto [isSolved, totalSteps] = s.SolvePuzzle();
+        auto depth = s.GetNumOfMoves();
+
+        REQUIRE (isSolved);
+        REQUIRE (depth == 22);
     }
 }

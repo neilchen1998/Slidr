@@ -3,53 +3,66 @@
 #include <unordered_set>    // std::unordered_set
 #include <queue>    // std::priority_queue
 #include <tuple>    // std::tuple
+#include <climits>  // INT_MAX
+#include <algorithm>  // std::ranges::reverse
+#include <iostream> // std::cout
 
 #include "constants/constantslib.hpp"
 #include "math/mathlib.hpp"
 #include "node/nodelib.hpp"
 #include "solver/solverlib.hpp"
 
-Solver::Solver(const std::vector<int> initialLayout) : visited(), curNode(Node(initialLayout)), steps(0)
+Solver::Solver(const std::vector<int> initialLayout) : visited(), curNode(Node(initialLayout)), iter(0)
 {
     pq.push(Node(initialLayout));
 }
 
-Solver::Solver(const Node& initialNode) : visited(), curNode(initialNode), steps(0)
+Solver::Solver(const Node& initialNode) : visited(), curNode(initialNode), iter(0)
 {
     pq.push(initialNode);
 }
 
-std::tuple<bool, int> Solver::SolvePuzzle()
+std::tuple<bool, unsigned long> Solver::SolvePuzzle()
 {
     while (!pq.empty())
     {
-        // gets the top node
+        // Get the top node
         curNode = pq.top();
 
-        // checks if we have solved the problem
+        // Check if we have solved the problem
         if (curNode.IsSolved())
         {
-            return std::tuple{curNode.IsSolved(), steps};
+            optimalNumOfMoves = curNode.GetDepth();
+            return std::tuple{curNode.IsSolved(), iter};
         }
 
         pq.pop();
 
-        // gets all fessible children
-        std::vector<Node> children = curNode.GetChildrenNodes();
+        // Get all fessible children
+        std::vector<Node> children = curNode.GetChildrenNodes(curNode.GetDepth());
 
-        // starts from the beginning and checks if we have visited it before
+        // Loop through each child
         for(const Node& child : children)
         {
-            auto curHashValue = child.GetCurrentHashValue();
+            auto curHashValue = child.GetHashValue();
+
+            // Check if we have seen this before
             if (visited.count(curHashValue) == 0)
             {
                 pq.push(child);
                 visited.insert(curHashValue);
+
+                ++iter;
             }
         }
-
-        ++steps;
     }
 
-    return std::tuple{curNode.IsSolved(), steps};
+    // If we reach here that means we have run out of moves and therefore
+    // we cannot solve the puzzle.
+    return std::tuple{false, -1};
+}
+
+int Solver::GetNumOfMoves() const
+{
+    return optimalNumOfMoves;
 }

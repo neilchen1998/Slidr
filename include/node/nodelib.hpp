@@ -8,26 +8,28 @@
 class Node
 {
 public:
-    Node() = default;
+    Node() = delete;
     Node(std::vector<int> input);
+    Node(std::vector<int> input, unsigned long d);
     Node(std::vector<int> input, int posX);
+    Node(std::vector<int> input, int posX, unsigned long d);
     ~Node() = default;
 
     std::vector<int> AvailableMoves() const;
 
-    std::vector<Node> GetChildrenNodes() const;
+    std::vector<Node> GetChildrenNodes(unsigned long) const;
 
     std::tuple<std::vector<int>, int> GetNextLayout(int dir) const;
 
-    int GetCurrentManhattanDistance() const;
+    int GetManhattanDistance() const;
 
-    std::size_t GetCurrentHashValue() const;
+    std::size_t GetHashValue() const;
+
+    /// @brief Gets the depth of the node
+    /// @return The depth
+    unsigned long GetDepth() const;
 
     void Print() const;
-
-    bool operator<(const Node& rhs) const;
-
-    bool operator>(const Node& rhs) const;
 
     bool operator==(const Node& rhs) const;
 
@@ -39,17 +41,20 @@ private:
     void CalculateManhattanDistance();
 
 protected:
-    /// @brief the layout of the node
-    std::vector<int> layout;
+    /// @brief The state of the node
+    std::vector<int> state;
 
-    /// @brief the position of the empty piece
+    /// @brief The position of The empty piece
     int posX;
 
-    /// @brief the Manhattan distance
+    /// @brief The Manhattan distance
     int manhattanDistance;
 
-    /// @brief the hash value
+    /// @brief The hash value
     std::size_t hashValue;
+
+    /// @brief The depth of the node
+    unsigned long depth;
 };
 
 #endif // INCLUDE_NODE_NODELIB_H_
