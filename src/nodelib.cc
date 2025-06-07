@@ -181,11 +181,11 @@ void Node::CalculateManhattanDistance()
     {
         if (state[i] != constants::EMPTY)
         {
-            int goalRow = (state[i] - 1) / constants::EIGHT_PUZZLE_SIZE;
-            int goalCol = (state[i] - 1) % constants::EIGHT_PUZZLE_SIZE;
+            int curRow = (state[i] - 1) / constants::EIGHT_PUZZLE_SIZE;
+            int curCol = (state[i] - 1) % constants::EIGHT_PUZZLE_SIZE;
 
-            int curRow = i / constants::EIGHT_PUZZLE_SIZE;
-            int curCol = i % constants::EIGHT_PUZZLE_SIZE;
+            int goalRow = i / constants::EIGHT_PUZZLE_SIZE;
+            int goalCol = i % constants::EIGHT_PUZZLE_SIZE;
 
             manhattanDistance += (std::abs(goalRow - curRow) + std::abs(goalCol - curCol));
         }
