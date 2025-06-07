@@ -1,6 +1,7 @@
 #include <iostream> // std::cout
 #include <span> // std::span
 #include <algorithm> // std::ranges::find
+#include <memory.h> // std::shared_ptr, std::make_shared
 
 #include "node/nodelib.hpp"
 #include "constants/constantslib.hpp"
@@ -10,16 +11,9 @@ Node::Node(std::vector<int> input)
     : state(input),
       posX(std::ranges::find(input, constants::EMPTY) - input.begin()),
       hashValue(hash_range(std::span(state))),
-      depth(0)
-{
-    CalculateManhattanDistance();
-}
-
-Node::Node(std::vector<int> input, unsigned long d)
-    : state(input),
-    posX(std::ranges::find(input, constants::EMPTY) - input.begin()),
-    hashValue(hash_range(std::span(state))),
-    depth(d)
+      depth(0),
+      parent(nullptr),
+      move(-1)
 {
     CalculateManhattanDistance();
 }
@@ -30,7 +24,7 @@ Node::Node(std::vector<int> input, int posX) : state(input), posX(posX), depth(0
     CalculateManhattanDistance();
 }
 
-Node::Node(std::vector<int> input, int posX, unsigned long d) : state(input), posX(posX), depth(d)
+Node::Node(std::vector<int> input, int posX, unsigned long d, std::shared_ptr<const Node> p, short m) : state(input), posX(posX), depth(d), parent(p), move(m)
 {
     hashValue = hash_range(std::span(input));
     CalculateManhattanDistance();
@@ -41,9 +35,8 @@ std::vector<int> Node::AvailableMoves() const
     std::vector<int> ret;
     ret.reserve(4);
 
-    auto xDv = std::div(posX, constants::EIGHT_PUZZLE_SIZE);
-    int xRow = xDv.quot;
-    int xCol = xDv.rem;
+    int xRow = posX / constants::EIGHT_PUZZLE_SIZE;
+    int xCol = posX % constants::EIGHT_PUZZLE_SIZE;
 
     // constants::RIGHT
     if (xCol + 1 < constants::EIGHT_PUZZLE_SIZE)
@@ -72,7 +65,7 @@ std::vector<int> Node::AvailableMoves() const
     return ret;
 }
 
-std::vector<Node> Node::GetChildNodes(unsigned long curDepth) const
+std::vector<Node> Node::GetChildNodes(unsigned long curDepth, std::shared_ptr<const Node> p) const
 {
     std::vector<Node> children;
     children.reserve(4);
@@ -82,7 +75,7 @@ std::vector<Node> Node::GetChildNodes(unsigned long curDepth) const
     for(const int& move : moves)
     {
         auto [childLayout, childPosX] = GetNextLayout(move);
-        children.emplace_back(childLayout, childPosX, curDepth + 1);
+        children.emplace_back(childLayout, childPosX, curDepth + 1, p, move);
     }
 
     return children;
@@ -174,6 +167,16 @@ bool Node::operator!=(const Node &rhs) const
 bool Node::IsSolved() const
 {
     return (manhattanDistance == 0) ? true : false;
+}
+
+std::shared_ptr<const Node> Node::GetParent() const
+{
+    return parent;
+}
+
+short Node::GetMove() const
+{
+    return move;
 }
 
 void Node::CalculateManhattanDistance()

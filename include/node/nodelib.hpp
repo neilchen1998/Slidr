@@ -4,15 +4,15 @@
 #include <vector>   // std::vector
 #include <cstdlib>  // std::size_t
 #include <tuple>    // std::tuple
+#include <memory.h> // std::shared_ptr
 
 class Node
 {
 public:
     Node() = delete;
     Node(std::vector<int> input);
-    Node(std::vector<int> input, unsigned long d);
     Node(std::vector<int> input, int posX);
-    Node(std::vector<int> input, int posX, unsigned long d);
+    Node(std::vector<int> input, int posX, unsigned long d, std::shared_ptr<const Node> p, short m);
     ~Node() = default;
 
     /// @brief Gets all the available moves
@@ -22,7 +22,7 @@ public:
     /// @brief Gets all child nodes
     /// @param  The depth of the parent
     /// @return A vector of all child nodes
-    std::vector<Node> GetChildNodes(unsigned long d) const;
+    std::vector<Node> GetChildNodes(unsigned long d, std::shared_ptr<const Node> p) const;
 
     std::tuple<std::vector<int>, int> GetNextLayout(int dir) const;
 
@@ -49,6 +49,10 @@ public:
     /// @return Is solved or not
     bool IsSolved() const;
 
+    std::shared_ptr<const Node> GetParent() const;
+
+    short GetMove() const;
+
 private:
     /// @brief Calcualte the Manhattan distance
     void CalculateManhattanDistance();
@@ -68,6 +72,11 @@ protected:
 
     /// @brief The depth of the node
     unsigned long depth;
+
+    /// @brief The parent of this node
+    std::shared_ptr<const Node> parent;
+
+    short move;
 };
 
 #endif // INCLUDE_NODE_NODELIB_H_

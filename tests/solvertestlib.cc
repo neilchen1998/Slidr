@@ -2,10 +2,9 @@
 
 #include <catch2/catch.hpp>
 #include <vector>    // std::vector
-#include <array>    // std::array
-#include <algorithm>    // std::ranges::equal
-#include <span> // std::span
-#include <concepts> // std::integral
+#include <ranges>    // std::ranges::input_range
+#include <unordered_set>    // std::unordered_set
+#include <string_view>    // std::string_view
 
 #include "constants/constantslib.hpp"
 #include "math/mathlib.hpp"
@@ -38,7 +37,7 @@ struct Tester : Solver
     std::priority_queue<Node, std::vector<Node>, NodeCmp> GetPQ() const { return this->pq; }
 
     /// @brief Get the reference of the priority queue of Solver
-    /// @return The reference
+    /// @return The reference of the priority queue
     std::priority_queue<Node, std::vector<Node>, NodeCmp> &GetPQ() { return this->pq; }
     Node GetCurrentNode () const { return this->curNode; }
     int GetSteps() const { return this->iter; }
@@ -154,42 +153,50 @@ TEST_CASE( "Can Solve Puzzles", "[main]" )
     {
         std::vector<int> layout {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
         Solver s = Solver(layout);
-        auto [isSolved, totalSteps] = s.SolvePuzzle();
+        auto [isSolved, numOfIters] = s.SolvePuzzle();
 
         REQUIRE (isSolved);
-        REQUIRE (totalSteps == 0);
+        REQUIRE (numOfIters == 0);
     }
 
     SECTION("Puzzle 1", "[general case]")
     {
         std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
         Solver s = Solver(layout);
-        auto [isSolved, totalSteps] = s.SolvePuzzle();
+        auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
+        auto solution = s.GetSolution();
 
         REQUIRE (isSolved);
         REQUIRE (depth == 2);
+        REQUIRE (solution == "↑↑");
     }
 
     SECTION("Puzzle 2", "[general case]")
     {
+        // 536208417
         std::vector<int> layout {5, 3, 6, 2, constants::EMPTY, 8, 4, 1, 7};
         Solver s = Solver(layout);
-        auto [isSolved, totalSteps] = s.SolvePuzzle();
+        auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
+        auto solution = s.GetSolution();
 
         REQUIRE (isSolved);
         REQUIRE (depth == 14);
+        REQUIRE (solution == "↑←↓↓→↑→↓←↑→↑←←");
     }
 
     SECTION("Puzzle 3", "[general case]")
     {
+        // 318652470
         std::vector<int> layout {3, 1, 8, 6, 5, 2, 4, 7, constants::EMPTY};
         Solver s = Solver(layout);
-        auto [isSolved, totalSteps] = s.SolvePuzzle();
+        auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
+        auto solution = s.GetSolution();
 
         REQUIRE (isSolved);
         REQUIRE (depth == 22);
+        REQUIRE (solution == "↓→→↓←↑→↑←←↓↓→↑↑←↓↓→↑↑←");
     }
 }
