@@ -23,13 +23,20 @@ inline void hash_combine(std::size_t& seed, const T& u, const Args&... v)
     (hash_combine(seed, v), ...);
 }
 
+/// @brief Hashes the span
+/// @tparam T The type of the element (needs to be integral)
+/// @param vec The span
+/// @return The hash value of the span
 template <std::integral T>
-inline std::size_t hash_range(std::span<T> vec)
+inline std::size_t hash_range(std::span<T> s)
 {
-    std::size_t h {vec.size()};
-    for (std::size_t i {0}; i < vec.size(); ++i)
+    // Initialize hash value with the size of the span
+    std::size_t h {s.size()};
+
+    // Loop through each element and hash with the element and its position
+    for (std::size_t i {0}; i < s.size(); ++i)
     {
-        hash_combine(h, vec[i], i);
+        hash_combine(h, s[i], i);
     }
 
     return h;
