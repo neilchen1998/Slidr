@@ -176,31 +176,18 @@ bool Node::IsSolved() const
 
 void Node::CalculateManhattanDistance()
 {
-    int ptr = 0;
-    manhattanDistance = std::accumulate(state.begin(), state.end(), 0,
-        [&](int s, int v)
+    manhattanDistance = 0;
+    for (auto i = 0; i < constants::EIGHT_PUZZLE_NUM; ++i)
+    {
+        if (state[i] != constants::EMPTY)
         {
-            int diff = 0;
+            int goalRow = (state[i] - 1) / constants::EIGHT_PUZZLE_SIZE;
+            int goalCol = (state[i] - 1) % constants::EIGHT_PUZZLE_SIZE;
 
-            // checks if the element is valid
-            if (v != constants::EMPTY)
-            {
-                // finds the goal coordinate of the element
-                auto goalDv = std::div(v - 1, constants::EIGHT_PUZZLE_SIZE);
-                int goalRow = goalDv.quot;
-                int goalCol = goalDv.rem;
+            int curRow = i / constants::EIGHT_PUZZLE_SIZE;
+            int curCol = i % constants::EIGHT_PUZZLE_SIZE;
 
-                // finds the current coordinate of the element
-                auto curDv = std::div(ptr, constants::EIGHT_PUZZLE_SIZE);
-                int curRow = curDv.quot;
-                int curCol = curDv.rem;
-
-                // find the Manhattan distance of the two
-                diff = std::abs(goalCol - curCol) + std::abs(goalRow - curRow);
-            }
-
-            ++ptr;
-
-            return s += diff;
-        });
+            manhattanDistance += (std::abs(goalRow - curRow) + std::abs(goalCol - curCol));
+        }
+    }
 }
