@@ -3,12 +3,7 @@
 #include <unordered_set>    // std::unordered_set
 #include <queue>    // std::priority_queue
 #include <tuple>    // std::tuple
-#include <climits>  // INT_MAX
-#include <algorithm>  // std::ranges::reverse
-#include <iostream> // std::cout
 
-#include "constants/constantslib.hpp"
-#include "math/mathlib.hpp"
 #include "node/nodelib.hpp"
 #include "solver/solverlib.hpp"
 
