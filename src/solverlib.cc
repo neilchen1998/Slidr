@@ -1,8 +1,11 @@
+#include <cstddef>
 #include <cstdlib>  // std::size_t
 #include <vector>   // std::vector
 #include <unordered_set>    // std::unordered_set
 #include <queue>    // std::priority_queue
 #include <tuple>    // std::tuple
+#include <memory.h> // std::shared_ptr, std::make_shared
+#include <algorithm>    // std::reverse
 
 #include "node/nodelib.hpp"
 #include "solver/solverlib.hpp"
@@ -24,17 +27,19 @@ std::tuple<bool, unsigned long> Solver::SolvePuzzle()
         // Get the top node
         curNode = pq.top();
 
+        std::shared_ptr<const Node> p = std::make_shared<const Node>(curNode);
+
         // Check if we have solved the problem
         if (curNode.IsSolved())
         {
-            optimalNumOfMoves = curNode.GetDepth();
+            GeneratePath();
             return std::tuple{curNode.IsSolved(), iter};
         }
 
         pq.pop();
 
         // Get all fessible children
-        std::vector<Node> children = curNode.GetChildNodes(curNode.GetDepth());
+        std::vector<Node> children = curNode.GetChildNodes(curNode.GetDepth(), p);
 
         // Loop through each child
         for(const Node& child : children)
@@ -54,10 +59,34 @@ std::tuple<bool, unsigned long> Solver::SolvePuzzle()
 
     // If we reach here that means we have run out of moves and therefore
     // we cannot solve the puzzle.
-    return std::tuple{false, -1};
+    return std::tuple{false, iter};
 }
 
-int Solver::GetNumOfMoves() const
+std::size_t Solver::GetNumOfMoves() const
 {
-    return optimalNumOfMoves;
+    // The path includes the start state
+    return (path.size() - 1);
+}
+
+std::string Solver::GetSolution() const
+{
+    return solution;
+}
+
+std::vector<Node> Solver::GetPath() const
+{
+    return path;
+}
+
+void Solver::GeneratePath()
+{
+    path.push_back(curNode);
+    auto p = curNode.GetParent();
+    while (p != nullptr)
+    {
+        path.push_back(*p);
+        p = p->GetParent();
+    }
+
+    std::reverse(path.begin(), path.end());
 }

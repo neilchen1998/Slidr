@@ -29,7 +29,13 @@ public:
 
     /// @brief Gets the optimal number of moves
     /// @return The move
-    int GetNumOfMoves() const;
+    std::size_t GetNumOfMoves() const;
+
+    /// @brief Gets the solution
+    /// @return The solution
+    std::string GetSolution() const;
+
+    std::vector<Node> GetPath() const;
 
 protected:
 
@@ -43,12 +49,14 @@ protected:
             {
                 return (lhs.GetManhattanDistance() + lhs.GetDepth()) > (rhs.GetManhattanDistance() + rhs.GetDepth());
             }
-            
+
             // If they are identical, then we use the hash value for comparison.
             // Since this is for the min. priority queue, we return true if the lhs is greater than the rhs.
             return lhs.GetDepth() > rhs.GetDepth();
         }
     };
+
+    void GeneratePath();
 
 protected:
 
@@ -64,8 +72,10 @@ protected:
     /// @brief the number of iterations
     unsigned long iter;
 
-    /// @brief the number of depths
-    unsigned long optimalNumOfMoves;
+    /// @brief the solution
+    std::string solution;
+
+    std::vector<Node> path;
 };
 
 #endif // INCLUDE_SOLVER_SOLVERLIB_H_
