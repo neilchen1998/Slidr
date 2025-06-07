@@ -39,7 +39,7 @@ std::tuple<bool, unsigned long> Solver::SolvePuzzle()
         pq.pop();
 
         // Get all fessible children
-        std::vector<Node> children = curNode.GetChildrenNodes(curNode.GetDepth());
+        std::vector<Node> children = curNode.GetChildNodes(curNode.GetDepth());
 
         // Loop through each child
         for(const Node& child : children)

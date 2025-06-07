@@ -39,6 +39,7 @@ Node::Node(std::vector<int> input, int posX, unsigned long d) : state(input), po
 std::vector<int> Node::AvailableMoves() const
 {
     std::vector<int> ret;
+    ret.reserve(4);
 
     auto xDv = std::div(posX, constants::EIGHT_PUZZLE_SIZE);
     int xRow = xDv.quot;
@@ -71,9 +72,10 @@ std::vector<int> Node::AvailableMoves() const
     return ret;
 }
 
-std::vector<Node> Node::GetChildrenNodes(unsigned long curDepth) const
+std::vector<Node> Node::GetChildNodes(unsigned long curDepth) const
 {
     std::vector<Node> children;
+    children.reserve(4);
 
     std::vector<int> moves = AvailableMoves();
 

@@ -15,29 +15,42 @@ public:
     Node(std::vector<int> input, int posX, unsigned long d);
     ~Node() = default;
 
+    /// @brief Gets all the available moves
+    /// @return A vectors contains all the available moves
     std::vector<int> AvailableMoves() const;
 
-    std::vector<Node> GetChildrenNodes(unsigned long) const;
+    /// @brief Gets all child nodes
+    /// @param  The depth of the parent
+    /// @return A vector of all child nodes
+    std::vector<Node> GetChildNodes(unsigned long d) const;
 
     std::tuple<std::vector<int>, int> GetNextLayout(int dir) const;
 
+    /// @brief Gets the Manhattan distance of the puzzle (l-2 distance)
+    /// @return The manhattan distance
     int GetManhattanDistance() const;
 
+    /// @brief Gets the hash value of the node
+    /// @return The hash value of the node
     std::size_t GetHashValue() const;
 
     /// @brief Gets the depth of the node
     /// @return The depth
     unsigned long GetDepth() const;
 
+    /// @brief Prints the node
     void Print() const;
 
     bool operator==(const Node& rhs) const;
 
     bool operator!=(const Node& rhs) const;
 
+    /// @brief Returns if the puzzle is solved
+    /// @return Is solved or not
     bool IsSolved() const;
 
 private:
+    /// @brief Calcualte the Manhattan distance
     void CalculateManhattanDistance();
 
 protected:
