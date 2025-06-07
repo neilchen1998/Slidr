@@ -11,10 +11,8 @@ class Node
 public:
     Node() = delete;
     Node(std::vector<int> input);
-    Node(std::vector<int> input, unsigned long d);
     Node(std::vector<int> input, int posX);
-    Node(std::vector<int> input, int posX, unsigned long d);
-    Node(std::vector<int> input, int posX, unsigned long d, std::shared_ptr<const Node> p);
+    Node(std::vector<int> input, int posX, unsigned long d, std::shared_ptr<const Node> p, short m);
     ~Node() = default;
 
     /// @brief Gets all the available moves
@@ -53,6 +51,8 @@ public:
 
     std::shared_ptr<const Node> GetParent() const;
 
+    short GetMove() const;
+
 private:
     /// @brief Calcualte the Manhattan distance
     void CalculateManhattanDistance();
@@ -75,6 +75,8 @@ protected:
 
     /// @brief The parent of this node
     std::shared_ptr<const Node> parent;
+
+    short move;
 };
 
 #endif // INCLUDE_NODE_NODELIB_H_

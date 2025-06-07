@@ -12,17 +12,8 @@ Node::Node(std::vector<int> input)
       posX(std::ranges::find(input, constants::EMPTY) - input.begin()),
       hashValue(hash_range(std::span(state))),
       depth(0),
-      parent(nullptr)
-{
-    CalculateManhattanDistance();
-}
-
-Node::Node(std::vector<int> input, unsigned long d)
-    : state(input),
-    posX(std::ranges::find(input, constants::EMPTY) - input.begin()),
-    hashValue(hash_range(std::span(state))),
-    depth(d),
-    parent(nullptr)
+      parent(nullptr),
+      move(-1)
 {
     CalculateManhattanDistance();
 }
@@ -33,13 +24,7 @@ Node::Node(std::vector<int> input, int posX) : state(input), posX(posX), depth(0
     CalculateManhattanDistance();
 }
 
-Node::Node(std::vector<int> input, int posX, unsigned long d) : state(input), posX(posX), depth(d)
-{
-    hashValue = hash_range(std::span(input));
-    CalculateManhattanDistance();
-}
-
-Node::Node(std::vector<int> input, int posX, unsigned long d, std::shared_ptr<const Node> p) : state(input), posX(posX), depth(d), parent(p)
+Node::Node(std::vector<int> input, int posX, unsigned long d, std::shared_ptr<const Node> p, short m) : state(input), posX(posX), depth(d), parent(p), move(m)
 {
     hashValue = hash_range(std::span(input));
     CalculateManhattanDistance();
@@ -90,7 +75,7 @@ std::vector<Node> Node::GetChildNodes(unsigned long curDepth, std::shared_ptr<co
     for(const int& move : moves)
     {
         auto [childLayout, childPosX] = GetNextLayout(move);
-        children.emplace_back(childLayout, childPosX, curDepth + 1, p);
+        children.emplace_back(childLayout, childPosX, curDepth + 1, p, move);
     }
 
     return children;
@@ -187,6 +172,11 @@ bool Node::IsSolved() const
 std::shared_ptr<const Node> Node::GetParent() const
 {
     return parent;
+}
+
+short Node::GetMove() const
+{
+    return move;
 }
 
 void Node::CalculateManhattanDistance()

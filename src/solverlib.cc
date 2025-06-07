@@ -9,6 +9,7 @@
 
 #include "node/nodelib.hpp"
 #include "solver/solverlib.hpp"
+#include "constants/constantslib.hpp"
 
 Solver::Solver(const std::vector<int> initialLayout) : visited(), curNode(Node(initialLayout)), iter(0)
 {
@@ -80,13 +81,48 @@ std::vector<Node> Solver::GetPath() const
 
 void Solver::GeneratePath()
 {
+    std::vector<short> sol;
+
+    // Start backtracking
     path.push_back(curNode);
-    auto p = curNode.GetParent();
+    sol.push_back(curNode.GetMove());
+    std::shared_ptr<const Node> p = curNode.GetParent();
     while (p != nullptr)
     {
         path.push_back(*p);
+        sol.push_back(p->GetMove());
         p = p->GetParent();
     }
 
     std::reverse(path.begin(), path.end());
+
+    // Construct the solution
+    auto itr = sol.crbegin();
+    while (itr != sol.crend())
+    {
+        // Invert the direction
+        switch (*itr)
+        {
+        case constants::RIGHT:
+            solution += "←";
+            break;
+
+        case constants::UP:
+            solution += "↓";
+            break;
+
+        case constants::LEFT:
+            solution += "→";
+            break;
+
+        case constants::DOWN:
+            solution += "↑";
+            break;
+
+        default:
+            break;
+        }
+
+        ++itr;
+    }
 }

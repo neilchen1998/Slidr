@@ -5,27 +5,24 @@
 #include <vector>    // std::vector
 #include <algorithm>    // std::ranges::equal
 #include <chrono>   // std::chrono::high_resolution_clock, std::chrono::duration_cast
-#include <random>
 
 #include "constants/constantslib.hpp"
 #include "solver/solverlib.hpp"
 
 int main(int argc, char* argv[])
 {
-    unsigned int seed = 41;
-    std::default_random_engine rng(seed);
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    std::vector<int> layout {3, 1, 8, 6, 5, 2, 4, 7, constants::EMPTY};
+    std::vector<int> layout {5, 3, 6, 2, constants::EMPTY, 8, 4, 1, 7};
 
     Solver s = Solver(layout);
-    auto [isSolved, totalSteps] = s.SolvePuzzle();
+    auto [isSolved, totalIters] = s.SolvePuzzle();
 
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
 
-    std::cout << "duration: " << duration / 100 << "\n";
+    std::cout << "duration: " << duration << "\t total iterations: " << totalIters << "\n";
 
     auto path = s.GetPath();
     for (size_t i = 0; i < path.size(); ++i)
@@ -33,6 +30,8 @@ int main(int argc, char* argv[])
         std::cout << "Step " << i << ":\n";
         path[i].Print();
     }
+
+    std::cout << "Moves: " << s.GetSolution() << std::endl;
 
     return EXIT_SUCCESS;
 }

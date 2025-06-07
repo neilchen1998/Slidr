@@ -4,6 +4,7 @@
 #include <vector>    // std::vector
 #include <ranges>    // std::ranges::input_range
 #include <unordered_set>    // std::unordered_set
+#include <string_view>    // std::string_view
 
 #include "constants/constantslib.hpp"
 #include "math/mathlib.hpp"
@@ -164,30 +165,38 @@ TEST_CASE( "Can Solve Puzzles", "[main]" )
         Solver s = Solver(layout);
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
+        auto solution = s.GetSolution();
 
         REQUIRE (isSolved);
         REQUIRE (depth == 2);
+        REQUIRE (solution == "↑↑");
     }
 
     SECTION("Puzzle 2", "[general case]")
     {
+        // 536208417
         std::vector<int> layout {5, 3, 6, 2, constants::EMPTY, 8, 4, 1, 7};
         Solver s = Solver(layout);
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
+        auto solution = s.GetSolution();
 
         REQUIRE (isSolved);
         REQUIRE (depth == 14);
+        REQUIRE (solution == "↑←↓↓→↑→↓←↑→↑←←");
     }
 
     SECTION("Puzzle 3", "[general case]")
     {
+        // 318652470
         std::vector<int> layout {3, 1, 8, 6, 5, 2, 4, 7, constants::EMPTY};
         Solver s = Solver(layout);
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
+        auto solution = s.GetSolution();
 
         REQUIRE (isSolved);
         REQUIRE (depth == 22);
+        REQUIRE (solution == "↓→→↓←↑→↑←←↓↓→↑↑←↓↓→↑↑←");
     }
 }
