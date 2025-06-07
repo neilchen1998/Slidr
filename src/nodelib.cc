@@ -51,7 +51,6 @@ std::vector<int> Node::AvailableMoves() const
         ret.push_back(constants::DOWN);
     }
 
-
     return ret;
 }
 
