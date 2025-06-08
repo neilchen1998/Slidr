@@ -41,16 +41,32 @@ public:
     /// @brief Prints the node
     void Print() const;
 
-    bool operator==(const Node& rhs) const;
+    /// @brief Compares if two nodes (puzzles) are identical
+    /// @param rhs The right hand side node (puzzle)
+    /// @return True if they are identical
+    inline bool operator==(const Node &rhs) const
+    {
+        return state == rhs.state;
+    }
 
-    bool operator!=(const Node& rhs) const;
+    /// @brief Compares if two nodes (puzzles) are NOT identical
+    /// @param rhs The right hand side node (puzzle)
+    /// @return True if they are NOT identical
+    inline bool operator!=(const Node &rhs) const
+    {
+        return !(*this == rhs);
+    }
 
     /// @brief Returns if the puzzle is solved
     /// @return Is solved or not
     bool IsSolved() const;
 
+    /// @brief Gets the pointer of its parent
+    /// @return The pointer of its parent
     std::shared_ptr<const Node> GetParent() const;
 
+    /// @brief Gets the move used to reach this node
+    /// @return The move
     short GetMove() const;
 
 private:
@@ -76,6 +92,7 @@ protected:
     /// @brief The parent of this node
     std::shared_ptr<const Node> parent;
 
+    /// @brief The move used to reach this node in terms of the empty space
     short move;
 };
 
