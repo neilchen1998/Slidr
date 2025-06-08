@@ -11,7 +11,7 @@
 #include "node/nodelib.hpp"
 #include "solver/solverlib.hpp"
 
-/// @brief Gets the underlying container of an iteralbe type
+/// @brief Get the underlying container of an iteralbe type
 /// @tparam Adaptor the data type of the input
 /// @param adaptor An iterable data structure
 /// @return The underlying container of the input
@@ -40,7 +40,7 @@ struct Tester : Solver
     /// @return The reference of the priority queue
     std::priority_queue<Node, std::vector<Node>, NodeCmp> &GetPQ() { return this->pq; }
     Node GetCurrentNode () const { return this->curNode; }
-    int GetSteps() const { return this->iter; }
+    int Getteps() const { return this->iter; }
 };
 
 TEST_CASE( "Solver Constructor", "[main]" )
@@ -97,26 +97,30 @@ TEST_CASE( "Solver Initialization", "[main]" )
 
     SECTION("Steps", "[some_details]")
     {
-        REQUIRE (t.GetSteps() == 0);
+        REQUIRE (t.Getteps() == 0);
     }
 }
 
 TEST_CASE( "Priority Queue", "[main]" )
 {
     Node node0 = Node({1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY});
-    Node node1 = Node({1, 2, 3, 4, 5, constants::EMPTY, 7, 8, 6});
-    Node node2 = Node({1, 2, 3, 4, 5, 6, 7, constants::EMPTY, 8});
-    Node node3 = Node({1, 2, 3, 4, constants::EMPTY, 6, 7, 5, 8});
+    Node node1 = Node({1, 2, 3, 4, 5, 6, 7, constants::EMPTY, 8});
+    Node node2 = Node({1, 2, 3, 4, 5, constants::EMPTY, 7, 8, 6});
 
-    SECTION("Three Nodes with Three Distinct Values", "[some_details]")
+    // Create two identical nodes but two different cost values
+    std::vector<int> state {{1, 2, 3, constants::EMPTY, 4, 6, 7, 5, 8}};
+    Node node3 = Node(state, 1);
+    Node node4 = Node(state, 2);
+
+    SECTION("Three Different Nodes with Three Distinct Manhattan Values", "[some_details]")
     {
-        Solver s = Solver({1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY});
+        Solver s = Solver(node0);
         Tester t = static_cast<const Tester&>(s);
 
-        // gets the reference of the priority queue of the Solver instance
+        // Get the reference of the priority queue of the Solver instance
         auto& pq = t.GetPQ();
 
-        // inject the values directly
+        // Inject the values directly
         pq.push(node1);
         pq.push(node3);
 
@@ -127,23 +131,23 @@ TEST_CASE( "Priority Queue", "[main]" )
         REQUIRE (vec.at(2) == node3);
     }
 
-    SECTION("Two Nodes with Two Distinct Values", "[some_details]")
+    SECTION("Two Identical Nodes with Two Cost Values", "[some_details]")
     {
-        Solver s = Solver({1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY});
+        Solver s = Solver(node0);
         Tester t = static_cast<const Tester&>(s);
 
-        // gets the reference of the priority queue of the Solver instance
+        // Get the reference of the priority queue of the Solver instance
         auto& pq = t.GetPQ();
 
-        // inject the values directly
-        pq.push(node1);
-        pq.push(node2);
+        // Inject the values directly
+        pq.push(node3);
+        pq.push(node4);
 
         std::vector<Node> vec = GetContainer(pq);
         REQUIRE (vec.size() == 3);
         REQUIRE (vec.at(0) == node0);
-        REQUIRE (vec.at(1) == node2);
-        REQUIRE (vec.at(2) == node1);
+        REQUIRE (vec.at(1) == node3);
+        REQUIRE (vec.at(2) == node4);
     }
 }
 

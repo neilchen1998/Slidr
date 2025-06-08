@@ -154,16 +154,6 @@ void Node::Print() const
     }
 }
 
-bool Node::operator==(const Node &rhs) const
-{
-    return manhattanDistance == rhs.GetManhattanDistance();
-}
-
-bool Node::operator!=(const Node &rhs) const
-{
-    return manhattanDistance != rhs.GetManhattanDistance();
-}
-
 bool Node::IsSolved() const
 {
     return (manhattanDistance == 0) ? true : false;
