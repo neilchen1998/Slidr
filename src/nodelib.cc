@@ -78,6 +78,7 @@ std::vector<Node> Node::GetChildNodes(unsigned long curDepth, std::shared_ptr<co
         children.emplace_back(childLayout, childPosX, curDepth + 1, p, move);
     }
 
+    // NOTE: due to the advent of copy elision, this vector of Nodes will not be copied
     return children;
 }
 
