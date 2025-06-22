@@ -1,7 +1,6 @@
 #include <cstddef>
 #include <iostream> // std::cerr
 #include <stdlib.h> // EXIT_SUCCESS, EXIT_FAILURE
-
 #include <vector>    // std::vector
 #include <algorithm>    // std::ranges::equal
 #include <chrono>   // std::chrono::high_resolution_clock, std::chrono::duration_cast

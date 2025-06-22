@@ -16,6 +16,7 @@ target_include_directories(node_library PUBLIC ../include)
 target_include_directories(solver_library PUBLIC ../include)
 target_include_directories(prompt_library PUBLIC ../include)
 
+# target_link_libraries(math_library PUBLIC Boost::boost) # if you want to use boost::hash_combine
 target_link_libraries(node_library PUBLIC math_library)
 target_link_libraries(solver_library PUBLIC node_library)
 

@@ -2,6 +2,7 @@
 #include <span> // std::span
 #include <algorithm> // std::ranges::find
 #include <memory.h> // std::shared_ptr, std::make_shared
+#include <ranges>   // std::views::iota
 
 #include "node/nodelib.hpp"
 #include "constants/constantslib.hpp"
@@ -172,18 +173,20 @@ short Node::GetMove() const
 
 void Node::CalculateManhattanDistance()
 {
-    manhattanDistance = 0;
-    for (auto i = 0; i < constants::EIGHT_PUZZLE_NUM; ++i)
-    {
-        if (state[i] != constants::EMPTY)
-        {
-            int curRow = (state[i] - 1) / constants::EIGHT_PUZZLE_SIZE;
-            int curCol = (state[i] - 1) % constants::EIGHT_PUZZLE_SIZE;
+    manhattanDistance = std::reduce(
+    std::views::iota(0, constants::EIGHT_PUZZLE_NUM).begin(),
+    std::views::iota(0, constants::EIGHT_PUZZLE_NUM).end(),
+    0,
+    [&](int acc, int i) {
+        if (state[i] == constants::EMPTY)
+            return acc;
 
-            int goalRow = i / constants::EIGHT_PUZZLE_SIZE;
-            int goalCol = i % constants::EIGHT_PUZZLE_SIZE;
+        int curRow = (state[i] - 1) / constants::EIGHT_PUZZLE_SIZE;
+        int curCol = (state[i] - 1) % constants::EIGHT_PUZZLE_SIZE;
+        int goalRow = i / constants::EIGHT_PUZZLE_SIZE;
+        int goalCol = i % constants::EIGHT_PUZZLE_SIZE;
 
-            manhattanDistance += (std::abs(goalRow - curRow) + std::abs(goalCol - curCol));
-        }
+        return acc + std::abs(goalRow - curRow) + std::abs(goalCol - curCol);
     }
+);
 }
