@@ -93,6 +93,11 @@ An even more simplified version as shown in the comment *MIGHT* work.
 It passes all the test cases in the repo.
 But it is not adviced.
 
+| benchmark       | op/s | ns/op |
+| :-----------| :------------ | ----: |
+| hash_vector | 74,615,800.46 | 13.40 |
+| hash_range  | 90,301,886.39 | 11.07 |
+
 ### `const std::vector<T>& vec` vs. `std::span<T> s`
 
 According to the benchmark `bench/mathbenchlib` powered by [nanobench](https://github.com/martinus/nanobench) and [Quick C++ Benchmark](https://quick-bench.com/), 
