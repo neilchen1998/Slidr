@@ -4,12 +4,19 @@ This project solves the famous 8 Puzzle problem.
 
 ## Summary
 
+8 Puzzle problem is a simple version of [15 Puzzle problem](https://en.wikipedia.org/wiki/15_puzzle).
+In this project, [A* algorithm](http://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html) is used to solve the problem.
+Each time through the main loop, A* examines the state $n$ sucht that it has the lowest value of $f(n) = g(n) + h(n)$.
+$g(n)$ is the actual cost (in this case, the number of moves) of a state from the starting state.
+$h(n)$ is the heuristic cost of a state to the goal, [Manhattan Distance](https://xlinux.nist.gov/dads/HTML/manhattanDistance.html) is used in this project. Then it will explore all possible movements (left, right, up, down),
+and keep on until it reaches the goal.
+
 ## Requirements
 
 The requirements are:
 
 - CMake 3.11 or better; 3.14+ highly recommended
-- A C++17 compatible compiler
+- A C++20 compatible compiler ([gcc](https://gcc.gnu.org/) or [llvm](https://llvm.org/))
 - The Boost libararies
 - Git
 - Doxygen (optional, highly recommended)
@@ -57,11 +64,128 @@ To build docs (requires Doxygen, output in `build/docs/html`):
 cmake --build build --target docs
 ```
 
-## Note
+To build and run benchmark
+```
+cmake --build build && ./build/bench/<name_of_benchmark>
+```
+
+## Notes
+
+### Hash Algorithm
+
+A simple way to hash two values is using `boost::hash_combine` from the [Boost library](https://www.boost.org/).
+Or as this [post](https://stackoverflow.com/questions/2590677/how-do-i-combine-hash-values-in-c0x) suggests, use the following:
+
+```cpp
+template <class T>
+inline void hash_combine(std::size_t& seed, const T& v)
+{
+    std::hash<T> h;
+    seed ^= h(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    // seed ^= (std::hash<T>{}(u) << 1); // this MIGHT get the job done, it passess all the test cases
+}
+```
+
+There is no significant performance difference between two approaches according to the benchmark that can be found in `bench/mathbenchlib`.
+The archeive file size when using `boost::hash_combine` and that when using `hash_combine` are identical.
+
+An even more simplified version as shown in the comment *MIGHT* work.
+It passes all the test cases in the repo.
+But it is not adviced.
 
 ### `const std::vector<T>& vec` vs. `std::span<T> s`
 
-According to [Quick C++ Benchmark](https://quick-bench.com/), there is no significant performance difference 
+According to the benchmark `bench/mathbenchlib` powered by [nanobench](https://github.com/martinus/nanobench) and [Quick C++ Benchmark](https://quick-bench.com/), 
+there is no significant performance difference 
 between hashing a `const std::vector<T>& vec` and `std::span<T> s`.
 The overhead of converting a `std::vector<T> vec` to `std::span<T> s` is minimal.
 Since this project uses C++20, this is the way to go.
+
+### Manhattan Distance Calculation
+
+[Manhattan Distance](https://xlinux.nist.gov/dads/HTML/manhattanDistance.html) is used to calculate the heuristic value of a puzzle in a given state.
+
+In our problem, $p_1$ represents the goal position and $p_2$ represents the current position of a piece of the puzzle and the formula is
+$|x_1 - x_2| + |y_1 - y_2|$, where $x$ denotes the row position and $y$ denotes the column position.
+
+There are three implementations, using a simple for-loop, using `std::accumulate`, and using `std::reduce`:
+
+```cpp
+int GetManhattanDistance(std::span<int> s)
+{
+    int manhattanDistance = 0;
+    for (auto i = 0; i < constants::EIGHT_PUZZLE_NUM; ++i)
+    {
+        if (s[i] != constants::EMPTY)
+        {
+            int curRow = (s[i] - 1) / constants::EIGHT_PUZZLE_SIZE;
+            int curCol = (s[i] - 1) % constants::EIGHT_PUZZLE_SIZE;
+
+            int goalRow = i / constants::EIGHT_PUZZLE_SIZE;
+            int goalCol = i % constants::EIGHT_PUZZLE_SIZE;
+
+            manhattanDistance += (std::abs(goalRow - curRow) + std::abs(goalCol - curCol));
+        }
+    }
+
+    return manhattanDistance;
+}
+```
+
+```cpp
+int GetManhattanDistanceAccumulate(std::span<int> s)
+{
+    auto v = std::views::iota(0, constants::EIGHT_PUZZLE_NUM);
+    return std::accumulate(
+        v.begin(),
+        v.end(),
+        0,
+        [&](int acc, int i) {
+            if (s[i] == constants::EMPTY)
+            return acc;
+            
+            int curRow = (s[i] - 1) / constants::EIGHT_PUZZLE_SIZE;
+            int curCol = (s[i] - 1) % constants::EIGHT_PUZZLE_SIZE;
+            int goalRow = i / constants::EIGHT_PUZZLE_SIZE;
+            int goalCol = i % constants::EIGHT_PUZZLE_SIZE;
+            
+            return acc + std::abs(goalRow - curRow) + std::abs(goalCol - curCol);
+        }
+    );
+}
+```
+
+```cpp
+int GetManhattanDistanceReduce(std::span<int> s)
+{
+    auto v = std::views::iota(0, constants::EIGHT_PUZZLE_NUM);
+    return std::reduce(
+        v.begin(),
+        v.end(),
+        0,
+        [&](int acc, int i) {
+            if (s[i] == constants::EMPTY)
+                return acc;
+
+            int curRow = (s[i] - 1) / constants::EIGHT_PUZZLE_SIZE;
+            int curCol = (s[i] - 1) % constants::EIGHT_PUZZLE_SIZE;
+            int goalRow = i / constants::EIGHT_PUZZLE_SIZE;
+            int goalCol = i % constants::EIGHT_PUZZLE_SIZE;
+
+            return acc + std::abs(goalRow - curRow) + std::abs(goalCol - curCol);
+        }
+    );
+}
+```
+
+`std::reduce` utilizes parallelism which in theory be faster than `std::accumulate`.
+In our case the order of the operations does not matter, therefore we can use `std::reduce`.
+Nonetheless, based on the benchmark, the three different approaches do not have discernable difference in terms of speed.
+
+| benchmark       | op/s | ns/op |
+| :---------------| :------------- | ---: |
+| for loop        | 160,295,728.06 | 6.24 |
+| std::accumulate | 156,853,151.47 | 6.38 |
+| std::reduce     | 157,072,439.95 | 6.37 |
+
+## Reference

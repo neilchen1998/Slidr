@@ -6,6 +6,7 @@
 #include <functional>   // std::hash
 #include <numeric>   // std::accumulate, std::reduce
 #include <concepts> // std::integral
+// #include <boost/functional/hash.hpp> // if you want to use boost::hash_combine
 
 /// @brief Hashes multiple arguments with an initial hash value using fold expressions
 /// @tparam T The first argument type
@@ -18,6 +19,7 @@ inline void hash_combine(std::size_t& seed, const T& u, const Args&... v)
 {
     // Hash the first argument
     seed ^= std::hash<T>{}(u) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    // boost::hash_combine(seed, u);
 
     // Hash the rest of the arguments
     (hash_combine(seed, v), ...);
@@ -25,7 +27,7 @@ inline void hash_combine(std::size_t& seed, const T& u, const Args&... v)
 
 /// @brief Hashes the span
 /// @tparam T The type of the element (needs to be integral)
-/// @param vec The span
+/// @param s The span
 /// @return The hash value of the span
 template <std::integral T>
 inline std::size_t hash_range(std::span<T> s)
