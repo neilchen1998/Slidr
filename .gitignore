@@ -3,3 +3,7 @@ build/*
 
 # vscode
 .vscode/*
+
+# mac
+.cache/*
+.DS_Store
