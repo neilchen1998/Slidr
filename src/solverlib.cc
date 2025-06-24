@@ -6,6 +6,7 @@
 #include <tuple>    // std::tuple
 #include <memory.h> // std::shared_ptr, std::make_shared
 #include <algorithm>    // std::reverse
+#include <fmt/core.h>   // fmt::print
 
 #include "node/nodelib.hpp"
 #include "solver/solverlib.hpp"
@@ -124,5 +125,14 @@ void Solver::GeneratePath()
         }
 
         ++itr;
+    }
+}
+
+void Solver::PrintPath() const
+{
+    for (size_t i = 0; i < path.size(); ++i)
+    {
+        fmt::print("Step: {}\n", i);
+        path[i].Print();
     }
 }

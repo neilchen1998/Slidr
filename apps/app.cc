@@ -1,9 +1,8 @@
-#include <cstddef>
-#include <iostream> // std::cerr
 #include <stdlib.h> // EXIT_SUCCESS, EXIT_FAILURE
 #include <vector>    // std::vector
 #include <algorithm>    // std::ranges::equal
 #include <chrono>   // std::chrono::high_resolution_clock, std::chrono::duration_cast
+#include <fmt/core.h>   // fmt::print
 
 #include "constants/constantslib.hpp"
 #include "solver/solverlib.hpp"
@@ -21,16 +20,10 @@ int main(int argc, char* argv[])
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
 
-    std::cout << "duration: " << duration << "\t total iterations: " << totalIters << "\n";
+    fmt::print("duration: {} µs\t # of iterations: {}\n", duration.count(), totalIters);
+    s.PrintPath();
 
-    auto path = s.GetPath();
-    for (size_t i = 0; i < path.size(); ++i)
-    {
-        std::cout << "Step " << i << ":\n";
-        path[i].Print();
-    }
-
-    std::cout << "Moves: " << s.GetSolution() << std::endl;
+    fmt::print("Moves: {}\n", s.GetSolution());
 
     return EXIT_SUCCESS;
 }

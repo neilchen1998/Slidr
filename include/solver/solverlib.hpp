@@ -37,6 +37,8 @@ public:
 
     std::vector<Node> GetPath() const;
 
+    void PrintPath() const;
+
 protected:
 
     /// @brief the compare function for the priority queue

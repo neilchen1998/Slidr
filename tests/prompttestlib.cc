@@ -7,8 +7,6 @@
 #include <optional> // std::optional
 #include <string_view>  // std::string_view
 
-#include <iostream>
-
 #include "constants/constantslib.hpp"
 #include "math/mathlib.hpp"
 #include "node/nodelib.hpp"

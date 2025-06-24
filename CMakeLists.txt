@@ -52,6 +52,11 @@ find_package(Boost REQUIRED)
 find_package(Boost COMPONENTS program_options REQUIRED) # boost::program_options
 
 # all required packages
+FetchContent_Declare(
+  fmt
+  GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+  GIT_TAG        6.1.2)
+FetchContent_MakeAvailable(fmt)
 
 # the compiled library code
 add_subdirectory(src)

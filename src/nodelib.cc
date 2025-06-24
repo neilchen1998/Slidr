@@ -1,8 +1,8 @@
-#include <iostream> // std::cout
 #include <span> // std::span
 #include <algorithm> // std::ranges::find
 #include <memory.h> // std::shared_ptr, std::make_shared
 #include <ranges>   // std::views::iota
+#include <fmt/core.h>   // fmt::print
 
 #include "node/nodelib.hpp"
 #include "constants/constantslib.hpp"
@@ -141,17 +141,17 @@ void Node::Print() const
         // prints "x" if the value if equals to "constants::EMPTY"
         if (ele != constants::EMPTY)
         {
-            std::cout << (int)ele << " ";
+            fmt::print("{} ", ele);
         }
         else
         {
-            std::cout << "x ";
+            fmt::print("x ");
         }
 
         // increments the value of cnt and then be checked
         if (++cnt % constants::EIGHT_PUZZLE_SIZE == 0)
         {
-            std::cout << "\n";
+            fmt::print("\n");
         }
     }
 }
