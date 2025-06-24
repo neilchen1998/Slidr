@@ -4,9 +4,9 @@
 #include <ranges>   // std::views::iota
 #include <fmt/core.h>   // fmt::print
 
-#include "node/nodelib.hpp"
-#include "constants/constantslib.hpp"
-#include "math/mathlib.hpp"
+#include "math/mathlib.hpp" // hash_range
+#include "node/nodelib.hpp" // Node
+#include "constants/constantslib.hpp"   // constants::RIGHT, constants::LEFT, etc.
 
 Node::Node(std::vector<int> input)
     : state(input),

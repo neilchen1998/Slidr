@@ -1,14 +1,14 @@
 #ifndef INCLUDE_SOLVER_SOLVERLIB_H_
 #define INCLUDE_SOLVER_SOLVERLIB_H_
 
-#include <cstdlib>  // std::size_t
+#include <cstddef>  // std::size_t
 #include <vector>   // std::vector
 #include <unordered_set>    // std::unordered_set
 #include <queue>    // std::priority_queue
 #include <tuple>    // std::tuple
 #include <string>    // std::string
 
-#include "node/nodelib.hpp"
+#include "node/nodelib.hpp" // Node
 
 class Solver
 {
@@ -35,8 +35,11 @@ public:
     /// @return The solution
     std::string GetSolution() const;
 
+    /// @brief Gets the path (all the nodes from the start to the end)
+    /// @return The path
     std::vector<Node> GetPath() const;
 
+    /// @brief Print out the path (from the start node to the goal)
     void PrintPath() const;
 
 protected:
@@ -58,6 +61,7 @@ protected:
         }
     };
 
+    /// @brief Generate the path by backtracking
     void GeneratePath();
 
 protected:
@@ -77,6 +81,7 @@ protected:
     /// @brief the solution
     std::string solution;
 
+    /// @brief the path
     std::vector<Node> path;
 };
 

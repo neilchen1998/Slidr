@@ -1,7 +1,7 @@
 #ifndef INCLUDE_MATH_MATHLIB_H_
 #define INCLUDE_MATH_MATHLIB_H_
 
-#include <cstdlib>  // std::size_t
+#include <cstddef>  // std::size_t
 #include <span> // std::span
 #include <functional>   // std::hash
 #include <numeric>   // std::accumulate, std::reduce

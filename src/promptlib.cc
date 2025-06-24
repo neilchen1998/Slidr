@@ -1,10 +1,9 @@
 #include <vector>   // std::vector
 #include <optional> // std::optional
 #include <string_view>  // std::string_view
-#include <span>  // std::span
 
-#include "prompt/promptlib.hpp"
-#include "constants/constantslib.hpp"
+#include "prompt/promptlib.hpp" // prompt::parse_string_to_layout
+#include "constants/constantslib.hpp"   // constants::RIGHT, constants::LEFT, etc.
 
 auto prompt::parse_string_to_layout(const std::string_view str) -> std::optional<std::vector<int>>
 {

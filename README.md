@@ -43,17 +43,17 @@ To test (`--target` can be written as `-t` in CMake 3.15+):
 cmake --build build --target test
 ```
 
-To run exe
+To run the binary with example layout:
 ```
 ./build/apps/app
 ```
 
-To build and run exe
+To run the binary with a custom puzzle layout (use 1 to 8 and 'x' or 'X' for the empty space):
 ```
-cmake --build build && ./build/apps/app
+./build/apps/app <puzzle>
 ```
 
-To build and test
+To build and test:
 ```
 cmake --build build && cmake --build build --target test
 ```
@@ -67,6 +67,94 @@ cmake --build build --target docs
 To build and run benchmark
 ```
 cmake --build build && ./build/bench/<name_of_benchmark>
+```
+
+## Example Result
+
+This is the default puzzle and its output:
+
+<table>
+  <tr>
+    <td>5</td>
+    <td>3</td>
+    <td>6</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td></td>
+    <td>8</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>1</td>
+    <td>7</td>
+  </tr>
+</table>
+
+```
+No additional argument is provided! An example puzzle layout will be used.
+Done in: 67 µs  # of iterations: 65     Total moves: 14
+Step: 0
+5 3 6
+2 x 8
+4 1 7
+Step: 1
+5 3 6
+2 1 8
+4 x 7
+Step: 2
+5 3 6
+2 1 8
+4 7 x
+Step: 3
+5 3 6
+2 1 x
+4 7 8
+Step: 4
+5 3 x
+2 1 6
+4 7 8
+Step: 5
+5 x 3
+2 1 6
+4 7 8
+Step: 6
+5 1 3
+2 x 6
+4 7 8
+Step: 7
+5 1 3
+x 2 6
+4 7 8
+Step: 8
+x 1 3
+5 2 6
+4 7 8
+Step: 9
+1 x 3
+5 2 6
+4 7 8
+Step: 10
+1 2 3
+5 x 6
+4 7 8
+Step: 11
+1 2 3
+x 5 6
+4 7 8
+Step: 12
+1 2 3
+4 5 6
+x 7 8
+Step: 13
+1 2 3
+4 5 6
+7 x 8
+Step: 14
+1 2 3
+4 5 6
+7 8 x
+Moves: ↑←↓↓→↑→↓←↑→↑←←
 ```
 
 ## Notes
@@ -100,8 +188,8 @@ But it is not adviced.
 
 ### `const std::vector<T>& vec` vs. `std::span<T> s`
 
-According to the benchmark `bench/mathbenchlib` powered by [nanobench](https://github.com/martinus/nanobench) and [Quick C++ Benchmark](https://quick-bench.com/), 
-there is no significant performance difference 
+According to the benchmark `bench/mathbenchlib` powered by [nanobench](https://github.com/martinus/nanobench) and [Quick C++ Benchmark](https://quick-bench.com/),
+there is no significant performance difference
 between hashing a `const std::vector<T>& vec` and `std::span<T> s`.
 The overhead of converting a `std::vector<T> vec` to `std::span<T> s` is minimal.
 Since this project uses C++20, this is the way to go.
@@ -148,12 +236,12 @@ int GetManhattanDistanceAccumulate(std::span<int> s)
         [&](int acc, int i) {
             if (s[i] == constants::EMPTY)
             return acc;
-            
+
             int curRow = (s[i] - 1) / constants::EIGHT_PUZZLE_SIZE;
             int curCol = (s[i] - 1) % constants::EIGHT_PUZZLE_SIZE;
             int goalRow = i / constants::EIGHT_PUZZLE_SIZE;
             int goalCol = i % constants::EIGHT_PUZZLE_SIZE;
-            
+
             return acc + std::abs(goalRow - curRow) + std::abs(goalCol - curCol);
         }
     );

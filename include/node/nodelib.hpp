@@ -2,7 +2,7 @@
 #define INCLUDE_NODE_NODELIB_H_
 
 #include <vector>   // std::vector
-#include <cstdlib>  // std::size_t
+#include <cstddef>  // std::size_t
 #include <tuple>    // std::tuple
 #include <memory.h> // std::shared_ptr
 

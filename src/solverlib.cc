@@ -1,5 +1,4 @@
-#include <cstddef>
-#include <cstdlib>  // std::size_t
+#include <cstddef>  // std::size_t
 #include <vector>   // std::vector
 #include <unordered_set>    // std::unordered_set
 #include <queue>    // std::priority_queue
@@ -8,9 +7,9 @@
 #include <algorithm>    // std::reverse
 #include <fmt/core.h>   // fmt::print
 
-#include "node/nodelib.hpp"
-#include "solver/solverlib.hpp"
-#include "constants/constantslib.hpp"
+#include "node/nodelib.hpp" // Node
+#include "solver/solverlib.hpp" // Solver
+#include "constants/constantslib.hpp"   // constants::RIGHT, constants::LEFT, etc.
 
 Solver::Solver(const std::vector<int> initialLayout) : visited(), curNode(Node(initialLayout)), iter(0)
 {
@@ -24,7 +23,8 @@ Solver::Solver(const Node& initialNode) : visited(), curNode(initialNode), iter(
 
 std::tuple<bool, unsigned long> Solver::SolvePuzzle()
 {
-    while (!pq.empty())
+    std::size_t i = 0;
+    while (!pq.empty() && i < 1'000'000)
     {
         // Get the top node
         curNode = pq.top();
@@ -57,6 +57,8 @@ std::tuple<bool, unsigned long> Solver::SolvePuzzle()
                 ++iter;
             }
         }
+
+        ++i;
     }
 
     // If we reach here that means we have run out of moves and therefore
@@ -130,6 +132,14 @@ void Solver::GeneratePath()
 
 void Solver::PrintPath() const
 {
+    // Check if the puzzle is solved
+    if (!curNode.IsSolved())
+    {
+        fmt::print("The puzzle could not be solved!\n");
+        return;
+    }
+
+    // Print out the path
     for (size_t i = 0; i < path.size(); ++i)
     {
         fmt::print("Step: {}\n", i);
