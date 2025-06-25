@@ -19,15 +19,15 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
         add_compile_options(-Wall -Wextra -pedantic -g3 -fsanitize=address,undefined)
     elseif(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "Test" OR CMAKE_BUILD_TYPE STREQUAL "Bench")
         add_compile_options(-Wall -Wextra -pedantic -O3)
-    elseif(CMAKE_BUILD_TYPE STREQUAL "Gprof")
-        add_compile_options(-Wall -pg -g3)
+    elseif(CMAKE_BUILD_TYPE STREQUAL "gprof")
+        add_compile_options(-Wall -g -O2 -lprofiler)
     endif()
 
     # linker flags
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         add_link_options(-g3 -fsanitize=address,undefined)
-    elseif(CMAKE_BUILD_TYPE STREQUAL "Gprof")
-        add_link_options(-pg -g3)
+    elseif(CMAKE_BUILD_TYPE STREQUAL "gprof")
+        add_link_options(-g)
     endif()
 
     # uses CTest
@@ -50,6 +50,7 @@ include(FetchContent)
 # all required packages
 find_package(Boost REQUIRED)
 find_package(Boost COMPONENTS program_options REQUIRED) # boost::program_options
+find_library(PROFILER_LIB profiler REQUIRED)
 
 # all required packages
 FetchContent_Declare(
