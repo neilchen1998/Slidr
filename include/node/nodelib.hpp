@@ -4,7 +4,7 @@
 #include <vector>   // std::vector
 #include <cstddef>  // std::size_t
 #include <tuple>    // std::tuple
-#include <memory.h> // std::shared_ptr
+#include <memory>   // std::shared_ptr
 
 class Node
 {
