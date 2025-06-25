@@ -44,17 +44,20 @@ cmake --build build --target test
 ```
 
 To run the binary with example layout:
-```
+
+```bash
 ./build/apps/app
 ```
 
 To run the binary with a custom puzzle layout (use 1 to 8 and 'x' or 'X' for the empty space):
-```
+
+```bash
 ./build/apps/app <puzzle>
 ```
 
 To build and test:
-```
+
+```bash
 cmake --build build && cmake --build build --target test
 ```
 
@@ -64,9 +67,16 @@ To build docs (requires Doxygen, output in `build/docs/html`):
 cmake --build build --target docs
 ```
 
-To build and run benchmark
-```
+To build and run benchmark:
+
+```bash
 cmake --build build && ./build/bench/<name_of_benchmark>
+```
+
+To run the Unix performance analysis tool (tested only on Linux):
+
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=gprof && ./build/apps/app && gprof ./build/apps/app gmon.out > ./build/apps/analysis.txt
 ```
 
 ## Example Result

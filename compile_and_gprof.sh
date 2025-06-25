@@ -1,9 +1,16 @@
 #!/bin/bash
 
-# configures the repo
+# Configure the repo
 cmake -S . -B build -DCMAKE_BUILD_TYPE=gprof &&
 
-# builds the repo
+# Build the repo
 cmake --build build &&
 
-./build/apps/app
+# Run the app
+./build/apps/app &&
+
+# Run Gprof and generate a report
+gprof ./build/apps/app gmon.out > ./build/apps/analysis.txt
+
+# Remove gmon.out
+rm gmon.out

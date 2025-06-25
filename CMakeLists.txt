@@ -20,14 +20,14 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     elseif(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "Test" OR CMAKE_BUILD_TYPE STREQUAL "Bench")
         add_compile_options(-Wall -Wextra -pedantic -O3)
     elseif(CMAKE_BUILD_TYPE STREQUAL "gprof")
-        add_compile_options(-Wall -g -O2 -lprofiler)
+        add_compile_options(-Wall -pg -O0)
     endif()
 
     # linker flags
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         add_link_options(-g3 -fsanitize=address,undefined)
     elseif(CMAKE_BUILD_TYPE STREQUAL "gprof")
-        add_link_options(-g)
+        add_link_options(-pg)
     endif()
 
     # uses CTest

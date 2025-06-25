@@ -10,11 +10,8 @@
 #include "constants/constantslib.hpp"   // constants::EMPTY
 #include "prompt/promptlib.hpp" // prompt::parse_string_to_layout
 
-#include <gperftools/profiler.h>
-
 int main(int argc, char* argv[])
 {
-    ProfilerStart("myapp.prof");
 
     // Check if there is an additional argument (the total # of arguments should be 2)
     if (argc > 2)
@@ -54,8 +51,6 @@ int main(int argc, char* argv[])
     s.PrintPath();
 
     fmt::print("Moves: {}\n", s.GetSolution());
-
-    ProfilerStop();
 
     return EXIT_SUCCESS;
 }
