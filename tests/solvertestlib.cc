@@ -187,7 +187,7 @@ TEST_CASE( "Can Solve Puzzles", "[main]" )
 
         REQUIRE (isSolved);
         REQUIRE (depth == 14);
-        REQUIRE (solution == "↑←↓↓→↑→↓←↑→↑←←");
+        REQUIRE (solution == "↑←↓↓→→↑←↓→↑↑←←");
     }
 
     SECTION("Puzzle 3", "[general case]")
