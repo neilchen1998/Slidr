@@ -1,6 +1,6 @@
 #include <span> // std::span
 #include <algorithm> // std::ranges::find
-#include <memory.h> // std::shared_ptr, std::make_shared
+#include <memory> // std::shared_ptr, std::make_shared
 #include <ranges>   // std::views::iota
 #include <fmt/core.h>   // fmt::print
 

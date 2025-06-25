@@ -1,5 +1,5 @@
 # cmake requirements
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.5...4.0)
 
 project(
     8-Puzzle
@@ -56,7 +56,7 @@ find_library(PROFILER_LIB profiler REQUIRED)
 FetchContent_Declare(
   fmt
   GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-  GIT_TAG        6.1.2)
+  GIT_TAG        11.2.0)
 FetchContent_MakeAvailable(fmt)
 
 # the compiled library code
