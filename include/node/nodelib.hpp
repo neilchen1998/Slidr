@@ -28,7 +28,7 @@ public:
 
     /// @brief Gets the Manhattan distance of the puzzle (l-2 distance)
     /// @return The manhattan distance
-    int GetManhattanDistance() const;
+    unsigned int GetManhattanDistance() const;
 
     /// @brief Gets the hash value of the node
     /// @return The hash value of the node
@@ -36,7 +36,11 @@ public:
 
     /// @brief Gets the depth of the node
     /// @return The depth
-    unsigned long GetDepth() const;
+    unsigned int GetDepth() const;
+
+    /// @brief Gets the total cost of the node
+    /// @return The total cost
+    unsigned int GetTotalCost() const;
 
     /// @brief Prints the node
     void Print() const;
@@ -81,13 +85,13 @@ protected:
     int posX;
 
     /// @brief The Manhattan distance
-    int manhattanDistance;
+    unsigned int manhattanDistance;
 
     /// @brief The hash value
     std::size_t hashValue;
 
     /// @brief The depth of the node
-    unsigned long depth;
+    unsigned int depth;
 
     /// @brief The parent of this node
     std::shared_ptr<const Node> parent;
