@@ -21,7 +21,4 @@ target_link_libraries(node_library PUBLIC math_library fmt::fmt)
 target_link_libraries(solver_library PUBLIC node_library)
 
 target_compile_features(math_library PUBLIC cxx_std_20)  # requires C++20 for concept
-target_compile_features(constants_library PUBLIC cxx_std_20)
-target_compile_features(node_library PUBLIC cxx_std_20)
-target_compile_features(solver_library PUBLIC cxx_std_20)
 target_compile_features(prompt_library PUBLIC cxx_std_20)   # requires C++20 for std::span
