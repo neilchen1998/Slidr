@@ -15,11 +15,13 @@ and keep on until it reaches the goal.
 
 The requirements are:
 
-- CMake 3.11 or better; 3.14+ highly recommended
+- CMake 3.14 or better; 4.0+ highly recommended
 - A C++20 compatible compiler ([gcc](https://gcc.gnu.org/) or [llvm](https://llvm.org/))
 - The Boost libararies
 - Git
 - Doxygen (optional, highly recommended)
+- Conda/Miniconda (optional, highly recommended)
+- Python (for gprof visualization)
 
 ## Instructions
 
@@ -76,7 +78,25 @@ cmake --build build && ./build/bench/<name_of_benchmark>
 To run the Unix performance analysis tool (tested only on Linux):
 
 ```bash
-cmake -S . -B build -DCMAKE_BUILD_TYPE=gprof && ./build/apps/app && gprof ./build/apps/app gmon.out > ./build/apps/analysis.txt
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Gprof && ./build/gprof/solverbenchmark && gprof ./build/gprof/solverbenchmark gmon.out > ./build/gprof/analysis.txt
+```
+
+To create and activate an environment if using conda:
+
+```bash
+conda create -n <env_name> && conda activate <env_name>
+```
+
+To install all dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+To visualize gprof:
+
+```bash
+./build/gprof/solverbenchmark && gprof ./build/gprof/solverbenchmark | gprof2dot | dot -Tpng -o output.png
 ```
 
 ## Example Result
@@ -292,3 +312,6 @@ Nonetheless, based on the benchmark, the three different approaches do not have 
 | std::reduce     | 157,072,439.95 | 6.37 |
 
 ## Reference
+
+- [gprof2dot](https://pypi.org/project/gprof2dot/)
+- [Visually Profile C++ Program Performance](https://www.youtube.com/watch?v=zbTtVW64R_I)
