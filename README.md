@@ -189,7 +189,7 @@ The archeive file size when using `boost::hash_combine` and that when using `has
 
 An even more simplified version as shown in the comment *MIGHT* work.
 It passes all the test cases in the repo.
-But it is not adviced.
+But it is not advised.
 
 | benchmark       | op/s | ns/op |
 | :-----------| :------------ | ----: |
