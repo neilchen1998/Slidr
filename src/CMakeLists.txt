@@ -20,6 +20,6 @@ target_include_directories(prompt_library PUBLIC ../include)
 target_link_libraries(node_library PUBLIC math_library fmt::fmt)
 target_link_libraries(solver_library PUBLIC node_library)
 
-target_compile_features(constants_library PUBLIC cxx_std_17)  # requires C++20 for inline variables
+target_compile_features(constants_library PUBLIC cxx_std_17)  # requires C++17 for inline variables
 target_compile_features(math_library PUBLIC cxx_std_20)  # requires C++20 for concept
 target_compile_features(prompt_library PUBLIC cxx_std_20)   # requires C++20 for std::span
