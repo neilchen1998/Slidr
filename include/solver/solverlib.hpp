@@ -52,7 +52,7 @@ protected:
             // Check if the two nodes are identical
             if (lhs != rhs)
             {
-                return (lhs.GetManhattanDistance() + lhs.GetDepth()) > (rhs.GetManhattanDistance() + rhs.GetDepth());
+                return lhs.GetTotalCost() > rhs.GetTotalCost();
             }
 
             // If they are identical, then we use the hash value for comparison.

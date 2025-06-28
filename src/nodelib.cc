@@ -118,7 +118,7 @@ std::tuple<std::vector<int>, int> Node::GetNextLayout(int dir) const
     return std::tuple<std::vector<int>, int>{newLayout, newPosX};
 }
 
-int Node::GetManhattanDistance() const
+unsigned int Node::GetManhattanDistance() const
 {
     return manhattanDistance;
 }
@@ -128,9 +128,14 @@ std::size_t Node::GetHashValue() const
     return hashValue;
 }
 
-unsigned long Node::GetDepth() const
+unsigned int Node::GetDepth() const
 {
     return depth;
+}
+
+unsigned int Node::GetTotalCost() const
+{
+    return GetManhattanDistance() + GetDepth();
 }
 
 void Node::Print() const
