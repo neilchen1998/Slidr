@@ -12,7 +12,6 @@
 
 TEST_CASE( "Basic Operations for Max Heap", "[main]" )
 {
-
     auto b = BucketQueue<std::string, int>(10);
 
     std::vector<std::string> elements {"low", "medium low",
@@ -75,7 +74,6 @@ TEST_CASE( "Basic Operations for Max Heap", "[main]" )
 
 TEST_CASE( "Basic Operations for Min Heap", "[main]" )
 {
-
     auto b = BucketQueue<std::string, int, std::greater<int>()>(10);
 
     std::vector<std::string> elements {"highest", "high",
@@ -133,6 +131,30 @@ TEST_CASE( "Basic Operations for Min Heap", "[main]" )
         b.pop();
         --sz;
         REQUIRE(b.size() == sz);
+    }
+}
+
+TEST_CASE( "Same Priority", "[main]" )
+{
+    auto b = BucketQueue<std::string, int, std::greater<int>()>(10);
+
+    std::vector<std::string> samePriorityElements {"medium1", "medium2"};
+
+    b.push(samePriorityElements.front(), 5);
+    b.push(samePriorityElements.back(), 5);
+
+    SECTION("Top", "[some_details]")
+    {
+        REQUIRE(b.size() == samePriorityElements.size());
+        REQUIRE(b.top() == samePriorityElements.back());
+    }
+
+    SECTION("Second Top", "[some_details]")
+    {
+        b.pop();
+        samePriorityElements.pop_back();
+        REQUIRE(b.size() == samePriorityElements.size());
+        REQUIRE(b.top() == samePriorityElements.back());
     }
 }
 

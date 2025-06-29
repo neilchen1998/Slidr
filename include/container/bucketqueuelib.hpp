@@ -46,6 +46,7 @@ public:
     }
 
     /// @brief Accesses the highest priority element
+    /// if there are multiple elements with the same priority, the top one is the last one (LIFO)
     /// @return A const reference to the top element
     const T& top()
     {
@@ -54,10 +55,11 @@ public:
             throw std::runtime_error("Cannot call top() on an empty bucket queue.");
         }
 
-        return buckets_[bestPriority_].front();
+        return buckets_[bestPriority_].back();
     }
 
     /// @brief Removes the hightest priority element
+    /// if there are multiple elements with the same priority, the last one will be popped (LIFO)
     void pop()
     {
         if (empty())
@@ -65,7 +67,7 @@ public:
             throw std::runtime_error("Cannot call top() on an empty bucket queue.");
         }
 
-        buckets_[bestPriority_].pop_front();
+        buckets_[bestPriority_].pop_back();
         --size_;
 
         if (buckets_[bestPriority_].empty())
@@ -74,6 +76,9 @@ public:
         }
     }
 
+    /// @brief Push the element into the heap with specified priority
+    /// @param ele The element (const reference)
+    /// @param priority The priority
     void push(const T& ele, PriorityType priority)
     {
         if (priority > maxPriority_)
@@ -94,6 +99,9 @@ public:
         }
     }
 
+    /// @brief Push the element into the heap with specified priority
+    /// @param ele The element (rvalue)
+    /// @param priority The priority
     void push(T&& ele, PriorityType priority)
     {
         if (priority > maxPriority_)
