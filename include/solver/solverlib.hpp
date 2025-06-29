@@ -14,28 +14,44 @@
 #include "node/nodelib.hpp" // Node
 #include "solver/solverlib.hpp" // Solver
 #include "constants/constantslib.hpp"   // constants::RIGHT, constants::LEFT, etc.s
+#include "container/bucketqueuelib.hpp"
 
 using DefaultPQ = std::priority_queue<Node, std::vector<Node>, NodeCmp>;
+using BucketPQ = BucketQueue<Node, unsigned int, std::greater<Node>>;
 
 template<typename PQ = DefaultPQ>
 class Solver
 {
 public:
 
-    Solver(PQ pq) : pq_(std::move(pq)) {}
-
     /// @brief The constructor
     /// @param initialLayout the initial layout of the puzzle (vector type)
-    Solver(std::vector<int> initialLayout) : pq_()
+    explicit Solver(std::vector<int> initialLayout, PQ pq = PQ()) : pq_(std::move(pq)), iter(0)
     {
-        pq_.push(Node(initialLayout));
+        if constexpr (std::is_same<PQ, BucketPQ>::value == true)
+        {
+            auto n = Node(initialLayout);
+            pq_.push(n, n.GetTotalCost());
+        }
+        else
+        {
+            pq_.push(Node(initialLayout));
+        }
     }
 
     /// @brief The constructor
     /// @param initialNode the initial layout of the puzzle (vector type)
-    Solver(const Node& initialNode) : pq_()
+    Solver(const Node& initialNode) : pq_(), iter(0)
     {
-        pq_.push(initialNode);
+
+        if constexpr (std::is_same<PQ, BucketPQ>::value == true)
+        {
+            pq_.push(initialNode, initialNode.GetTotalCost());
+        }
+        else
+        {
+            pq_.push(initialNode);
+        }
     }
 
     ~Solver() = default;
@@ -72,7 +88,14 @@ public:
                 // Check if we have seen this before
                 if (visited.count(curHashValue) == 0)
                 {
-                    pq_.push(child);
+                    if constexpr (std::is_same<PQ, BucketPQ>::value == true)
+                    {
+                        pq_.push(child, child.GetTotalCost());
+                    }
+                    else
+                    {
+                        pq_.push(child);
+                    }
                     visited.insert(curHashValue);
 
                     ++iter;
@@ -178,7 +201,7 @@ private:
         }
     }
 
-protected:
+private:
 
     /// @brief the cache that stores all visited nodes
     std::unordered_set<std::size_t> visited;
