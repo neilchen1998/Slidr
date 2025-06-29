@@ -4,7 +4,7 @@
 #include <array>    // std::array
 #include <algorithm>    // std::ranges::equal
 #include <span> // std::span
-#include <catch2/catch.hpp> // TEST_CASE, SECTION, REQUIRE
+#include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE
 
 #include "constants/constantslib.hpp"
 #include "math/mathlib.hpp"

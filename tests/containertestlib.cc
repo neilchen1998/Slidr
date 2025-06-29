@@ -4,7 +4,7 @@
 #include <vector>    // std::vector
 #include <functional>    // std::greater
 #include <algorithm>   // std::sort
-#include <catch2/catch.hpp> // TEST_CASE, SECTION, REQUIRE
+#include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE
 
 #include "container/bucketqueuelib.hpp" // BucketQueue
 #include "constants/constantslib.hpp"

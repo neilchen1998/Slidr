@@ -3,7 +3,8 @@
 #include <vector>    // std::vector
 #include <ranges>    // std::ranges::input_range
 #include <unordered_set>    // std::unordered_set
-#include <catch2/catch.hpp> // TEST_CASE, SECTION, REQUIRE
+#include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE
+#include <catch2/matchers/catch_matchers_all.hpp>   // Catch::Matchers::Equals
 
 #include "constants/constantslib.hpp"
 #include "math/mathlib.hpp"
@@ -186,7 +187,7 @@ TEST_CASE( "Can Solve Puzzles", "[main]" )
 
         REQUIRE (isSolved);
         REQUIRE (depth == 14);
-        REQUIRE (solution == "↑←↓↓→→↑←↓→↑↑←←");
+        REQUIRE_THAT(solution, Catch::Matchers::Equals("↑←↓↓→→↑←↓→↑↑←←") || Catch::Matchers::Equals("↑←↓↓→↑→↓←↑→↑←←")); // there're two valid solutions so far
     }
 
     SECTION("Puzzle 3", "[general case]")

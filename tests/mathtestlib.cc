@@ -4,7 +4,7 @@
 #include <span> // std::span
 #include <algorithm> // std::shuffle
 #include <random>   // std::mt19937_64
-#include <catch2/catch.hpp> // TEST_CASE, SECTION, REQUIRE
+#include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE
 
 #include "math/mathlib.hpp"
 #include "constants/constantslib.hpp"   // constants::EMPTY
