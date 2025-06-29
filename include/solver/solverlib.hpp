@@ -7,69 +7,176 @@
 #include <queue>    // std::priority_queue
 #include <tuple>    // std::tuple
 #include <string>    // std::string
+#include <memory> // std::shared_ptr, std::make_shared
+#include <algorithm>    // std::reverse
+#include <fmt/core.h>   // fmt::print
 
 #include "node/nodelib.hpp" // Node
+#include "solver/solverlib.hpp" // Solver
+#include "constants/constantslib.hpp"   // constants::RIGHT, constants::LEFT, etc.s
 
+using DefaultPQ = std::priority_queue<Node, std::vector<Node>, NodeCmp>;
+
+template<typename PQ = DefaultPQ>
 class Solver
 {
 public:
+
+    Solver(PQ pq) : pq_(std::move(pq)) {}
+
     /// @brief The constructor
     /// @param initialLayout the initial layout of the puzzle (vector type)
-    Solver(std::vector<int> initialLayout);
+    Solver(std::vector<int> initialLayout) : pq_()
+    {
+        pq_.push(Node(initialLayout));
+    }
 
     /// @brief The constructor
     /// @param initialNode the initial layout of the puzzle (vector type)
-    Solver(const Node& initialNode);
+    Solver(const Node& initialNode) : pq_()
+    {
+        pq_.push(initialNode);
+    }
 
     ~Solver() = default;
 
     /// @brief Solves the puzzle
     /// @return { whether the puzzle is solved, the number of iterations the Solver took }
-    std::tuple<bool, unsigned long> SolvePuzzle();
+    std::tuple<bool, unsigned long> SolvePuzzle()
+    {
+        std::size_t i = 0;
+        while (!pq_.empty() && i < 1'000'000)
+        {
+            // Get the top node
+            curNode = pq_.top();
+
+            std::shared_ptr<const Node> p = std::make_shared<const Node>(curNode);
+
+            // Check if we have solved the problem
+            if (curNode.IsSolved())
+            {
+                GeneratePath();
+                return std::tuple{curNode.IsSolved(), iter};
+            }
+
+            pq_.pop();
+
+            // Get all fessible children
+            std::vector<Node> children = curNode.GetChildNodes(curNode.GetDepth(), p);
+
+            // Loop through each child
+            for(const Node& child : children)
+            {
+                auto curHashValue = child.GetHashValue();
+
+                // Check if we have seen this before
+                if (visited.count(curHashValue) == 0)
+                {
+                    pq_.push(child);
+                    visited.insert(curHashValue);
+
+                    ++iter;
+                }
+            }
+
+            ++i;
+        }
+
+        // If we reach here that means we have run out of moves and therefore
+        // we cannot solve the puzzle.
+        return std::tuple{false, iter};
+    }
 
     /// @brief Gets the optimal number of moves
     /// @return The move
-    std::size_t GetNumOfMoves() const;
+    std::size_t GetNumOfMoves() const
+    {
+        // The path includes the start state
+        return (path.size() - 1);
+    }
 
     /// @brief Gets the solution
     /// @return The solution
-    std::string GetSolution() const;
+    inline std::string GetSolution() const
+    {
+        return solution;
+    }
 
     /// @brief Gets the path (all the nodes from the start to the end)
     /// @return The path
-    std::vector<Node> GetPath() const;
+    inline std::vector<Node> GetPath() const
+    {
+        return path;
+    }
 
     /// @brief Print out the path (from the start node to the goal)
-    void PrintPath() const;
-
-protected:
-
-    /// @brief the compare function for the priority queue
-    struct NodeCmp
+    void PrintPath() const
     {
-        bool operator()(const Node& lhs, const Node& rhs)
+        // Check if the puzzle is solved
+        if (!curNode.IsSolved())
         {
-            // Check if the two nodes are identical
-            if (lhs != rhs)
-            {
-                // Check if the two nodes have the same total cost (f value)
-                // if so then we prefer the node that has a lower Manhattan distance (h value)
-                if (lhs.GetTotalCost() == rhs.GetTotalCost())
-                {
-                    return lhs.GetManhattanDistance() > rhs.GetManhattanDistance();
-                }
-
-                return lhs.GetTotalCost() > rhs.GetTotalCost();
-            }
-
-            // If they are identical, then we use the hash value for comparison.
-            // Since this is for the min. priority queue, we return true if the lhs is greater than the rhs.
-            return lhs.GetDepth() > rhs.GetDepth();
+            fmt::print("The puzzle could not be solved!\n");
+            return;
         }
-    };
+
+        // Print out the path
+        for (size_t i = 0; i < path.size(); ++i)
+        {
+            fmt::print("Step: {}\n", i);
+            path[i].Print();
+        }
+    }
+
+private:
 
     /// @brief Generate the path by backtracking
-    void GeneratePath();
+    void GeneratePath()
+    {
+        std::vector<short> sol;
+
+        // Start backtracking
+        path.push_back(curNode);
+        sol.push_back(curNode.GetMove());
+        std::shared_ptr<const Node> p = curNode.GetParent();
+        while (p != nullptr)
+        {
+            path.push_back(*p);
+            sol.push_back(p->GetMove());
+            p = p->GetParent();
+        }
+
+        std::reverse(path.begin(), path.end());
+
+        // Construct the solution
+        auto itr = sol.crbegin();
+        while (itr != sol.crend())
+        {
+            // Invert the direction
+            switch (*itr)
+            {
+            case constants::RIGHT:
+                solution += "←";
+                break;
+
+            case constants::UP:
+                solution += "↓";
+                break;
+
+            case constants::LEFT:
+                solution += "→";
+                break;
+
+            case constants::DOWN:
+                solution += "↑";
+                break;
+
+            default:
+                break;
+            }
+
+            ++itr;
+        }
+    }
 
 protected:
 
@@ -77,7 +184,7 @@ protected:
     std::unordered_set<std::size_t> visited;
 
     /// @brief the priority queue that stores all candidate nodes
-    std::priority_queue<Node, std::vector<Node>, NodeCmp> pq;
+    PQ pq_;
 
     /// @brief the current node
     Node curNode;

@@ -7,11 +7,8 @@
 #include <string_view>  // std::string_view
 #include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE
 
-#include "constants/constantslib.hpp"
-#include "math/mathlib.hpp"
-#include "node/nodelib.hpp"
-#include "solver/solverlib.hpp"
-#include "prompt/promptlib.hpp"
+#include "constants/constantslib.hpp"   // constants::EMPTY
+#include "prompt/promptlib.hpp" // prompt::parse_string_to_layout
 
 TEST_CASE( "Solver Constructor", "[main]" )
 {
