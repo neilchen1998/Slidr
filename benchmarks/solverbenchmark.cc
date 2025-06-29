@@ -41,7 +41,7 @@ int main()
     });
 
     ankerl::nanobench::Bench()
-        .minEpochIterations(30)    
+        .minEpochIterations(30)
         .run("Bucket Queue Solver", [&]
     {
         Solver<BucketPQ>(layout0, bucket).SolvePuzzle();

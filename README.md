@@ -322,7 +322,9 @@ Therefore a better data structure is needed.
 A [bucket queue](https://en.wikipedia.org/wiki/Bucket_queue) is choosen to replace `std::priortiy_queue`.
 A bucket queue has `O(1)` for insertion, `O(#priorities)` for deletion, and `O(1)` for peak operation.
 Therefore, a bucket queue is faster than a `std::priortiy_queue`.
-In the benchmark, a bucket queue with 50 priorities is used.
+In the benchmark, a bucket queue with **30** priorities is used.
+The rationale behind the number **30** is because the maximum Manhattan distance of an 8 puzzle problem is 32
+and not all pieces wil be that far away from the goal.
 The improvement is **~13.3%**
 
 | benchmark             | op/s         | ns/op |
