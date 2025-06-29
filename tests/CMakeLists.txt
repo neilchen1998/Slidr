@@ -16,7 +16,7 @@ target_link_libraries(constantstestlib PRIVATE Catch2::Catch2 constants_library)
 target_link_libraries(nodetestlib PRIVATE Catch2::Catch2 node_library)
 target_link_libraries(solvertestlib PRIVATE Catch2::Catch2 solver_library)
 target_link_libraries(prompttestlib PRIVATE Catch2::Catch2 prompt_library)
-target_link_libraries(containertestlib PRIVATE Catch2::Catch2 container_library)
+target_link_libraries(containertestlib PRIVATE Catch2::Catch2 container_library node_library)
 
 add_test(NAME mathtestlibtest COMMAND mathtestlib)
 add_test(NAME constantstestlibtest COMMAND constantstestlib)
