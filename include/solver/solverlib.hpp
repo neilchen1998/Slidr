@@ -48,21 +48,21 @@ public:
         while (!pq_.empty() && i < 1'000'000)
         {
             // Get the top node
-            curNode = pq_.top();
+            curNodePtr = std::make_unique<Node>(pq_.top());
 
-            std::shared_ptr<const Node> p = std::make_shared<const Node>(curNode);
+            std::shared_ptr<const Node> p = std::make_shared<const Node>(*curNodePtr);
 
             // Check if we have solved the problem
-            if (curNode.IsSolved())
+            if (curNodePtr->IsSolved())
             {
                 GeneratePath();
-                return std::tuple{curNode.IsSolved(), iter};
+                return std::tuple{curNodePtr->IsSolved(), iter};
             }
 
             pq_.pop();
 
             // Get all fessible children
-            std::vector<Node> children = curNode.GetChildNodes(curNode.GetDepth(), p);
+            std::vector<Node> children = curNodePtr->GetChildNodes(curNodePtr->GetDepth(), p);
 
             // Loop through each child
             for(const Node& child : children)
@@ -113,7 +113,7 @@ public:
     void PrintPath() const
     {
         // Check if the puzzle is solved
-        if (!curNode.IsSolved())
+        if (!curNodePtr->IsSolved())
         {
             fmt::print("The puzzle could not be solved!\n");
             return;
@@ -135,9 +135,9 @@ private:
         std::vector<short> sol;
 
         // Start backtracking
-        path.push_back(curNode);
-        sol.push_back(curNode.GetMove());
-        std::shared_ptr<const Node> p = curNode.GetParent();
+        path.push_back(*curNodePtr);
+        sol.push_back(curNodePtr->GetMove());
+        std::shared_ptr<const Node> p = curNodePtr->GetParent();
         while (p != nullptr)
         {
             path.push_back(*p);
@@ -187,7 +187,7 @@ protected:
     PQ pq_;
 
     /// @brief the current node
-    Node curNode;
+    std::unique_ptr<Node> curNodePtr;
 
     /// @brief the number of iterations
     unsigned long iter;
