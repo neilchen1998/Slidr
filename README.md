@@ -305,11 +305,32 @@ int GetManhattanDistanceReduce(std::span<int> s)
 In our case the order of the operations does not matter, therefore we can use `std::reduce`.
 Nonetheless, based on the benchmark, the three different approaches do not have discernable difference in terms of speed.
 
-| benchmark       | op/s | ns/op |
+| benchmark       | op/s           | ns/op|
 | :---------------| :------------- | ---: |
 | for loop        | 160,295,728.06 | 6.24 |
 | std::accumulate | 156,853,151.47 | 6.38 |
 | std::reduce     | 157,072,439.95 | 6.37 |
+
+### `std::priortiy_queue` vs. Bucket Queue
+
+The most commonly used data structure for the queue is a [priority queue](https://en.cppreference.com/w/cpp/container/priority_queue.html).
+It has `O(log n)` for insertion, `O(log n)` for deletion, and `O(1)` for peak operation.
+Whenever the solver enters the node with the lowest value of `f(n)`, it will need to pop out the state from the priority queue.
+And when the solver finds a new valid state, it will need to add the new state to the priority queue.
+Both operations are done frequently and both operations have a time complexity of `O(log n)`.
+Therefore a better data structure is needed.
+A [bucket queue](https://en.wikipedia.org/wiki/Bucket_queue) is choosen to replace `std::priortiy_queue`.
+A bucket queue has `O(1)` for insertion, `O(#priorities)` for deletion, and `O(1)` for peak operation.
+Therefore, a bucket queue is faster than a `std::priortiy_queue`.
+In the benchmark, a bucket queue with **30** priorities is used.
+The rationale behind the number **30** is because the maximum Manhattan distance of an 8 puzzle problem is 32
+and not all pieces wil be that far away from the goal.
+The improvement is **~13.3%**
+
+| benchmark             | op/s         | ns/op |
+| :---------------------| :----------- | ---: |
+| Priority Queue Solver | 4,300,869.94 | 232.51 |
+| Bucket Queue Solver   | 3,796,364.58 | 263.41 |
 
 ## Reference
 
