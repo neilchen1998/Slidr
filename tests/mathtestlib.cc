@@ -1,16 +1,17 @@
 #define CATCH_CONFIG_MAIN
 
-#include <catch2/catch.hpp>
 #include <vector>   // std::vector
 #include <span> // std::span
 #include <algorithm> // std::shuffle
+#include <random>   // std::mt19937_64
+#include <catch2/catch.hpp> // TEST_CASE, SECTION, REQUIRE
 
 #include "math/mathlib.hpp"
 #include "constants/constantslib.hpp"   // constants::EMPTY
 
 TEST_CASE( "Hash Range Function", "[main]" )
 {
-    std::mt19937 g(41);
+    std::mt19937_64 g(41);
 
     std::vector<int> v1 {constants::EMPTY, 1, 2, 3, 4, 5, 6, 7, 8};
     std::vector<int> v2 {3, 1, constants::EMPTY, 2, 8, 7, 6, 5, 4};

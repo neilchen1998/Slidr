@@ -6,9 +6,10 @@
 #include <cstddef>  // std::size_t
 #include <tuple>    // std::tuple
 #include <memory>   // std::shared_ptr
+#include <type_traits>  // std::is_same
 #include <iostream>
 
-template<typename T, typename PriorityType = std::size_t>
+template<typename T, typename PriorityType = std::size_t, typename Compare = std::less<PriorityType>>
 class BucketQueue
 {
 public:
@@ -16,9 +17,18 @@ public:
         buckets_(maxPriority + 1),
         size_(0),
         maxPriority_(maxPriority),
-        hightPriority_(0)
+        bestPriority_(0)
     {
-
+        // Initialize best priority based on the compare type
+        // NOTE: if constexpr enables compile-time conditional branching
+        if constexpr (std::is_same<Compare, std::less<PriorityType>>::value == true)
+        {
+            bestPriority_ = 0;
+        }
+        else
+        {
+            bestPriority_ = maxPriority_;
+        }
     }
 
     /// @brief Returns the number of elements
@@ -44,7 +54,7 @@ public:
             throw std::runtime_error("Cannot call top() on an empty bucket queue.");
         }
 
-        return buckets_[hightPriority_].front();
+        return buckets_[bestPriority_].front();
     }
 
     /// @brief Removes the hightest priority element
@@ -55,10 +65,10 @@ public:
             throw std::runtime_error("Cannot call top() on an empty bucket queue.");
         }
 
-        buckets_[hightPriority_].pop_front();
+        buckets_[bestPriority_].pop_front();
         --size_;
 
-        if (buckets_[hightPriority_].empty())
+        if (buckets_[bestPriority_].empty())
         {
             UpdateHigestPriority();
         }
@@ -74,7 +84,14 @@ public:
         buckets_[priority].push_back(ele);
         ++size_;
 
-        hightPriority_ = (priority > hightPriority_) ? priority : hightPriority_;
+        if constexpr (std::is_same<Compare, std::less<PriorityType>>::value == true)
+        {
+            bestPriority_ = (priority > bestPriority_) ? priority : bestPriority_;
+        }
+        else
+        {
+           bestPriority_ = (priority < bestPriority_) ? priority : bestPriority_;
+        }
     }
 
     void push(T&& ele, PriorityType priority)
@@ -87,28 +104,58 @@ public:
         buckets_[priority].push_back(std::move(ele));
         ++size_;
 
-        hightPriority_ = (priority >= hightPriority_) ? priority : hightPriority_;
+        if constexpr (std::is_same<Compare, std::less<PriorityType>>::value == true)
+        {
+            bestPriority_ = (priority > bestPriority_) ? priority : bestPriority_;
+        }
+        else
+        {
+           bestPriority_ = (priority < bestPriority_) ? priority : bestPriority_;
+        }
     }
 
 private:
     void UpdateHigestPriority()
     {
-        for (PriorityType i = hightPriority_; i > 0; --i)
+
+        if constexpr (std::is_same<Compare, std::less<PriorityType>>::value == true)
         {
-            if (!buckets_[i].empty())
+            for (PriorityType i = bestPriority_; i > 0; --i)
             {
-                hightPriority_ = i;
-                return;
+                if (!buckets_[i].empty())
+                {
+                    bestPriority_ = i;
+                    return;
+                }
+            }
+        }
+        else
+        {
+           for (PriorityType i = bestPriority_; i <= maxPriority_; ++i)
+            {
+                if (!buckets_[i].empty())
+                {
+                    bestPriority_ = i;
+                    return;
+                }
             }
         }
 
         // If we reach here, that means the hightest priority is 0
         // no matter if the 0th bucket is empty or not
-        hightPriority_ = 0;
+        if constexpr (std::is_same<Compare, std::less<PriorityType>>::value == true)
+        {
+            bestPriority_ = 0;
+        }
+        else
+        {
+           bestPriority_ = maxPriority_;
+        }
     }
 
 private:
 
+    /// @brief The container
     std::vector<std::list<T>> buckets_;
 
     /// @brief The number of elements in the queue
@@ -116,7 +163,11 @@ private:
 
     const PriorityType maxPriority_;
 
-    PriorityType hightPriority_;
+    // The current best priority
+    PriorityType bestPriority_;
+
+    // // The compare type that provides a strict weak ordering
+    // Compare cmp_ {};
 };
 
 #endif // INCLUDE_CONTAINER_BUCKETQUEUE_H_

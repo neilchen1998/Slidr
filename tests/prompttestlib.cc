@@ -1,11 +1,11 @@
 #define CATCH_CONFIG_MAIN
 
-#include <catch2/catch.hpp>
 #include <vector>    // std::vector
 #include <ranges>    // std::ranges::input_range
 #include <unordered_set>    // std::unordered_set
 #include <optional> // std::optional
 #include <string_view>  // std::string_view
+#include <catch2/catch.hpp> // TEST_CASE, SECTION, REQUIRE
 
 #include "constants/constantslib.hpp"
 #include "math/mathlib.hpp"

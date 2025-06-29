@@ -1,10 +1,10 @@
 #define CATCH_CONFIG_MAIN
 
-#include <catch2/catch.hpp>
 #include <vector>    // std::vector
 #include <array>    // std::array
 #include <algorithm>    // std::ranges::equal
 #include <span> // std::span
+#include <catch2/catch.hpp> // TEST_CASE, SECTION, REQUIRE
 
 #include "constants/constantslib.hpp"
 #include "math/mathlib.hpp"
