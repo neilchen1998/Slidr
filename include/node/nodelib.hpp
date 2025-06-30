@@ -103,24 +103,24 @@ protected:
 /// @brief the compare function for the priority queue
 struct NodeCmp
 {
-    bool operator()(const Node& lhs, const Node& rhs)
+    bool operator()(std::shared_ptr<Node> lhs, std::shared_ptr<Node> rhs)
     {
         // Check if the two nodes are identical
         if (lhs != rhs)
         {
             // Check if the two nodes have the same total cost (f value)
             // if so then we prefer the node that has a lower Manhattan distance (h value)
-            if (lhs.GetTotalCost() == rhs.GetTotalCost())
+            if (lhs->GetTotalCost() == rhs->GetTotalCost())
             {
-                return lhs.GetManhattanDistance() > rhs.GetManhattanDistance();
+                return lhs->GetManhattanDistance() > rhs->GetManhattanDistance();
             }
 
-            return lhs.GetTotalCost() > rhs.GetTotalCost();
+            return lhs->GetTotalCost() > rhs->GetTotalCost();
         }
 
         // If they are identical, then we use the hash value for comparison.
         // Since this is for the min. priority queue, we return true if the lhs is greater than the rhs.
-        return lhs.GetDepth() > rhs.GetDepth();
+        return lhs->GetDepth() > rhs->GetDepth();
     }
 };
 

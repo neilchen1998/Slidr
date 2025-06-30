@@ -12,16 +12,19 @@
 template<typename T, typename PriorityType = std::size_t, typename Compare = std::less<PriorityType>>
 class BucketQueue
 {
+    // Determine if this is a min. queue
+    static constexpr bool isMinQueue = std::is_same<Compare, std::less<PriorityType>>::value;
+
 public:
     explicit BucketQueue(std::size_t maxPriority) :
-        buckets_(maxPriority + 1),
+        buckets_(maxPriority),
         size_(0),
         maxPriority_(maxPriority),
         bestPriority_(0)
     {
         // Initialize best priority based on the compare type
         // NOTE: if constexpr enables compile-time conditional branching
-        if constexpr (std::is_same<Compare, std::less<PriorityType>>::value == true)
+        if constexpr (isMinQueue)
         {
             bestPriority_ = 0;
         }
@@ -89,7 +92,7 @@ public:
         buckets_[priority].push_back(ele);
         ++size_;
 
-        if constexpr (std::is_same<Compare, std::less<PriorityType>>::value == true)
+        if constexpr (isMinQueue)
         {
             bestPriority_ = (priority > bestPriority_) ? priority : bestPriority_;
         }
@@ -112,7 +115,7 @@ public:
         buckets_[priority].push_back(std::move(ele));
         ++size_;
 
-        if constexpr (std::is_same<Compare, std::less<PriorityType>>::value == true)
+        if constexpr (isMinQueue)
         {
             bestPriority_ = (priority > bestPriority_) ? priority : bestPriority_;
         }
@@ -125,8 +128,7 @@ public:
 private:
     void UpdateHigestPriority()
     {
-
-        if constexpr (std::is_same<Compare, std::less<PriorityType>>::value == true)
+        if constexpr (isMinQueue)
         {
             for (PriorityType i = bestPriority_; i > 0; --i)
             {
@@ -136,10 +138,13 @@ private:
                     return;
                 }
             }
+
+            // Reset best priority to 0 no matter if buckets_[0] is empty or not
+            bestPriority_ = 0;
         }
         else
         {
-           for (PriorityType i = bestPriority_; i <= maxPriority_; ++i)
+           for (PriorityType i = bestPriority_; i < maxPriority_; ++i)
             {
                 if (!buckets_[i].empty())
                 {
@@ -147,24 +152,16 @@ private:
                     return;
                 }
             }
-        }
 
-        // If we reach here, that means the hightest priority is 0
-        // no matter if the 0th bucket is empty or not
-        if constexpr (std::is_same<Compare, std::less<PriorityType>>::value == true)
-        {
-            bestPriority_ = 0;
-        }
-        else
-        {
-           bestPriority_ = maxPriority_;
+            // Reset best priority to max no matter if the last bucket is empty or not
+            bestPriority_ = maxPriority_;
         }
     }
 
 private:
 
     /// @brief The container
-    std::vector<std::list<T>> buckets_;
+    std::vector<std::vector<T>> buckets_;
 
     /// @brief The number of elements in the queue
     std::size_t size_;

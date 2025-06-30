@@ -21,11 +21,11 @@
 #include "constants/constantslib.hpp"   // constants::EMPTY
 #include "prompt/promptlib.hpp" // prompt::parse_string_to_layout
 
-using BucketPQ = BucketQueue<Node, unsigned int, std::greater<Node>>;
+using BucketPQ = BucketQueue<std::shared_ptr<Node>, unsigned int, std::greater<Node>>;
 
 int main()
 {
-    auto bucket = BucketPQ(50);
+    auto bucket = BucketPQ(40);
 
     std::vector<int> layout0 {1, 7, constants::EMPTY, 8, 4, 3, 5, 2, 6};
     std::vector<int> layout1 {6, 3, 8, 2, 1, 7, constants::EMPTY, 5, 4};

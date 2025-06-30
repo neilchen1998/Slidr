@@ -340,6 +340,10 @@ In this project, **constantslib**, **mathlib**, and **solverlib** are all interf
 **constantslib** is where all constants are defined.
 **mathlib**, and **solverlib** are both template classes.
 
+### Use Pointers
+
+After changing the data type in our `std::priortiy_queue`, a significant performance increase is observed.
+
 ## Reference
 
 - [gprof2dot](https://pypi.org/project/gprof2dot/)
