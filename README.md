@@ -332,7 +332,16 @@ The improvement is **~13.3%**
 | Priority Queue Solver | 4,300,869.94 | 232.51 |
 | Bucket Queue Solver   | 3,796,364.58 | 263.41 |
 
+### Interface Library
+
+An [interface library](https://cliutils.gitlab.io/modern-cmake/chapters/basics.html) is for a header-only library.
+It does not create an output library. But it can and will be used by other libraries.
+In this project, **constantslib**, **mathlib**, and **solverlib** are all interface libraries.
+**constantslib** is where all constants are defined.
+**mathlib**, and **solverlib** are both template classes.
+
 ## Reference
 
 - [gprof2dot](https://pypi.org/project/gprof2dot/)
 - [Visually Profile C++ Program Performance](https://www.youtube.com/watch?v=zbTtVW64R_I)
+- [Global Constants](https://www.learncpp.com/cpp-tutorial/sharing-global-constants-across-multiple-files-using-inline-variables/)
