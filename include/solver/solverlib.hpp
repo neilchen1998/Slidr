@@ -16,8 +16,8 @@
 #include "constants/constantslib.hpp"   // constants::RIGHT, constants::LEFT, etc.s
 #include "container/bucketqueuelib.hpp"
 
-using DefaultPQ = std::priority_queue<Node, std::vector<Node>, NodeCmp>;
-using BucketPQ = BucketQueue<Node, unsigned int, std::greater<Node>>;
+using DefaultPQ = std::priority_queue<std::shared_ptr<Node>,  std::vector<std::shared_ptr<Node>>, NodeCmp>;
+using BucketPQ = BucketQueue<std::shared_ptr<Node>, unsigned int, std::greater<Node>>;
 
 template<typename PQ = DefaultPQ>
 class Solver
@@ -28,14 +28,15 @@ public:
     /// @param initialLayout the initial layout of the puzzle (vector type)
     explicit Solver(std::vector<int> initialLayout, PQ pq = PQ()) : pq_(std::move(pq)), iter(0)
     {
+        std::shared_ptr<Node> n = std::make_shared<Node>(initialLayout);
+
         if constexpr (std::is_same<PQ, BucketPQ>::value == true)
         {
-            auto n = Node(initialLayout);
-            pq_.push(n, n.GetTotalCost());
+            pq_.push(n, n->GetTotalCost());
         }
         else
         {
-            pq_.push(Node(initialLayout));
+            pq_.push(n);
         }
     }
 
@@ -43,14 +44,14 @@ public:
     /// @param initialNode the initial layout of the puzzle (vector type)
     Solver(const Node& initialNode) : pq_(), iter(0)
     {
-
+        std::shared_ptr<Node> n = std::make_shared<Node>(initialNode);
         if constexpr (std::is_same<PQ, BucketPQ>::value == true)
         {
-            pq_.push(initialNode, initialNode.GetTotalCost());
+            pq_.push(n, n->GetTotalCost());
         }
         else
         {
-            pq_.push(initialNode);
+            pq_.push(n);
         }
     }
 
@@ -66,19 +67,17 @@ public:
             // Get the top node
             curNode = pq_.top();
 
-            std::shared_ptr<const Node> p = std::make_shared<const Node>(curNode);
-
             // Check if we have solved the problem
-            if (curNode.IsSolved())
+            if (curNode->IsSolved())
             {
                 GeneratePath();
-                return std::tuple{curNode.IsSolved(), iter};
+                return std::tuple{curNode->IsSolved(), iter};
             }
 
             pq_.pop();
 
             // Get all fessible children
-            std::vector<Node> children = curNode.GetChildNodes(curNode.GetDepth(), p);
+            std::vector<Node> children = curNode->GetChildNodes(curNode->GetDepth(), curNode);
 
             // Loop through each child
             for(const Node& child : children)
@@ -88,13 +87,14 @@ public:
                 // Check if we have seen this before
                 if (visited.count(curHashValue) == 0)
                 {
+                    std::shared_ptr<Node> c = std::make_shared<Node>(child);
                     if constexpr (std::is_same<PQ, BucketPQ>::value == true)
                     {
-                        pq_.push(child, child.GetTotalCost());
+                        pq_.push(c, c->GetTotalCost());
                     }
                     else
                     {
-                        pq_.push(child);
+                        pq_.push(c);
                     }
                     visited.insert(curHashValue);
 
@@ -112,7 +112,7 @@ public:
 
     /// @brief Gets the optimal number of moves
     /// @return The move
-    std::size_t GetNumOfMoves() const
+    inline std::size_t GetNumOfMoves() const
     {
         // The path includes the start state
         return (path.size() - 1);
@@ -136,7 +136,7 @@ public:
     void PrintPath() const
     {
         // Check if the puzzle is solved
-        if (!curNode.IsSolved())
+        if (!curNode->IsSolved())
         {
             fmt::print("The puzzle could not be solved!\n");
             return;
@@ -158,9 +158,9 @@ private:
         std::vector<short> sol;
 
         // Start backtracking
-        path.push_back(curNode);
-        sol.push_back(curNode.GetMove());
-        std::shared_ptr<const Node> p = curNode.GetParent();
+        path.push_back(*curNode);
+        sol.push_back(curNode->GetMove());
+        std::shared_ptr<const Node> p = curNode->GetParent();
         while (p != nullptr)
         {
             path.push_back(*p);
@@ -211,7 +211,7 @@ private:
 
     /// @brief the current node
     /// NOTE: since top() returns a T& so this can not be replaced by a pointer
-    Node curNode;
+    std::shared_ptr<Node> curNode;
 
     /// @brief the number of iterations
     unsigned long iter;

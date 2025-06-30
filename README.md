@@ -325,9 +325,10 @@ Therefore, a bucket queue is faster than a `std::priortiy_queue`.
 In the benchmark, a bucket queue with **30** priorities is used.
 The rationale behind the number **30** is because the maximum Manhattan distance of an 8 puzzle problem is 32
 and not all pieces wil be that far away from the goal.
-The improvement is **~12%**
+The improvement is **~12%**.
+NOTE: however, this performance gain is vanished when we switch to using pointers instead of instances.
 
-| benchmark             | op/s   | ns/op.      |
+| benchmark             | op/s   | ns/op      |
 | :---------------------| :----- | :----------- |
 | Priority Queue Solver | 221.22 | 4,520,419.18 |
 | Bucket Queue Solver   | 246.93 | 4,049,751.35 |
@@ -339,6 +340,17 @@ It does not create an output library. But it can and will be used by other libra
 In this project, **constantslib**, **mathlib**, and **solverlib** are all interface libraries.
 **constantslib** is where all constants are defined.
 **mathlib**, and **solverlib** are both template classes.
+
+### Use Pointers
+
+After changing the data type in our `std::priortiy_queue`, a significant performance increase is observed. NOTE: those are using *-Ofast* [compiler flag](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html).
+
+| benchmark             | op/s     | ns/op     |
+| :---------------------| :------- | :----------- |
+| Priority Queue Solver | 2,089.45 | 478,594.10 |
+| Priority Queue Solver (using pointers) | 2,578.67 | 387,796.43 |
+| Bucket Queue Solver   | 1,876.87 | 532,802.08 |
+| Bucket Queue Solver (using pointers)   | 2,139.18 | 467,469.06 |
 
 ## Reference
 
