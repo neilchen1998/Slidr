@@ -342,7 +342,14 @@ In this project, **constantslib**, **mathlib**, and **solverlib** are all interf
 
 ### Use Pointers
 
-After changing the data type in our `std::priortiy_queue`, a significant performance increase is observed.
+After changing the data type in our `std::priortiy_queue`, a significant performance increase is observed. NOTE: those are using *-Ofast* [compiler flag](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html).
+
+| benchmark             | op/s     | ns/op     |
+| :---------------------| :------- | :----------- |
+| Priority Queue Solver | 2,089.45 | 478,594.10 |
+| Priority Queue Solver (using pointers) | 2,578.67 | 387,796.43 |
+| Bucket Queue Solver   | 1,876.87 | 532,802.08 |
+| Bucket Queue Solver (using pointers)   | 2,139.18 | 467,469.06 |
 
 ## Reference
 
