@@ -325,9 +325,10 @@ Therefore, a bucket queue is faster than a `std::priortiy_queue`.
 In the benchmark, a bucket queue with **30** priorities is used.
 The rationale behind the number **30** is because the maximum Manhattan distance of an 8 puzzle problem is 32
 and not all pieces wil be that far away from the goal.
-The improvement is **~12%**
+The improvement is **~12%**.
+NOTE: however, this performance gain is vanished when we switch to using pointers instead of instances.
 
-| benchmark             | op/s   | ns/op.      |
+| benchmark             | op/s   | ns/op      |
 | :---------------------| :----- | :----------- |
 | Priority Queue Solver | 221.22 | 4,520,419.18 |
 | Bucket Queue Solver   | 246.93 | 4,049,751.35 |
