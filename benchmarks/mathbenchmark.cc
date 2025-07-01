@@ -1,10 +1,12 @@
-#include <vector>
-#include <concepts>
-#include <span>
-#include <random>
-#include <chrono>
-#include <nanobench.h>
-#include <boost/functional/hash.hpp>
+#include <vector>   // std::vector
+#include <random>   // std::mt19937
+#include <span> // std::span
+#include <nanobench.h>  // ankerl::nanobench::Bench
+#include <ranges>   // std::views::iota
+#include <algorithm>   // std::shuffle
+#include <chrono>   // std::chrono::steady_clock::now
+#include <boost/functional/hash.hpp>    // boost::hash_combine
+#include <fstream>  // std::fstream
 
 #include "constants/constantslib.hpp"
 #include "math/mathlib.hpp"
@@ -44,7 +46,10 @@ inline void simple_hash_combine(std::size_t& seed, const T& u, const Args&... v)
     (hash_combine(seed, v), ...);
 }
 
-int main() {
+int main()
+{
+    std::ofstream file("./build/benchmarks/math-results.csv");
+    ankerl::nanobench::Bench bench;
 
     constexpr std::size_t N {constants::EIGHT_PUZZLE_NUM};
     std::random_device rd;
@@ -81,4 +86,7 @@ int main() {
         std::size_t h = distrib(gen);
         simple_hash_combine(h, distrib(gen), distrib(gen));
     });
+
+    // Render the results to a csv file
+    bench.render(ankerl::nanobench::templates::csv(), file);
 }

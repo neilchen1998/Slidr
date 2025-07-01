@@ -5,6 +5,7 @@
 #include <ranges>   // std::views::iota
 #include <algorithm>   // std::shuffle
 #include <chrono>   // std::chrono::steady_clock::now
+#include <fstream>  // std::fstream
 
 #include "constants/constantslib.hpp"
 #include "node/nodelib.hpp"
@@ -25,6 +26,9 @@ using BucketPQ = BucketQueue<std::shared_ptr<Node>, unsigned int, std::greater<N
 
 int main()
 {
+    std::ofstream file("./build/benchmarks/solver-results.csv");
+    ankerl::nanobench::Bench bench;
+
     auto bucket = BucketPQ(50);
 
     std::vector<int> layout0 {1, 7, constants::EMPTY, 8, 4, 3, 5, 2, 6};
@@ -33,8 +37,7 @@ int main()
     std::vector<int> layout3 {1, 2, 7, 4, constants::EMPTY, 5, 8, 3, 6};
     std::vector<int> layout4 {2, 3, 1, 4, constants::EMPTY, 8, 5, 7, 6};
 
-    ankerl::nanobench::Bench()
-        .minEpochIterations(10)
+    bench.minEpochIterations(10)
         .run("Priority Queue Solver", [&]
     {
         Solver(layout0).SolvePuzzle();
@@ -44,8 +47,7 @@ int main()
         Solver(layout4).SolvePuzzle();
     });
 
-    ankerl::nanobench::Bench()
-        .minEpochIterations(10)
+    bench.minEpochIterations(10)
         .run("Bucket Queue Solver", [&]
     {
         Solver<BucketPQ>(layout0, bucket).SolvePuzzle();
@@ -54,4 +56,7 @@ int main()
         Solver<BucketPQ>(layout3, bucket).SolvePuzzle();
         Solver<BucketPQ>(layout4, bucket).SolvePuzzle();
     });
+
+    // Render the results to a csv file
+    bench.render(ankerl::nanobench::templates::csv(), file);
 }
