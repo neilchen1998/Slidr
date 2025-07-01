@@ -25,27 +25,33 @@ using BucketPQ = BucketQueue<std::shared_ptr<Node>, unsigned int, std::greater<N
 
 int main()
 {
-    auto bucket = BucketPQ(40);
+    auto bucket = BucketPQ(50);
 
     std::vector<int> layout0 {1, 7, constants::EMPTY, 8, 4, 3, 5, 2, 6};
     std::vector<int> layout1 {6, 3, 8, 2, 1, 7, constants::EMPTY, 5, 4};
     std::vector<int> layout2 {7, 4, 1, 5, 2, 3, 8, 6, constants::EMPTY};
+    std::vector<int> layout3 {1, 2, 7, 4, constants::EMPTY, 5, 8, 3, 6};
+    std::vector<int> layout4 {2, 3, 1, 4, constants::EMPTY, 8, 5, 7, 6};
 
     ankerl::nanobench::Bench()
-        .minEpochIterations(30)    
+        .minEpochIterations(10)
         .run("Priority Queue Solver", [&]
     {
         Solver(layout0).SolvePuzzle();
         Solver(layout1).SolvePuzzle();
         Solver(layout2).SolvePuzzle();
+        Solver(layout3).SolvePuzzle();
+        Solver(layout4).SolvePuzzle();
     });
 
     ankerl::nanobench::Bench()
-        .minEpochIterations(30)
+        .minEpochIterations(10)
         .run("Bucket Queue Solver", [&]
     {
         Solver<BucketPQ>(layout0, bucket).SolvePuzzle();
         Solver<BucketPQ>(layout1, bucket).SolvePuzzle();
         Solver<BucketPQ>(layout2, bucket).SolvePuzzle();
+        Solver<BucketPQ>(layout3, bucket).SolvePuzzle();
+        Solver<BucketPQ>(layout4, bucket).SolvePuzzle();
     });
 }
