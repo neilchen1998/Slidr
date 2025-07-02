@@ -12,27 +12,20 @@
 
 int main(int argc, char* argv[])
 {
+    std::vector<int> layout0 {1, 7, constants::EMPTY, 8, 4, 3, 5, 2, 6};
+    std::vector<int> layout1 {6, 3, 8, 2, 1, 7, constants::EMPTY, 5, 4};
+    std::vector<int> layout2 {7, 4, 1, 5, 2, 3, 8, 6, constants::EMPTY};
+    std::vector<int> layout3 {1, 2, 7, 4, constants::EMPTY, 5, 8, 3, 6};
+    std::vector<int> layout4 {2, 3, 1, 4, constants::EMPTY, 8, 5, 7, 6};
+
+
     auto start = std::chrono::high_resolution_clock::now();
-    for (int i = 0; i < 100; ++i)
-    {
-        {
-            std::vector<int> layout {1, 7, constants::EMPTY, 8, 4, 3, 5, 2, 6};
-            Solver s = Solver(layout);
-            auto [isSolved, totalIters] = s.SolvePuzzle();
-        }
-
-        {
-            std::vector<int> layout {6, 3, 8, 2, 1, 7, constants::EMPTY, 5, 4};
-            Solver s = Solver(layout);
-            auto [isSolved, totalIters] = s.SolvePuzzle();
-        }
-
-        {
-            std::vector<int> layout {7, 4, 1, 5, 2, 3, 8, 6, constants::EMPTY};
-            Solver s = Solver(layout);
-            auto [isSolved, totalIters] = s.SolvePuzzle();
-        }
-    }
+    
+    Solver(layout0).SolvePuzzle();
+    Solver(layout1).SolvePuzzle();
+    Solver(layout2).SolvePuzzle();
+    Solver(layout3).SolvePuzzle();
+    Solver(layout4).SolvePuzzle();
 
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
