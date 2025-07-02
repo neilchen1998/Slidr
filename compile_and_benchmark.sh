@@ -8,4 +8,5 @@ cmake --build build &&
 
 # runs the benchmark
 ./build/benchmarks/mathbenchmark &&
-./build/benchmarks/nodebenchmark
+./build/benchmarks/nodebenchmark &&
+./build/benchmarks/solverbenchmark

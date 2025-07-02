@@ -15,10 +15,10 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     set(CMAKE_CXX_EXTENSIONS OFF)
 
     # compiler flags
-    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "Test" OR CMAKE_BUILD_TYPE STREQUAL "Benchmark")
+        add_compile_options(-Wall -Wextra -pedantic -Ofast)
+    elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
         add_compile_options(-Wall -Wextra -pedantic -g3 -fsanitize=address,undefined)
-    elseif(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "Test" OR CMAKE_BUILD_TYPE STREQUAL "Bench")
-        add_compile_options(-Wall -Wextra -pedantic -O3)
     elseif(CMAKE_BUILD_TYPE STREQUAL "Gprof")
         add_compile_options(-Wall -pg -O0)
     endif()
@@ -50,7 +50,7 @@ include(FetchContent)
 # all required packages
 find_package(Boost REQUIRED)
 find_package(Boost COMPONENTS program_options REQUIRED) # boost::program_options
-find_library(PROFILER_LIB profiler REQUIRED)
+# find_library(PROFILER_LIB profiler REQUIRED)
 
 # all required packages
 FetchContent_Declare(

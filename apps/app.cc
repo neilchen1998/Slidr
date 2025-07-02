@@ -12,7 +12,6 @@
 
 int main(int argc, char* argv[])
 {
-
     // Check if there is an additional argument (the total # of arguments should be 2)
     if (argc > 2)
     {
