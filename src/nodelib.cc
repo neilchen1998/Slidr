@@ -29,9 +29,9 @@ Node::Node(std::vector<int> input, int posX, unsigned long d, std::shared_ptr<co
     CalculateManhattanDistance();
 }
 
-std::vector<int> Node::AvailableMoves() const
+std::vector<short> Node::AvailableMoves() const
 {
-    std::vector<int> ret;
+    std::vector<short> ret;
     ret.reserve(4);
 
     int xRow = posX / constants::EIGHT_PUZZLE_SIZE;
@@ -69,9 +69,9 @@ std::vector<Node> Node::GetChildNodes(unsigned long curDepth, std::shared_ptr<co
     std::vector<Node> children;
     children.reserve(4);
 
-    std::vector<int> moves = AvailableMoves();
+    std::vector<short> moves = AvailableMoves();
 
-    for(const int& move : moves)
+    for(const short& move : moves)
     {
         auto [childLayout, childPosX] = GetNextLayout(move);
         children.emplace_back(childLayout, childPosX, curDepth + 1, p, move);
@@ -81,7 +81,7 @@ std::vector<Node> Node::GetChildNodes(unsigned long curDepth, std::shared_ptr<co
     return children;
 }
 
-std::tuple<std::vector<int>, int> Node::GetNextLayout(int dir) const
+std::tuple<std::vector<int>, int> Node::GetNextLayout(short dir) const
 {
     std::vector<int> newLayout = state;
     int newPosX = posX;
@@ -116,22 +116,22 @@ std::tuple<std::vector<int>, int> Node::GetNextLayout(int dir) const
     return std::tuple<std::vector<int>, int>{newLayout, newPosX};
 }
 
-unsigned int Node::GetManhattanDistance() const
+unsigned int Node::GetManhattanDistance() const noexcept
 {
     return manhattanDistance;
 }
 
-std::size_t Node::GetHashValue() const
+std::size_t Node::GetHashValue() const noexcept
 {
     return hashValue;
 }
 
-unsigned int Node::GetDepth() const
+unsigned int Node::GetDepth() const noexcept
 {
     return depth;
 }
 
-unsigned int Node::GetTotalCost() const
+unsigned int Node::GetTotalCost() const noexcept
 {
     return GetManhattanDistance() + GetDepth();
 }
@@ -159,17 +159,17 @@ void Node::Print() const
     }
 }
 
-bool Node::IsSolved() const
+bool Node::IsSolved() const noexcept
 {
     return (manhattanDistance == 0) ? true : false;
 }
 
-std::shared_ptr<const Node> Node::GetParent() const
+std::shared_ptr<const Node> Node::GetParent() const noexcept
 {
     return parent;
 }
 
-short Node::GetMove() const
+short Node::GetMove() const noexcept
 {
     return move;
 }
