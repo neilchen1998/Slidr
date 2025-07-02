@@ -50,7 +50,6 @@ include(FetchContent)
 # all required packages
 find_package(Boost REQUIRED)
 find_package(Boost COMPONENTS program_options REQUIRED) # boost::program_options
-# find_library(PROFILER_LIB profiler REQUIRED)
 
 # all required packages
 FetchContent_Declare(
