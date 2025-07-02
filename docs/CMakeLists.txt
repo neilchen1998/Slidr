@@ -3,6 +3,7 @@ set(DOXYGEN_BUILTIN_STL_SUPPORT YES)
 
 doxygen_add_docs(docs
     constants/constantslib.hpp
+    container/bucketqueuelib.hpp
     math/mathlib.hpp
     node/nodelib.hpp
     prompt/promptlib.hpp
