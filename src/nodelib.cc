@@ -1,6 +1,6 @@
 #include <span> // std::span
 #include <algorithm> // std::ranges::find
-#include <memory.h> // std::shared_ptr, std::make_shared
+#include <memory> // std::shared_ptr, std::make_shared
 #include <ranges>   // std::views::iota
 #include <fmt/core.h>   // fmt::print
 
@@ -19,15 +19,13 @@ Node::Node(std::vector<int> input)
     CalculateManhattanDistance();
 }
 
-Node::Node(std::vector<int> input, int posX) : state(input), posX(posX), depth(0)
+Node::Node(std::vector<int> input, int posX) : state(input), posX(posX), depth(0), hashValue(hash_range(std::span(state)))
 {
-    hashValue = hash_range(std::span(input));
     CalculateManhattanDistance();
 }
 
-Node::Node(std::vector<int> input, int posX, unsigned long d, std::shared_ptr<const Node> p, short m) : state(input), posX(posX), depth(d), parent(p), move(m)
+Node::Node(std::vector<int> input, int posX, unsigned long d, std::shared_ptr<const Node> p, short m) : state(input), posX(posX), depth(d), parent(p), move(m), hashValue(hash_range(std::span(state)))
 {
-    hashValue = hash_range(std::span(input));
     CalculateManhattanDistance();
 }
 
@@ -118,7 +116,7 @@ std::tuple<std::vector<int>, int> Node::GetNextLayout(int dir) const
     return std::tuple<std::vector<int>, int>{newLayout, newPosX};
 }
 
-int Node::GetManhattanDistance() const
+unsigned int Node::GetManhattanDistance() const
 {
     return manhattanDistance;
 }
@@ -128,9 +126,14 @@ std::size_t Node::GetHashValue() const
     return hashValue;
 }
 
-unsigned long Node::GetDepth() const
+unsigned int Node::GetDepth() const
 {
     return depth;
+}
+
+unsigned int Node::GetTotalCost() const
+{
+    return GetManhattanDistance() + GetDepth();
 }
 
 void Node::Print() const

@@ -15,11 +15,13 @@ and keep on until it reaches the goal.
 
 The requirements are:
 
-- CMake 3.11 or better; 3.14+ highly recommended
+- CMake 3.14 or better; 4.0+ highly recommended
 - A C++20 compatible compiler ([gcc](https://gcc.gnu.org/) or [llvm](https://llvm.org/))
 - The Boost libararies
 - Git
 - Doxygen (optional, highly recommended)
+- Conda/Miniconda (optional, highly recommended)
+- Python (for gprof visualization)
 
 ## Instructions
 
@@ -44,17 +46,20 @@ cmake --build build --target test
 ```
 
 To run the binary with example layout:
-```
+
+```bash
 ./build/apps/app
 ```
 
 To run the binary with a custom puzzle layout (use 1 to 8 and 'x' or 'X' for the empty space):
-```
+
+```bash
 ./build/apps/app <puzzle>
 ```
 
 To build and test:
-```
+
+```bash
 cmake --build build && cmake --build build --target test
 ```
 
@@ -64,9 +69,34 @@ To build docs (requires Doxygen, output in `build/docs/html`):
 cmake --build build --target docs
 ```
 
-To build and run benchmark
-```
+To build and run benchmark:
+
+```bash
 cmake --build build && ./build/bench/<name_of_benchmark>
+```
+
+To run the Unix performance analysis tool (tested only on Linux):
+
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Gprof && ./build/gprof/solverbenchmark && gprof ./build/gprof/solverbenchmark gmon.out > ./build/gprof/analysis.txt
+```
+
+To create and activate an environment if using conda:
+
+```bash
+conda create -n <env_name> && conda activate <env_name>
+```
+
+To install all dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+To visualize gprof:
+
+```bash
+./build/gprof/solverbenchmark && gprof ./build/gprof/solverbenchmark | gprof2dot | dot -Tpng -o output.png
 ```
 
 ## Example Result
@@ -179,7 +209,7 @@ The archeive file size when using `boost::hash_combine` and that when using `has
 
 An even more simplified version as shown in the comment *MIGHT* work.
 It passes all the test cases in the repo.
-But it is not adviced.
+But it is not advised.
 
 | benchmark       | op/s | ns/op |
 | :-----------| :------------ | ----: |
@@ -275,10 +305,55 @@ int GetManhattanDistanceReduce(std::span<int> s)
 In our case the order of the operations does not matter, therefore we can use `std::reduce`.
 Nonetheless, based on the benchmark, the three different approaches do not have discernable difference in terms of speed.
 
-| benchmark       | op/s | ns/op |
+| benchmark       | op/s           | ns/op|
 | :---------------| :------------- | ---: |
 | for loop        | 160,295,728.06 | 6.24 |
 | std::accumulate | 156,853,151.47 | 6.38 |
 | std::reduce     | 157,072,439.95 | 6.37 |
 
+### `std::priortiy_queue` vs. Bucket Queue
+
+The most commonly used data structure for the queue is a [priority queue](https://en.cppreference.com/w/cpp/container/priority_queue.html).
+It has `O(log n)` for insertion, `O(log n)` for deletion, and `O(1)` for peak operation.
+Whenever the solver enters the node with the lowest value of `f(n)`, it will need to pop out the state from the priority queue.
+And when the solver finds a new valid state, it will need to add the new state to the priority queue.
+Both operations are done frequently and both operations have a time complexity of `O(log n)`.
+Therefore a better data structure is needed.
+A [bucket queue](https://en.wikipedia.org/wiki/Bucket_queue) is choosen to replace `std::priortiy_queue`.
+A bucket queue has `O(1)` for insertion, `O(#priorities)` for deletion, and `O(1)` for peak operation.
+Therefore, a bucket queue is faster than a `std::priortiy_queue`.
+In the benchmark, a bucket queue with **30** priorities is used.
+The rationale behind the number **30** is because the maximum Manhattan distance of an 8 puzzle problem is 32
+and not all pieces wil be that far away from the goal.
+The improvement is **~12%**.
+NOTE: however, this performance gain is vanished when we switch to using pointers instead of instances.
+
+| benchmark             | op/s   | ns/op      |
+| :---------------------| :----- | :----------- |
+| Priority Queue Solver | 221.22 | 4,520,419.18 |
+| Bucket Queue Solver   | 246.93 | 4,049,751.35 |
+
+### Interface Library
+
+An [interface library](https://cliutils.gitlab.io/modern-cmake/chapters/basics.html) is for a header-only library.
+It does not create an output library. But it can and will be used by other libraries.
+In this project, **constantslib**, **mathlib**, and **solverlib** are all interface libraries.
+**constantslib** is where all constants are defined.
+**mathlib**, and **solverlib** are both template classes.
+
+### Use Pointers
+
+After changing the data type in our `std::priortiy_queue`, a significant performance increase is observed. NOTE: those are using *-Ofast* [compiler flag](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html).
+
+| benchmark             | op/s     | ns/op     |
+| :---------------------| :------- | :----------- |
+| Priority Queue Solver | 2,089.45 | 478,594.10 |
+| Priority Queue Solver (using pointers) | 2,578.67 | 387,796.43 |
+| Bucket Queue Solver   | 1,876.87 | 532,802.08 |
+| Bucket Queue Solver (using pointers)   | 2,139.18 | 467,469.06 |
+
 ## Reference
+
+- [gprof2dot](https://pypi.org/project/gprof2dot/)
+- [Visually Profile C++ Program Performance](https://www.youtube.com/watch?v=zbTtVW64R_I)
+- [Global Constants](https://www.learncpp.com/cpp-tutorial/sharing-global-constants-across-multiple-files-using-inline-variables/)

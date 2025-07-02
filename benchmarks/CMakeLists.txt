@@ -4,11 +4,10 @@ FetchContent_Declare(
   GIT_TAG v4.3.10)
 FetchContent_MakeAvailable(nanobench)
 
-add_executable(mathbenchmarklib mathbenchmarklib.cc)
-add_executable(nodebenchmarklib nodebenchmarklib.cc)
+add_executable(mathbenchmark mathbenchmark.cc)
+add_executable(nodebenchmark nodebenchmark.cc)
+add_executable(solverbenchmark solverbenchmark.cc)
 
-target_compile_features(mathbenchmarklib PRIVATE cxx_std_20)
-target_compile_features(nodebenchmarklib PRIVATE cxx_std_20)
-
-target_link_libraries(mathbenchmarklib PRIVATE nanobench math_library Boost::boost)
-target_link_libraries(nodebenchmarklib PRIVATE nanobench node_library)
+target_link_libraries(mathbenchmark PRIVATE nanobench math_library Boost::boost)
+target_link_libraries(nodebenchmark PRIVATE nanobench node_library)
+target_link_libraries(solverbenchmark PRIVATE nanobench solver_library)

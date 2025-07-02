@@ -5,6 +5,7 @@
 #include <ranges>   // std::views::iota
 #include <algorithm>   // std::shuffle
 #include <chrono>   // std::chrono::steady_clock::now
+#include <fstream>  // std::fstream
 
 #include "constants/constantslib.hpp"
 #include "node/nodelib.hpp"
@@ -72,8 +73,11 @@ int GetManhattanDistanceReduce(std::span<int> s)
     );
 }
 
-int main() {
-    
+int main()
+{
+    std::ofstream file("./build/benchmarks/node-results.csv");
+    ankerl::nanobench::Bench bench;
+
     constexpr std::size_t N {constants::EIGHT_PUZZLE_NUM};
     std::mt19937 gen(std::chrono::steady_clock::now().time_since_epoch().count());
 
@@ -97,4 +101,7 @@ int main() {
         auto ret = GetManhattanDistanceReduce(std::span(vec));
         ankerl::nanobench::doNotOptimizeAway(ret);
     });
+
+    // Render the results to a csv file
+    bench.render(ankerl::nanobench::templates::csv(), file);
 }

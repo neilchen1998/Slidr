@@ -4,12 +4,12 @@
 #include <vector>   // std::vector
 #include <cstddef>  // std::size_t
 #include <tuple>    // std::tuple
-#include <memory.h> // std::shared_ptr
+#include <memory>   // std::shared_ptr
 
 class Node
 {
 public:
-    Node() = delete;
+    Node() = default;   // TODO: fix the initialization in Solver
     Node(std::vector<int> input);
     Node(std::vector<int> input, int posX);
     Node(std::vector<int> input, int posX, unsigned long d, std::shared_ptr<const Node> p, short m);
@@ -28,7 +28,7 @@ public:
 
     /// @brief Gets the Manhattan distance of the puzzle (l-2 distance)
     /// @return The manhattan distance
-    int GetManhattanDistance() const;
+    unsigned int GetManhattanDistance() const;
 
     /// @brief Gets the hash value of the node
     /// @return The hash value of the node
@@ -36,7 +36,11 @@ public:
 
     /// @brief Gets the depth of the node
     /// @return The depth
-    unsigned long GetDepth() const;
+    unsigned int GetDepth() const;
+
+    /// @brief Gets the total cost of the node
+    /// @return The total cost
+    unsigned int GetTotalCost() const;
 
     /// @brief Prints the node
     void Print() const;
@@ -81,19 +85,43 @@ protected:
     int posX;
 
     /// @brief The Manhattan distance
-    int manhattanDistance;
+    unsigned int manhattanDistance;
 
     /// @brief The hash value
     std::size_t hashValue;
 
     /// @brief The depth of the node
-    unsigned long depth;
+    unsigned int depth;
 
     /// @brief The parent of this node
     std::shared_ptr<const Node> parent;
 
     /// @brief The move used to reach this node in terms of the empty space
     short move;
+};
+
+/// @brief the compare function for the priority queue
+struct NodeCmp
+{
+    bool operator()(std::shared_ptr<Node> lhs, std::shared_ptr<Node> rhs)
+    {
+        // Check if the two nodes are identical
+        if (lhs != rhs)
+        {
+            // Check if the two nodes have the same total cost (f value)
+            // if so then we prefer the node that has a lower Manhattan distance (h value)
+            if (lhs->GetTotalCost() == rhs->GetTotalCost())
+            {
+                return lhs->GetManhattanDistance() > rhs->GetManhattanDistance();
+            }
+
+            return lhs->GetTotalCost() > rhs->GetTotalCost();
+        }
+
+        // If they are identical, then we use the hash value for comparison.
+        // Since this is for the min. priority queue, we return true if the lhs is greater than the rhs.
+        return lhs->GetDepth() > rhs->GetDepth();
+    }
 };
 
 #endif // INCLUDE_NODE_NODELIB_H_

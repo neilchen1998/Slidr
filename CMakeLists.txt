@@ -1,5 +1,5 @@
 # cmake requirements
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.5...4.0)
 
 project(
     8-Puzzle
@@ -15,19 +15,19 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     set(CMAKE_CXX_EXTENSIONS OFF)
 
     # compiler flags
-    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "Test" OR CMAKE_BUILD_TYPE STREQUAL "Benchmark")
+        add_compile_options(-Wall -Wextra -pedantic -Ofast)
+    elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
         add_compile_options(-Wall -Wextra -pedantic -g3 -fsanitize=address,undefined)
-    elseif(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "Test" OR CMAKE_BUILD_TYPE STREQUAL "Bench")
-        add_compile_options(-Wall -Wextra -pedantic -O3)
     elseif(CMAKE_BUILD_TYPE STREQUAL "Gprof")
-        add_compile_options(-Wall -pg -g3)
+        add_compile_options(-Wall -pg -O0)
     endif()
 
     # linker flags
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         add_link_options(-g3 -fsanitize=address,undefined)
     elseif(CMAKE_BUILD_TYPE STREQUAL "Gprof")
-        add_link_options(-pg -g3)
+        add_link_options(-pg)
     endif()
 
     # uses CTest
@@ -50,12 +50,13 @@ include(FetchContent)
 # all required packages
 find_package(Boost REQUIRED)
 find_package(Boost COMPONENTS program_options REQUIRED) # boost::program_options
+# find_library(PROFILER_LIB profiler REQUIRED)
 
 # all required packages
 FetchContent_Declare(
   fmt
   GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-  GIT_TAG        6.1.2)
+  GIT_TAG        11.2.0)
 FetchContent_MakeAvailable(fmt)
 
 # the compiled library code
@@ -69,4 +70,6 @@ if((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR MODERN_CMAKE_BUILD_TESTING) AND 
     add_subdirectory(tests)
 elseif((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR MODERN_CMAKE_BUILD_TESTING) AND BUILD_TESTING AND CMAKE_BUILD_TYPE STREQUAL "Benchmark")
     add_subdirectory(benchmarks)
+elseif((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR MODERN_CMAKE_BUILD_TESTING) AND BUILD_TESTING AND CMAKE_BUILD_TYPE STREQUAL "Gprof")
+    add_subdirectory(gprof)
 endif()

@@ -7,5 +7,6 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=Benchmark &&
 cmake --build build &&
 
 # runs the benchmark
-./build/benchmarks/mathbenchmarklib &&
-./build/benchmarks/nodebenchmarklib
+./build/benchmarks/mathbenchmark &&
+./build/benchmarks/nodebenchmark &&
+./build/benchmarks/solverbenchmark
