@@ -21,11 +21,14 @@ int main(int argc, char* argv[])
 
     auto start = std::chrono::high_resolution_clock::now();
     
-    Solver(layout0).SolvePuzzle();
-    Solver(layout1).SolvePuzzle();
-    Solver(layout2).SolvePuzzle();
-    Solver(layout3).SolvePuzzle();
-    Solver(layout4).SolvePuzzle();
+    for (int i = 0; i < 100; ++i)
+    {
+        Solver(layout0).SolvePuzzle();
+        Solver(layout1).SolvePuzzle();
+        Solver(layout2).SolvePuzzle();
+        Solver(layout3).SolvePuzzle();
+        Solver(layout4).SolvePuzzle();
+    }
 
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
