@@ -20,7 +20,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
         add_compile_options(-Wall -Wextra -pedantic -g3 -fsanitize=address,undefined)
     elseif(CMAKE_BUILD_TYPE STREQUAL "Gprof")
-        add_compile_options(-Wall -pg -O0)
+        add_compile_options(-pg)
     endif()
 
     # linker flags
@@ -50,7 +50,6 @@ include(FetchContent)
 # all required packages
 find_package(Boost REQUIRED)
 find_package(Boost COMPONENTS program_options REQUIRED) # boost::program_options
-# find_library(PROFILER_LIB profiler REQUIRED)
 
 # all required packages
 FetchContent_Declare(

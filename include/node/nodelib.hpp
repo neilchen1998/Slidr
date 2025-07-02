@@ -17,30 +17,30 @@ public:
 
     /// @brief Gets all the available moves
     /// @return A vectors contains all the available moves
-    std::vector<int> AvailableMoves() const;
+    std::vector<short> AvailableMoves() const;
 
     /// @brief Gets all child nodes
     /// @param  The depth of the parent
     /// @return A vector of all child nodes
     std::vector<Node> GetChildNodes(unsigned long d, std::shared_ptr<const Node> p) const;
 
-    std::tuple<std::vector<int>, int> GetNextLayout(int dir) const;
+    std::tuple<std::vector<int>, int> GetNextLayout(short dir) const;
 
     /// @brief Gets the Manhattan distance of the puzzle (l-2 distance)
     /// @return The manhattan distance
-    unsigned int GetManhattanDistance() const;
+    unsigned int GetManhattanDistance() const noexcept;
 
     /// @brief Gets the hash value of the node
     /// @return The hash value of the node
-    std::size_t GetHashValue() const;
+    std::size_t GetHashValue() const noexcept;
 
     /// @brief Gets the depth of the node
     /// @return The depth
-    unsigned int GetDepth() const;
+    unsigned int GetDepth() const noexcept;
 
     /// @brief Gets the total cost of the node
     /// @return The total cost
-    unsigned int GetTotalCost() const;
+    unsigned int GetTotalCost() const noexcept;
 
     /// @brief Prints the node
     void Print() const;
@@ -63,15 +63,15 @@ public:
 
     /// @brief Returns if the puzzle is solved
     /// @return Is solved or not
-    bool IsSolved() const;
+    bool IsSolved() const noexcept;
 
     /// @brief Gets the pointer of its parent
     /// @return The pointer of its parent
-    std::shared_ptr<const Node> GetParent() const;
+    std::shared_ptr<const Node> GetParent() const noexcept;
 
     /// @brief Gets the move used to reach this node
     /// @return The move
-    short GetMove() const;
+    short GetMove() const noexcept;
 
 private:
     /// @brief Calcualte the Manhattan distance

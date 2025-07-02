@@ -17,7 +17,7 @@ cmake --build build &&
 ./build/gprof/solverbenchmark &&
 
 # Run Gprof and generate a report
-gprof ./build/gprof/solverbenchmark gmon.out | gprof2dot | dot -Tpng -o output.png &&
+gprof ./build/gprof/solverbenchmark gmon.out | gprof2dot | dot -Tpng -Gdpi=150 -o output.png &&
 
 # Remove gmon.out
 rm gmon.out
