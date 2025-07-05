@@ -20,7 +20,8 @@ public:
         buckets_(maxPriority),
         size_(0),
         maxPriority_(maxPriority),
-        bestPriority_(0)
+        bestPriority_(0),
+        mask_(maxPriority, false)
     {
         // Initialize best priority based on the compare type
         // NOTE: if constexpr enables compile-time conditional branching
@@ -75,6 +76,7 @@ public:
 
         if (buckets_[bestPriority_].empty())
         {
+            mask_[bestPriority_] = false;
             UpdateHigestPriority();
         }
     }
@@ -109,6 +111,8 @@ public:
         buckets_[priority].push_back(std::forward<U>(ele));
         ++size_;
 
+        mask_[priority] = true;
+
         if constexpr (isMaxQueue)
         {
             bestPriority_ = (priority > bestPriority_) ? priority : bestPriority_;
@@ -126,7 +130,7 @@ private:
         {
             for (PriorityType i = bestPriority_; i > 0; --i)
             {
-                if (!buckets_[i].empty())
+                if (mask_[i])
                 {
                     bestPriority_ = i;
                     return;
@@ -140,7 +144,7 @@ private:
         {
            for (PriorityType i = bestPriority_; i < maxPriority_; ++i)
             {
-                if (!buckets_[i].empty())
+                if (mask_[i])
                 {
                     bestPriority_ = i;
                     return;
@@ -165,8 +169,7 @@ private:
     // The current best priority
     PriorityType bestPriority_;
 
-    // // The compare type that provides a strict weak ordering
-    // Compare cmp_ {};
+    std::vector<bool> mask_;
 };
 
 #endif // INCLUDE_CONTAINER_BUCKETQUEUE_H_
