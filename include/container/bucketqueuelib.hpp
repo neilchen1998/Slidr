@@ -8,20 +8,38 @@
 #include <memory>   // std::shared_ptr
 #include <type_traits>  // std::is_same
 #include <utility>  // std::forward
+#include <bitset>  // std::bitset
 
-template<typename T, typename PriorityType = std::size_t, typename Compare = std::less<PriorityType>>
-class BucketQueue
+/// @brief The interface (abstract class) of Bucket Queue class
+/// @tparam T The element type
+/// @tparam PriorityType The priority type
+template<typename T, typename PriorityType = std::size_t>
+class BucketQueueBase
+{
+    virtual std::size_t size() const noexcept = 0;
+    virtual bool empty() const noexcept = 0;
+    virtual const T& top() const = 0;
+    virtual void pop() = 0;
+    virtual void push(const T& ele, PriorityType priority) = 0;
+    virtual void push(T&& ele, PriorityType priority) = 0;
+};
+
+/// @brief The concrete class of Bucket Queue class
+/// @tparam T The element type
+/// @tparam PriorityType The priority type (default is std::size_t)
+/// @tparam Compare The compare struct (default is std::less)
+/// @tparam MaxPriorityLimit The number of buckets (default value is 64)
+template<typename T, typename PriorityType = std::size_t, typename Compare = std::less<PriorityType>, std::size_t MaxPriorityLimit = 64>
+class BucketQueue : public BucketQueueBase <T, PriorityType>
 {
     // Determine if this is a max queue
     static constexpr bool isMaxQueue = std::is_same<Compare, std::less<PriorityType>>::value;
 
 public:
-    explicit BucketQueue(std::size_t maxPriority) :
-        buckets_(maxPriority),
+    explicit BucketQueue() :
+        buckets_(MaxPriorityLimit),
         size_(0),
-        maxPriority_(maxPriority),
-        bestPriority_(0),
-        mask_(maxPriority, false)
+        maxPriority_(MaxPriorityLimit)
     {
         // Initialize best priority based on the compare type
         // NOTE: if constexpr enables compile-time conditional branching
@@ -77,11 +95,11 @@ public:
         if (buckets_[bestPriority_].empty())
         {
             mask_[bestPriority_] = false;
-            UpdateHigestPriority();
+            UpdateHighestPriority();
         }
     }
 
-    /// @brief Push the element into the heap with specified priority
+    /// @brief Pushes the element into the heap with specified priority
     /// @param ele The element (const reference)
     /// @param priority The priority
     void push(const T& ele, PriorityType priority)
@@ -89,7 +107,7 @@ public:
         emplace(ele, priority);
     }
 
-    /// @brief Push the element into the heap with specified priority
+    /// @brief Pushes the element into the heap with specified priority
     /// @param ele The element (rvalue)
     /// @param priority The priority
     void push(T&& ele, PriorityType priority)
@@ -97,7 +115,7 @@ public:
         emplace(std::move(ele), priority);
     }
 
-    /// @brief Empplace the element into the heap with specified priority
+    /// @brief Empplaces the element into the heap with specified priority
     /// @param ele The element (rvalue)
     /// @param priority The priority
     template<typename U>
@@ -124,7 +142,9 @@ public:
     }
 
 private:
-    void UpdateHigestPriority()
+
+    /// @brief Updates the highest priority
+    void UpdateHighestPriority()
     {
         if constexpr (isMaxQueue)
         {
@@ -169,7 +189,8 @@ private:
     // The current best priority
     PriorityType bestPriority_;
 
-    std::vector<bool> mask_;
+    /// @brief The bitset that indicates which bucket is not empty (true if the bucket is not empty)
+    std::bitset<MaxPriorityLimit> mask_;
 };
 
 #endif // INCLUDE_CONTAINER_BUCKETQUEUE_H_
