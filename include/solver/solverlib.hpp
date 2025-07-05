@@ -85,20 +85,23 @@ public:
                 auto curHashValue = child.GetHashValue();
 
                 // Check if we have seen this before
-                if (visited.count(curHashValue) == 0)
+                if (!visited.count(curHashValue))
                 {
-                    std::shared_ptr<Node> c = std::make_shared<Node>(child);
                     if constexpr (std::is_same<PQ, BucketPQ>::value == true)
                     {
-                        pq_.push(c, c->GetTotalCost());
+                        pq_.push(std::make_shared<Node>(child), child.GetTotalCost());
                     }
                     else
                     {
-                        pq_.push(c);
+                        pq_.emplace(std::make_shared<Node>(child));
                     }
                     visited.insert(curHashValue);
 
                     ++iter;
+                }
+                else
+                {
+                    continue;
                 }
             }
 
@@ -107,7 +110,7 @@ public:
 
         // If we reach here that means we have run out of moves and therefore
         // we cannot solve the puzzle.
-        return std::tuple{false, iter};
+        return std::tuple {false, iter};
     }
 
     /// @brief Gets the optimal number of moves
