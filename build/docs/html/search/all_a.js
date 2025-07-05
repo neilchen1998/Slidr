@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['operator_21_3d_0',['operator!=',['../class_node.html#a44c0d94954cd23c4d3675e5afe4ae93d',1,'Node']]],
-  ['operator_28_29_1',['operator()',['../struct_solver_1_1_node_cmp.html#ab06c3ef534fc47a63d11b7d0ae6ed7eb',1,'Solver::NodeCmp']]],
-  ['operator_3d_3d_2',['operator==',['../class_node.html#ae5d55492a2ff9b0efc8744076480bb11',1,'Node']]]
+  ['node_0',['Node',['../class_node.html',1,'Node'],['../class_node.html#a082d5efb0be81faaeb35dc02b2a4fc76',1,'Node::Node()=default'],['../class_node.html#a7672fcda01c73a145bc5c258770db900',1,'Node::Node(std::vector&lt; int &gt; input)'],['../class_node.html#ae7f789ec96693b753766f58fe24e27f4',1,'Node::Node(std::vector&lt; int &gt; input, int posX)'],['../class_node.html#a39cbd3d10474935470019725af4a2bdb',1,'Node::Node(std::vector&lt; int &gt; input, int posX, unsigned long d, std::shared_ptr&lt; const Node &gt; p, short m)']]],
+  ['nodecmp_1',['NodeCmp',['../struct_node_cmp.html',1,'']]],
+  ['nodelib_2ehpp_2',['nodelib.hpp',['../nodelib_8hpp.html',1,'']]]
 ];

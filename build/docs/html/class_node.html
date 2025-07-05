@@ -97,34 +97,36 @@ $(function(){initNavTree('class_node.html','','class_node-members'); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab7399f0c1d344453ce44664904419c5c" id="r_ab7399f0c1d344453ce44664904419c5c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab7399f0c1d344453ce44664904419c5c">Node</a> ()=delete</td></tr>
+<tr class="memitem:a082d5efb0be81faaeb35dc02b2a4fc76" id="r_a082d5efb0be81faaeb35dc02b2a4fc76"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a082d5efb0be81faaeb35dc02b2a4fc76">Node</a> ()=default</td></tr>
 <tr class="memitem:a7672fcda01c73a145bc5c258770db900" id="r_a7672fcda01c73a145bc5c258770db900"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7672fcda01c73a145bc5c258770db900">Node</a> (std::vector&lt; int &gt; input)</td></tr>
 <tr class="memitem:ae7f789ec96693b753766f58fe24e27f4" id="r_ae7f789ec96693b753766f58fe24e27f4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae7f789ec96693b753766f58fe24e27f4">Node</a> (std::vector&lt; int &gt; input, int <a class="el" href="#ac2bacce3cb8bf161be629aaeca76ddce">posX</a>)</td></tr>
 <tr class="memitem:a39cbd3d10474935470019725af4a2bdb" id="r_a39cbd3d10474935470019725af4a2bdb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a39cbd3d10474935470019725af4a2bdb">Node</a> (std::vector&lt; int &gt; input, int <a class="el" href="#ac2bacce3cb8bf161be629aaeca76ddce">posX</a>, unsigned long d, std::shared_ptr&lt; const <a class="el" href="class_node.html">Node</a> &gt; p, short m)</td></tr>
 <tr class="memitem:a79a9d168fb1dc868e50b073ad20931cb" id="r_a79a9d168fb1dc868e50b073ad20931cb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a79a9d168fb1dc868e50b073ad20931cb">~Node</a> ()=default</td></tr>
-<tr class="memitem:aa9899bb0ce95a6757b902e4660981b3c" id="r_aa9899bb0ce95a6757b902e4660981b3c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9899bb0ce95a6757b902e4660981b3c">AvailableMoves</a> () const</td></tr>
-<tr class="memdesc:aa9899bb0ce95a6757b902e4660981b3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets all the available moves.  <br /></td></tr>
+<tr class="memitem:a8308931b95b54636f7e9320520baca23" id="r_a8308931b95b54636f7e9320520baca23"><td class="memItemLeft" align="right" valign="top">std::vector&lt; short &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8308931b95b54636f7e9320520baca23">AvailableMoves</a> () const</td></tr>
+<tr class="memdesc:a8308931b95b54636f7e9320520baca23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets all the available moves.  <br /></td></tr>
 <tr class="memitem:a685cc05811d8c33461556f1912ffc680" id="r_a685cc05811d8c33461556f1912ffc680"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_node.html">Node</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a685cc05811d8c33461556f1912ffc680">GetChildNodes</a> (unsigned long d, std::shared_ptr&lt; const <a class="el" href="class_node.html">Node</a> &gt; p) const</td></tr>
 <tr class="memdesc:a685cc05811d8c33461556f1912ffc680"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets all child nodes.  <br /></td></tr>
-<tr class="memitem:aa2d1020b6f5546730d66dc73c61a34bc" id="r_aa2d1020b6f5546730d66dc73c61a34bc"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; std::vector&lt; int &gt;, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2d1020b6f5546730d66dc73c61a34bc">GetNextLayout</a> (int dir) const</td></tr>
-<tr class="memitem:ab1726442c5466239f9f0cd0a6abeb45b" id="r_ab1726442c5466239f9f0cd0a6abeb45b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab1726442c5466239f9f0cd0a6abeb45b">GetManhattanDistance</a> () const</td></tr>
-<tr class="memdesc:ab1726442c5466239f9f0cd0a6abeb45b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the Manhattan distance of the puzzle (l-2 distance)  <br /></td></tr>
-<tr class="memitem:a260f65c94d63cdeca0eb9df8e087146b" id="r_a260f65c94d63cdeca0eb9df8e087146b"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a260f65c94d63cdeca0eb9df8e087146b">GetHashValue</a> () const</td></tr>
-<tr class="memdesc:a260f65c94d63cdeca0eb9df8e087146b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the hash value of the node.  <br /></td></tr>
-<tr class="memitem:a90164fafd41f7e681b75326c3414acac" id="r_a90164fafd41f7e681b75326c3414acac"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a90164fafd41f7e681b75326c3414acac">GetDepth</a> () const</td></tr>
-<tr class="memdesc:a90164fafd41f7e681b75326c3414acac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the depth of the node.  <br /></td></tr>
+<tr class="memitem:aaa00e4c8540048bc34278bdc9b85d8d0" id="r_aaa00e4c8540048bc34278bdc9b85d8d0"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; std::vector&lt; int &gt;, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaa00e4c8540048bc34278bdc9b85d8d0">GetNextLayout</a> (short dir) const</td></tr>
+<tr class="memitem:a5c006ef4d50c94973b91bf79b6176248" id="r_a5c006ef4d50c94973b91bf79b6176248"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5c006ef4d50c94973b91bf79b6176248">GetManhattanDistance</a> () const noexcept</td></tr>
+<tr class="memdesc:a5c006ef4d50c94973b91bf79b6176248"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the Manhattan distance of the puzzle (l-2 distance)  <br /></td></tr>
+<tr class="memitem:a93dea142c7c9b7023ed814a0c107a571" id="r_a93dea142c7c9b7023ed814a0c107a571"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a93dea142c7c9b7023ed814a0c107a571">GetHashValue</a> () const noexcept</td></tr>
+<tr class="memdesc:a93dea142c7c9b7023ed814a0c107a571"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the hash value of the node.  <br /></td></tr>
+<tr class="memitem:aead2400e5ccc6fa8e13beb9df60a095e" id="r_aead2400e5ccc6fa8e13beb9df60a095e"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aead2400e5ccc6fa8e13beb9df60a095e">GetDepth</a> () const noexcept</td></tr>
+<tr class="memdesc:aead2400e5ccc6fa8e13beb9df60a095e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the depth of the node.  <br /></td></tr>
+<tr class="memitem:a7f789b930c9602f213b0b3ca6a9d3bce" id="r_a7f789b930c9602f213b0b3ca6a9d3bce"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7f789b930c9602f213b0b3ca6a9d3bce">GetTotalCost</a> () const noexcept</td></tr>
+<tr class="memdesc:a7f789b930c9602f213b0b3ca6a9d3bce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the total cost of the node.  <br /></td></tr>
 <tr class="memitem:a583dcc2b28cc42f708b3ea226e20342a" id="r_a583dcc2b28cc42f708b3ea226e20342a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a583dcc2b28cc42f708b3ea226e20342a">Print</a> () const</td></tr>
 <tr class="memdesc:a583dcc2b28cc42f708b3ea226e20342a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the node.  <br /></td></tr>
 <tr class="memitem:ae5d55492a2ff9b0efc8744076480bb11" id="r_ae5d55492a2ff9b0efc8744076480bb11"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae5d55492a2ff9b0efc8744076480bb11">operator==</a> (const <a class="el" href="class_node.html">Node</a> &amp;rhs) const</td></tr>
 <tr class="memdesc:ae5d55492a2ff9b0efc8744076480bb11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares if two nodes (puzzles) are identical.  <br /></td></tr>
 <tr class="memitem:a44c0d94954cd23c4d3675e5afe4ae93d" id="r_a44c0d94954cd23c4d3675e5afe4ae93d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44c0d94954cd23c4d3675e5afe4ae93d">operator!=</a> (const <a class="el" href="class_node.html">Node</a> &amp;rhs) const</td></tr>
 <tr class="memdesc:a44c0d94954cd23c4d3675e5afe4ae93d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares if two nodes (puzzles) are NOT identical.  <br /></td></tr>
-<tr class="memitem:a20ad36b12b1a3c63354c34b53096e426" id="r_a20ad36b12b1a3c63354c34b53096e426"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20ad36b12b1a3c63354c34b53096e426">IsSolved</a> () const</td></tr>
-<tr class="memdesc:a20ad36b12b1a3c63354c34b53096e426"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if the puzzle is solved.  <br /></td></tr>
-<tr class="memitem:acf3945a7d69361abeb795231a396d92f" id="r_acf3945a7d69361abeb795231a396d92f"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; const <a class="el" href="class_node.html">Node</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acf3945a7d69361abeb795231a396d92f">GetParent</a> () const</td></tr>
-<tr class="memdesc:acf3945a7d69361abeb795231a396d92f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the pointer of its parent.  <br /></td></tr>
-<tr class="memitem:a389c7c8bf181ce2176ae00ec84661868" id="r_a389c7c8bf181ce2176ae00ec84661868"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a389c7c8bf181ce2176ae00ec84661868">GetMove</a> () const</td></tr>
-<tr class="memdesc:a389c7c8bf181ce2176ae00ec84661868"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the move used to reach this node.  <br /></td></tr>
+<tr class="memitem:a251c3da7d0aa57a7e2cb74d0906116f0" id="r_a251c3da7d0aa57a7e2cb74d0906116f0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a251c3da7d0aa57a7e2cb74d0906116f0">IsSolved</a> () const noexcept</td></tr>
+<tr class="memdesc:a251c3da7d0aa57a7e2cb74d0906116f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if the puzzle is solved.  <br /></td></tr>
+<tr class="memitem:af0880006af759a2ded842cc9ef1d3ece" id="r_af0880006af759a2ded842cc9ef1d3ece"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; const <a class="el" href="class_node.html">Node</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0880006af759a2ded842cc9ef1d3ece">GetParent</a> () const noexcept</td></tr>
+<tr class="memdesc:af0880006af759a2ded842cc9ef1d3ece"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the pointer of its parent.  <br /></td></tr>
+<tr class="memitem:aabd5b1dd6dcbc875717292c0f598b381" id="r_aabd5b1dd6dcbc875717292c0f598b381"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aabd5b1dd6dcbc875717292c0f598b381">GetMove</a> () const noexcept</td></tr>
+<tr class="memdesc:aabd5b1dd6dcbc875717292c0f598b381"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the move used to reach this node.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-attribs" class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -132,20 +134,20 @@ Protected Attributes</h2></td></tr>
 <tr class="memdesc:ae4e2f6d7bc68b77becfe40ed4ba7d1a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The state of the node.  <br /></td></tr>
 <tr class="memitem:ac2bacce3cb8bf161be629aaeca76ddce" id="r_ac2bacce3cb8bf161be629aaeca76ddce"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac2bacce3cb8bf161be629aaeca76ddce">posX</a></td></tr>
 <tr class="memdesc:ac2bacce3cb8bf161be629aaeca76ddce"><td class="mdescLeft">&#160;</td><td class="mdescRight">The position of The empty piece.  <br /></td></tr>
-<tr class="memitem:af1179a43e22b08ce4cb95144590898c3" id="r_af1179a43e22b08ce4cb95144590898c3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1179a43e22b08ce4cb95144590898c3">manhattanDistance</a></td></tr>
-<tr class="memdesc:af1179a43e22b08ce4cb95144590898c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Manhattan distance.  <br /></td></tr>
+<tr class="memitem:a890bba6209fdd3512d98be29a0ce1ea7" id="r_a890bba6209fdd3512d98be29a0ce1ea7"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a890bba6209fdd3512d98be29a0ce1ea7">manhattanDistance</a></td></tr>
+<tr class="memdesc:a890bba6209fdd3512d98be29a0ce1ea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Manhattan distance.  <br /></td></tr>
 <tr class="memitem:a7e33cf2a1bf3198a8917e46fe39046d4" id="r_a7e33cf2a1bf3198a8917e46fe39046d4"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7e33cf2a1bf3198a8917e46fe39046d4">hashValue</a></td></tr>
 <tr class="memdesc:a7e33cf2a1bf3198a8917e46fe39046d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The hash value.  <br /></td></tr>
-<tr class="memitem:a311c65dea2bba65444f4c3f51215a2e8" id="r_a311c65dea2bba65444f4c3f51215a2e8"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a311c65dea2bba65444f4c3f51215a2e8">depth</a></td></tr>
-<tr class="memdesc:a311c65dea2bba65444f4c3f51215a2e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The depth of the node.  <br /></td></tr>
+<tr class="memitem:ae41eac3cbca43f06a6f8a065215e196b" id="r_ae41eac3cbca43f06a6f8a065215e196b"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae41eac3cbca43f06a6f8a065215e196b">depth</a></td></tr>
+<tr class="memdesc:ae41eac3cbca43f06a6f8a065215e196b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The depth of the node.  <br /></td></tr>
 <tr class="memitem:a070594f73d0564f3f85e219a1a750536" id="r_a070594f73d0564f3f85e219a1a750536"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; const <a class="el" href="class_node.html">Node</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a070594f73d0564f3f85e219a1a750536">parent</a></td></tr>
 <tr class="memdesc:a070594f73d0564f3f85e219a1a750536"><td class="mdescLeft">&#160;</td><td class="mdescRight">The parent of this node.  <br /></td></tr>
 <tr class="memitem:a4e62b422cb77be91f3b93765a52a9f2f" id="r_a4e62b422cb77be91f3b93765a52a9f2f"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4e62b422cb77be91f3b93765a52a9f2f">move</a></td></tr>
 <tr class="memdesc:a4e62b422cb77be91f3b93765a52a9f2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The move used to reach this node in terms of the empty space.  <br /></td></tr>
 </table>
 <a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ab7399f0c1d344453ce44664904419c5c" name="ab7399f0c1d344453ce44664904419c5c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7399f0c1d344453ce44664904419c5c">&#9670;&#160;</a></span>Node() <span class="overload">[1/4]</span></h2>
+<a id="a082d5efb0be81faaeb35dc02b2a4fc76" name="a082d5efb0be81faaeb35dc02b2a4fc76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a082d5efb0be81faaeb35dc02b2a4fc76">&#9670;&#160;</a></span>Node() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -162,7 +164,7 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel delete">delete</span></span>  </td>
+<span class="mlabels"><span class="mlabel default">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -269,14 +271,14 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="aa9899bb0ce95a6757b902e4660981b3c" name="aa9899bb0ce95a6757b902e4660981b3c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9899bb0ce95a6757b902e4660981b3c">&#9670;&#160;</a></span>AvailableMoves()</h2>
+<a id="a8308931b95b54636f7e9320520baca23" name="a8308931b95b54636f7e9320520baca23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8308931b95b54636f7e9320520baca23">&#9670;&#160;</a></span>AvailableMoves()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; int &gt; Node::AvailableMoves </td>
+          <td class="memname">std::vector&lt; short &gt; Node::AvailableMoves </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -319,19 +321,27 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a90164fafd41f7e681b75326c3414acac" name="a90164fafd41f7e681b75326c3414acac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90164fafd41f7e681b75326c3414acac">&#9670;&#160;</a></span>GetDepth()</h2>
+<a id="aead2400e5ccc6fa8e13beb9df60a095e" name="aead2400e5ccc6fa8e13beb9df60a095e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aead2400e5ccc6fa8e13beb9df60a095e">&#9670;&#160;</a></span>GetDepth()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned long Node::GetDepth </td>
+          <td class="memname">unsigned int Node::GetDepth </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Gets the depth of the node. </p>
@@ -339,11 +349,14 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a260f65c94d63cdeca0eb9df8e087146b" name="a260f65c94d63cdeca0eb9df8e087146b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a260f65c94d63cdeca0eb9df8e087146b">&#9670;&#160;</a></span>GetHashValue()</h2>
+<a id="a93dea142c7c9b7023ed814a0c107a571" name="a93dea142c7c9b7023ed814a0c107a571"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93dea142c7c9b7023ed814a0c107a571">&#9670;&#160;</a></span>GetHashValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::size_t Node::GetHashValue </td>
@@ -352,6 +365,11 @@ Protected Attributes</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Gets the hash value of the node. </p>
@@ -359,19 +377,27 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ab1726442c5466239f9f0cd0a6abeb45b" name="ab1726442c5466239f9f0cd0a6abeb45b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1726442c5466239f9f0cd0a6abeb45b">&#9670;&#160;</a></span>GetManhattanDistance()</h2>
+<a id="a5c006ef4d50c94973b91bf79b6176248" name="a5c006ef4d50c94973b91bf79b6176248"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c006ef4d50c94973b91bf79b6176248">&#9670;&#160;</a></span>GetManhattanDistance()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Node::GetManhattanDistance </td>
+          <td class="memname">unsigned int Node::GetManhattanDistance </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Gets the Manhattan distance of the puzzle (l-2 distance) </p>
@@ -379,11 +405,14 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a389c7c8bf181ce2176ae00ec84661868" name="a389c7c8bf181ce2176ae00ec84661868"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a389c7c8bf181ce2176ae00ec84661868">&#9670;&#160;</a></span>GetMove()</h2>
+<a id="aabd5b1dd6dcbc875717292c0f598b381" name="aabd5b1dd6dcbc875717292c0f598b381"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabd5b1dd6dcbc875717292c0f598b381">&#9670;&#160;</a></span>GetMove()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">short Node::GetMove </td>
@@ -392,6 +421,11 @@ Protected Attributes</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Gets the move used to reach this node. </p>
@@ -399,8 +433,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aa2d1020b6f5546730d66dc73c61a34bc" name="aa2d1020b6f5546730d66dc73c61a34bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa2d1020b6f5546730d66dc73c61a34bc">&#9670;&#160;</a></span>GetNextLayout()</h2>
+<a id="aaa00e4c8540048bc34278bdc9b85d8d0" name="aaa00e4c8540048bc34278bdc9b85d8d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa00e4c8540048bc34278bdc9b85d8d0">&#9670;&#160;</a></span>GetNextLayout()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -408,7 +442,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">std::tuple&lt; std::vector&lt; int &gt;, int &gt; Node::GetNextLayout </td>
           <td>(</td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>dir</em></span></td><td>)</td>
+          <td class="paramtype">short</td>          <td class="paramname"><span class="paramname"><em>dir</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -416,11 +450,14 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="acf3945a7d69361abeb795231a396d92f" name="acf3945a7d69361abeb795231a396d92f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acf3945a7d69361abeb795231a396d92f">&#9670;&#160;</a></span>GetParent()</h2>
+<a id="af0880006af759a2ded842cc9ef1d3ece" name="af0880006af759a2ded842cc9ef1d3ece"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0880006af759a2ded842cc9ef1d3ece">&#9670;&#160;</a></span>GetParent()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::shared_ptr&lt; const <a class="el" href="class_node.html">Node</a> &gt; Node::GetParent </td>
@@ -429,6 +466,11 @@ Protected Attributes</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Gets the pointer of its parent. </p>
@@ -436,11 +478,42 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a20ad36b12b1a3c63354c34b53096e426" name="a20ad36b12b1a3c63354c34b53096e426"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a20ad36b12b1a3c63354c34b53096e426">&#9670;&#160;</a></span>IsSolved()</h2>
+<a id="a7f789b930c9602f213b0b3ca6a9d3bce" name="a7f789b930c9602f213b0b3ca6a9d3bce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f789b930c9602f213b0b3ca6a9d3bce">&#9670;&#160;</a></span>GetTotalCost()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int Node::GetTotalCost </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the total cost of the node. </p>
+<dl class="section return"><dt>Returns</dt><dd>The total cost </dd></dl>
+
+</div>
+</div>
+<a id="a251c3da7d0aa57a7e2cb74d0906116f0" name="a251c3da7d0aa57a7e2cb74d0906116f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a251c3da7d0aa57a7e2cb74d0906116f0">&#9670;&#160;</a></span>IsSolved()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool Node::IsSolved </td>
@@ -449,6 +522,11 @@ Protected Attributes</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Returns if the puzzle is solved. </p>
@@ -544,8 +622,8 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
-<a id="a311c65dea2bba65444f4c3f51215a2e8" name="a311c65dea2bba65444f4c3f51215a2e8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a311c65dea2bba65444f4c3f51215a2e8">&#9670;&#160;</a></span>depth</h2>
+<a id="ae41eac3cbca43f06a6f8a065215e196b" name="ae41eac3cbca43f06a6f8a065215e196b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae41eac3cbca43f06a6f8a065215e196b">&#9670;&#160;</a></span>depth</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -554,7 +632,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned long Node::depth</td>
+          <td class="memname">unsigned int Node::depth</td>
         </tr>
       </table>
   </td>
@@ -592,8 +670,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="af1179a43e22b08ce4cb95144590898c3" name="af1179a43e22b08ce4cb95144590898c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af1179a43e22b08ce4cb95144590898c3">&#9670;&#160;</a></span>manhattanDistance</h2>
+<a id="a890bba6209fdd3512d98be29a0ce1ea7" name="a890bba6209fdd3512d98be29a0ce1ea7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a890bba6209fdd3512d98be29a0ce1ea7">&#9670;&#160;</a></span>manhattanDistance</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -602,7 +680,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Node::manhattanDistance</td>
+          <td class="memname">unsigned int Node::manhattanDistance</td>
         </tr>
       </table>
   </td>

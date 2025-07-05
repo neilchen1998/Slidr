@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.14.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>8-Puzzle: Solver Class Reference</title>
+<title>8-Puzzle: Solver&lt; PQ &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -89,69 +89,58 @@ $(function(){initNavTree('class_solver.html','','class_solver-members'); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">Solver Class Reference</div></div>
+  <div class="headertitle"><div class="title">Solver&lt; PQ &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="solverlib_8hpp_source.html">solverlib.hpp</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:NodeCmp" id="r_NodeCmp"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_solver_1_1_node_cmp.html">NodeCmp</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">the compare function for the priority queue  <a href="struct_solver_1_1_node_cmp.html#details">More...</a><br /></td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a87481fdf7d7fa9b116b893f7c5a17c88" id="r_a87481fdf7d7fa9b116b893f7c5a17c88"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87481fdf7d7fa9b116b893f7c5a17c88">Solver</a> (std::vector&lt; int &gt; initialLayout)</td></tr>
-<tr class="memdesc:a87481fdf7d7fa9b116b893f7c5a17c88"><td class="mdescLeft">&#160;</td><td class="mdescRight">The constructor.  <br /></td></tr>
-<tr class="memitem:ad74720c80eab48d751a8d66bbbde1650" id="r_ad74720c80eab48d751a8d66bbbde1650"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad74720c80eab48d751a8d66bbbde1650">Solver</a> (const <a class="el" href="class_node.html">Node</a> &amp;initialNode)</td></tr>
-<tr class="memdesc:ad74720c80eab48d751a8d66bbbde1650"><td class="mdescLeft">&#160;</td><td class="mdescRight">The constructor.  <br /></td></tr>
-<tr class="memitem:ab23caa636c09a8260bd57acce6253452" id="r_ab23caa636c09a8260bd57acce6253452"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab23caa636c09a8260bd57acce6253452">~Solver</a> ()=default</td></tr>
-<tr class="memitem:acc04df617f26327bf17d6df348652828" id="r_acc04df617f26327bf17d6df348652828"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; bool, unsigned long &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc04df617f26327bf17d6df348652828">SolvePuzzle</a> ()</td></tr>
-<tr class="memdesc:acc04df617f26327bf17d6df348652828"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves the puzzle.  <br /></td></tr>
-<tr class="memitem:a51e7d6b1faa8b6ba9af87203c8af04ea" id="r_a51e7d6b1faa8b6ba9af87203c8af04ea"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a51e7d6b1faa8b6ba9af87203c8af04ea">GetNumOfMoves</a> () const</td></tr>
-<tr class="memdesc:a51e7d6b1faa8b6ba9af87203c8af04ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the optimal number of moves.  <br /></td></tr>
-<tr class="memitem:a53d9fd8b52a0cb1fe52d121f2a69d11c" id="r_a53d9fd8b52a0cb1fe52d121f2a69d11c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a53d9fd8b52a0cb1fe52d121f2a69d11c">GetSolution</a> () const</td></tr>
-<tr class="memdesc:a53d9fd8b52a0cb1fe52d121f2a69d11c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the solution.  <br /></td></tr>
-<tr class="memitem:ad4a467bf7569bb967fc10d8ab83b8559" id="r_ad4a467bf7569bb967fc10d8ab83b8559"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_node.html">Node</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4a467bf7569bb967fc10d8ab83b8559">GetPath</a> () const</td></tr>
-<tr class="memdesc:ad4a467bf7569bb967fc10d8ab83b8559"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the path (all the nodes from the start to the end)  <br /></td></tr>
-<tr class="memitem:a13bc90677c3f8dec0e67c53b1c8c88fa" id="r_a13bc90677c3f8dec0e67c53b1c8c88fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13bc90677c3f8dec0e67c53b1c8c88fa">PrintPath</a> () const</td></tr>
-<tr class="memdesc:a13bc90677c3f8dec0e67c53b1c8c88fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print out the path (from the start node to the goal)  <br /></td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a6e3533951fbb8b4a2cd31f7a21d00238" id="r_a6e3533951fbb8b4a2cd31f7a21d00238"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e3533951fbb8b4a2cd31f7a21d00238">GeneratePath</a> ()</td></tr>
-<tr class="memdesc:a6e3533951fbb8b4a2cd31f7a21d00238"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the path by backtracking.  <br /></td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-pro-attribs" class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:ac81a1d08383e46f29e439ffb49e784eb" id="r_ac81a1d08383e46f29e439ffb49e784eb"><td class="memItemLeft" align="right" valign="top">std::unordered_set&lt; std::size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac81a1d08383e46f29e439ffb49e784eb">visited</a></td></tr>
-<tr class="memdesc:ac81a1d08383e46f29e439ffb49e784eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">the cache that stores all visited nodes  <br /></td></tr>
-<tr class="memitem:ada2502a9753758ef3be6801798a78e47" id="r_ada2502a9753758ef3be6801798a78e47"><td class="memItemLeft" align="right" valign="top">std::priority_queue&lt; <a class="el" href="class_node.html">Node</a>, std::vector&lt; <a class="el" href="class_node.html">Node</a> &gt;, <a class="el" href="struct_solver_1_1_node_cmp.html">NodeCmp</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada2502a9753758ef3be6801798a78e47">pq</a></td></tr>
-<tr class="memdesc:ada2502a9753758ef3be6801798a78e47"><td class="mdescLeft">&#160;</td><td class="mdescRight">the priority queue that stores all candidate nodes  <br /></td></tr>
-<tr class="memitem:a4c6f0e553bbeaefcc237982fc4416af0" id="r_a4c6f0e553bbeaefcc237982fc4416af0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c6f0e553bbeaefcc237982fc4416af0">curNode</a></td></tr>
-<tr class="memdesc:a4c6f0e553bbeaefcc237982fc4416af0"><td class="mdescLeft">&#160;</td><td class="mdescRight">the current node  <br /></td></tr>
-<tr class="memitem:a455a6d4c19824c5757853f90f00bc232" id="r_a455a6d4c19824c5757853f90f00bc232"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a455a6d4c19824c5757853f90f00bc232">iter</a></td></tr>
-<tr class="memdesc:a455a6d4c19824c5757853f90f00bc232"><td class="mdescLeft">&#160;</td><td class="mdescRight">the number of iterations  <br /></td></tr>
-<tr class="memitem:aca2f14b309fc55bb1c5d3b2a0b50eb9c" id="r_aca2f14b309fc55bb1c5d3b2a0b50eb9c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca2f14b309fc55bb1c5d3b2a0b50eb9c">solution</a></td></tr>
-<tr class="memdesc:aca2f14b309fc55bb1c5d3b2a0b50eb9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">the solution  <br /></td></tr>
-<tr class="memitem:abac9a83003fec4c2a7637d3845ca9c9e" id="r_abac9a83003fec4c2a7637d3845ca9c9e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_node.html">Node</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abac9a83003fec4c2a7637d3845ca9c9e">path</a></td></tr>
-<tr class="memdesc:abac9a83003fec4c2a7637d3845ca9c9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">the path  <br /></td></tr>
+<tr class="memitem:ae1ddb7c8a3f55fb0ae963a2c902f4324" id="r_ae1ddb7c8a3f55fb0ae963a2c902f4324"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1ddb7c8a3f55fb0ae963a2c902f4324">Solver</a> (std::vector&lt; int &gt; initialLayout, PQ pq=PQ())</td></tr>
+<tr class="memdesc:ae1ddb7c8a3f55fb0ae963a2c902f4324"><td class="mdescLeft">&#160;</td><td class="mdescRight">The constructor.  <br /></td></tr>
+<tr class="memitem:ad8da8bb7be57e5f18aa68cb49f3fc978" id="r_ad8da8bb7be57e5f18aa68cb49f3fc978"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad8da8bb7be57e5f18aa68cb49f3fc978">Solver</a> (const <a class="el" href="class_node.html">Node</a> &amp;initialNode)</td></tr>
+<tr class="memdesc:ad8da8bb7be57e5f18aa68cb49f3fc978"><td class="mdescLeft">&#160;</td><td class="mdescRight">The constructor.  <br /></td></tr>
+<tr class="memitem:a49f8af747cb41d5284072a504df00129" id="r_a49f8af747cb41d5284072a504df00129"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a49f8af747cb41d5284072a504df00129">~Solver</a> ()=default</td></tr>
+<tr class="memitem:acb06545e4fa9e19e44c6534761b40852" id="r_acb06545e4fa9e19e44c6534761b40852"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; bool, unsigned long &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acb06545e4fa9e19e44c6534761b40852">SolvePuzzle</a> ()</td></tr>
+<tr class="memdesc:acb06545e4fa9e19e44c6534761b40852"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves the puzzle.  <br /></td></tr>
+<tr class="memitem:aea51f1e6b16e4a07b13acefffc54bda5" id="r_aea51f1e6b16e4a07b13acefffc54bda5"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea51f1e6b16e4a07b13acefffc54bda5">GetNumOfMoves</a> () const</td></tr>
+<tr class="memdesc:aea51f1e6b16e4a07b13acefffc54bda5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the optimal number of moves.  <br /></td></tr>
+<tr class="memitem:aeaa342e16f09030741850a8b6a7e025e" id="r_aeaa342e16f09030741850a8b6a7e025e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeaa342e16f09030741850a8b6a7e025e">GetSolution</a> () const</td></tr>
+<tr class="memdesc:aeaa342e16f09030741850a8b6a7e025e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the solution.  <br /></td></tr>
+<tr class="memitem:a616d518831f4dedc8dbce214c1064f90" id="r_a616d518831f4dedc8dbce214c1064f90"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_node.html">Node</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a616d518831f4dedc8dbce214c1064f90">GetPath</a> () const</td></tr>
+<tr class="memdesc:a616d518831f4dedc8dbce214c1064f90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the path (all the nodes from the start to the end)  <br /></td></tr>
+<tr class="memitem:a6486320ddcef599c3721d733200dc336" id="r_a6486320ddcef599c3721d733200dc336"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6486320ddcef599c3721d733200dc336">PrintPath</a> () const</td></tr>
+<tr class="memdesc:a6486320ddcef599c3721d733200dc336"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print out the path (from the start node to the goal)  <br /></td></tr>
 </table>
 <a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a87481fdf7d7fa9b116b893f7c5a17c88" name="a87481fdf7d7fa9b116b893f7c5a17c88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a87481fdf7d7fa9b116b893f7c5a17c88">&#9670;&#160;</a></span>Solver() <span class="overload">[1/2]</span></h2>
+<a id="ae1ddb7c8a3f55fb0ae963a2c902f4324" name="ae1ddb7c8a3f55fb0ae963a2c902f4324"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1ddb7c8a3f55fb0ae963a2c902f4324">&#9670;&#160;</a></span>Solver() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename PQ = DefaultPQ&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Solver::Solver </td>
+          <td class="memname"><a class="el" href="class_solver.html">Solver</a>&lt; PQ &gt;<a class="el" href="class_solver.html">::Solver</a> </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; int &gt;</td>          <td class="paramname"><span class="paramname"><em>initialLayout</em></span></td><td>)</td>
+          <td class="paramtype">std::vector&lt; int &gt;</td>          <td class="paramname"><span class="paramname"><em>initialLayout</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">PQ</td>          <td class="paramname"><span class="paramname"><em>pq</em></span><span class="paramdefsep"> = </span><span class="paramdefval">PQ()</span>&#160;)</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>The constructor. </p>
@@ -164,19 +153,29 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ad74720c80eab48d751a8d66bbbde1650" name="ad74720c80eab48d751a8d66bbbde1650"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad74720c80eab48d751a8d66bbbde1650">&#9670;&#160;</a></span>Solver() <span class="overload">[2/2]</span></h2>
+<a id="ad8da8bb7be57e5f18aa68cb49f3fc978" name="ad8da8bb7be57e5f18aa68cb49f3fc978"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8da8bb7be57e5f18aa68cb49f3fc978">&#9670;&#160;</a></span>Solver() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename PQ = DefaultPQ&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Solver::Solver </td>
+          <td class="memname"><a class="el" href="class_solver.html">Solver</a>&lt; PQ &gt;<a class="el" href="class_solver.html">::Solver</a> </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="class_node.html">Node</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>initialNode</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>The constructor. </p>
@@ -189,17 +188,19 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ab23caa636c09a8260bd57acce6253452" name="ab23caa636c09a8260bd57acce6253452"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab23caa636c09a8260bd57acce6253452">&#9670;&#160;</a></span>~Solver()</h2>
+<a id="a49f8af747cb41d5284072a504df00129" name="a49f8af747cb41d5284072a504df00129"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49f8af747cb41d5284072a504df00129">&#9670;&#160;</a></span>~Solver()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename PQ = DefaultPQ&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Solver::~Solver </td>
+          <td class="memname"><a class="el" href="class_solver.html">Solver</a>&lt; PQ &gt;::~<a class="el" href="class_solver.html">Solver</a> </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -215,46 +216,29 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="a6e3533951fbb8b4a2cd31f7a21d00238" name="a6e3533951fbb8b4a2cd31f7a21d00238"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e3533951fbb8b4a2cd31f7a21d00238">&#9670;&#160;</a></span>GeneratePath()</h2>
+<a id="aea51f1e6b16e4a07b13acefffc54bda5" name="aea51f1e6b16e4a07b13acefffc54bda5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea51f1e6b16e4a07b13acefffc54bda5">&#9670;&#160;</a></span>GetNumOfMoves()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename PQ = DefaultPQ&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Solver::GeneratePath </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Generate the path by backtracking. </p>
-
-</div>
-</div>
-<a id="a51e7d6b1faa8b6ba9af87203c8af04ea" name="a51e7d6b1faa8b6ba9af87203c8af04ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a51e7d6b1faa8b6ba9af87203c8af04ea">&#9670;&#160;</a></span>GetNumOfMoves()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::size_t Solver::GetNumOfMoves </td>
+          <td class="memname">std::size_t <a class="el" href="class_solver.html">Solver</a>&lt; PQ &gt;::GetNumOfMoves </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Gets the optimal number of moves. </p>
@@ -262,19 +246,29 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ad4a467bf7569bb967fc10d8ab83b8559" name="ad4a467bf7569bb967fc10d8ab83b8559"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4a467bf7569bb967fc10d8ab83b8559">&#9670;&#160;</a></span>GetPath()</h2>
+<a id="a616d518831f4dedc8dbce214c1064f90" name="a616d518831f4dedc8dbce214c1064f90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a616d518831f4dedc8dbce214c1064f90">&#9670;&#160;</a></span>GetPath()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename PQ = DefaultPQ&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="class_node.html">Node</a> &gt; Solver::GetPath </td>
+          <td class="memname">std::vector&lt; <a class="el" href="class_node.html">Node</a> &gt; <a class="el" href="class_solver.html">Solver</a>&lt; PQ &gt;::GetPath </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Gets the path (all the nodes from the start to the end) </p>
@@ -282,19 +276,29 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a53d9fd8b52a0cb1fe52d121f2a69d11c" name="a53d9fd8b52a0cb1fe52d121f2a69d11c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53d9fd8b52a0cb1fe52d121f2a69d11c">&#9670;&#160;</a></span>GetSolution()</h2>
+<a id="aeaa342e16f09030741850a8b6a7e025e" name="aeaa342e16f09030741850a8b6a7e025e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeaa342e16f09030741850a8b6a7e025e">&#9670;&#160;</a></span>GetSolution()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename PQ = DefaultPQ&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string Solver::GetSolution </td>
+          <td class="memname">std::string <a class="el" href="class_solver.html">Solver</a>&lt; PQ &gt;::GetSolution </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Gets the solution. </p>
@@ -302,187 +306,62 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a13bc90677c3f8dec0e67c53b1c8c88fa" name="a13bc90677c3f8dec0e67c53b1c8c88fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13bc90677c3f8dec0e67c53b1c8c88fa">&#9670;&#160;</a></span>PrintPath()</h2>
+<a id="a6486320ddcef599c3721d733200dc336" name="a6486320ddcef599c3721d733200dc336"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6486320ddcef599c3721d733200dc336">&#9670;&#160;</a></span>PrintPath()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename PQ = DefaultPQ&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Solver::PrintPath </td>
+          <td class="memname">void <a class="el" href="class_solver.html">Solver</a>&lt; PQ &gt;::PrintPath </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Print out the path (from the start node to the goal) </p>
 
 </div>
 </div>
-<a id="acc04df617f26327bf17d6df348652828" name="acc04df617f26327bf17d6df348652828"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc04df617f26327bf17d6df348652828">&#9670;&#160;</a></span>SolvePuzzle()</h2>
+<a id="acb06545e4fa9e19e44c6534761b40852" name="acb06545e4fa9e19e44c6534761b40852"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb06545e4fa9e19e44c6534761b40852">&#9670;&#160;</a></span>SolvePuzzle()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename PQ = DefaultPQ&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::tuple&lt; bool, unsigned long &gt; Solver::SolvePuzzle </td>
+          <td class="memname">std::tuple&lt; bool, unsigned long &gt; <a class="el" href="class_solver.html">Solver</a>&lt; PQ &gt;::SolvePuzzle </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Solves the puzzle. </p>
 <dl class="section return"><dt>Returns</dt><dd>{ whether the puzzle is solved, the number of iterations the <a class="el" href="class_solver.html">Solver</a> took } </dd></dl>
-
-</div>
-</div>
-<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
-<a id="a4c6f0e553bbeaefcc237982fc4416af0" name="a4c6f0e553bbeaefcc237982fc4416af0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c6f0e553bbeaefcc237982fc4416af0">&#9670;&#160;</a></span>curNode</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_node.html">Node</a> Solver::curNode</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>the current node </p>
-
-</div>
-</div>
-<a id="a455a6d4c19824c5757853f90f00bc232" name="a455a6d4c19824c5757853f90f00bc232"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a455a6d4c19824c5757853f90f00bc232">&#9670;&#160;</a></span>iter</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned long Solver::iter</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>the number of iterations </p>
-
-</div>
-</div>
-<a id="abac9a83003fec4c2a7637d3845ca9c9e" name="abac9a83003fec4c2a7637d3845ca9c9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abac9a83003fec4c2a7637d3845ca9c9e">&#9670;&#160;</a></span>path</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="class_node.html">Node</a>&gt; Solver::path</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>the path </p>
-
-</div>
-</div>
-<a id="ada2502a9753758ef3be6801798a78e47" name="ada2502a9753758ef3be6801798a78e47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada2502a9753758ef3be6801798a78e47">&#9670;&#160;</a></span>pq</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::priority_queue&lt;<a class="el" href="class_node.html">Node</a>, std::vector&lt;<a class="el" href="class_node.html">Node</a>&gt;, <a class="el" href="struct_solver_1_1_node_cmp.html">NodeCmp</a>&gt; Solver::pq</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>the priority queue that stores all candidate nodes </p>
-
-</div>
-</div>
-<a id="aca2f14b309fc55bb1c5d3b2a0b50eb9c" name="aca2f14b309fc55bb1c5d3b2a0b50eb9c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca2f14b309fc55bb1c5d3b2a0b50eb9c">&#9670;&#160;</a></span>solution</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string Solver::solution</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>the solution </p>
-
-</div>
-</div>
-<a id="ac81a1d08383e46f29e439ffb49e784eb" name="ac81a1d08383e46f29e439ffb49e784eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac81a1d08383e46f29e439ffb49e784eb">&#9670;&#160;</a></span>visited</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unordered_set&lt;std::size_t&gt; Solver::visited</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>the cache that stores all visited nodes </p>
 
 </div>
 </div>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['left_0',['LEFT',['../namespaceconstants.html#aa4644e91802e580d7f242533cd72db21',1,'constants']]]
+  ['issolved_0',['IsSolved',['../class_node.html#a251c3da7d0aa57a7e2cb74d0906116f0',1,'Node']]]
 ];

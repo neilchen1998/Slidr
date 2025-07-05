@@ -1,5 +1,5 @@
 var solverlib_8hpp =
 [
-    [ "Solver", "class_solver.html", "class_solver" ],
-    [ "Solver::NodeCmp", "struct_solver_1_1_node_cmp.html", "struct_solver_1_1_node_cmp" ]
+    [ "Solver< PQ >", "class_solver.html", "class_solver" ],
+    [ "DefaultPQ", "solverlib_8hpp.html#ac445248f68c395c64e0eca6e9d4f84ff", null ]
 ];

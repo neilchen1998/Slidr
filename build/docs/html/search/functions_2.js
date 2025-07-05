@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['hash_5fcombine_0',['hash_combine',['../mathlib_8hpp.html#ab420721d99ebdc508c044116eb287d4a',1,'mathlib.hpp']]],
-  ['hash_5frange_1',['hash_range',['../mathlib_8hpp.html#ae8cb407a81cd207f54181e87b3969d9c',1,'mathlib.hpp']]]
+  ['emplace_0',['emplace',['../class_bucket_queue.html#a19e4df8e808476e625697596f1851d81',1,'BucketQueue']]],
+  ['empty_1',['empty',['../class_bucket_queue.html#a846046cc1ec7dd3c58d76f9a2c72d154',1,'BucketQueue']]]
 ];

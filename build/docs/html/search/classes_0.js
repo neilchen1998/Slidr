@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['node_0',['Node',['../class_node.html',1,'']]],
-  ['nodecmp_1',['NodeCmp',['../struct_solver_1_1_node_cmp.html',1,'Solver']]]
+  ['bucketqueue_0',['BucketQueue',['../class_bucket_queue.html',1,'']]],
+  ['bucketqueuebase_1',['BucketQueueBase',['../class_bucket_queue_base.html',1,'']]],
+  ['bucketqueuebase_3c_20t_2c_20std_3a_3asize_5ft_20_3e_2',['BucketQueueBase&lt; T, std::size_t &gt;',['../class_bucket_queue_base.html',1,'']]]
 ];

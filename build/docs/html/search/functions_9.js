@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['_7enode_0',['~Node',['../class_node.html#a79a9d168fb1dc868e50b073ad20931cb',1,'Node']]],
-  ['_7esolver_1',['~Solver',['../class_solver.html#ab23caa636c09a8260bd57acce6253452',1,'Solver']]]
+  ['size_0',['size',['../class_bucket_queue.html#a2f1b870786f38cb48667cfbe7f055383',1,'BucketQueue']]],
+  ['solvepuzzle_1',['SolvePuzzle',['../class_solver.html#acb06545e4fa9e19e44c6534761b40852',1,'Solver']]],
+  ['solver_2',['Solver',['../class_solver.html#ae1ddb7c8a3f55fb0ae963a2c902f4324',1,'Solver::Solver(std::vector&lt; int &gt; initialLayout, PQ pq=PQ())'],['../class_solver.html#ad8da8bb7be57e5f18aa68cb49f3fc978',1,'Solver::Solver(const Node &amp;initialNode)']]]
 ];

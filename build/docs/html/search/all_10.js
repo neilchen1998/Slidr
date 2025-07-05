@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['_7enode_0',['~Node',['../class_node.html#a79a9d168fb1dc868e50b073ad20931cb',1,'Node']]],
-  ['_7esolver_1',['~Solver',['../class_solver.html#ab23caa636c09a8260bd57acce6253452',1,'Solver']]]
+  ['up_0',['UP',['../namespaceconstants.html#a33b636d6672eb4c6666c5e486f4b6e42',1,'constants']]]
 ];

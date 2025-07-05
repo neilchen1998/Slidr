@@ -98,16 +98,39 @@ $(function(){initNavTree('solverlib_8hpp.html','',''); });
 <code>#include &lt;queue&gt;</code><br />
 <code>#include &lt;tuple&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
+<code>#include &lt;memory&gt;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;fmt/core.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="nodelib_8hpp_source.html">node/nodelib.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="solverlib_8hpp_source.html">solver/solverlib.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="constantslib_8hpp_source.html">constants/constantslib.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="bucketqueuelib_8hpp_source.html">container/bucketqueuelib.hpp</a>&quot;</code><br />
 </div>
 <p><a href="solverlib_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:Solver" id="r_Solver"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_solver.html">Solver</a></td></tr>
-<tr class="memitem:Solver_3A_3ANodeCmp" id="r_Solver_3A_3ANodeCmp"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_solver_1_1_node_cmp.html">Solver::NodeCmp</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">the compare function for the priority queue  <a href="struct_solver_1_1_node_cmp.html#details">More...</a><br /></td></tr>
+<tr class="memitem:Solver_3C_20PQ_20_3E" id="r_Solver_3C_20PQ_20_3E"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_solver.html">Solver&lt; PQ &gt;</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ac445248f68c395c64e0eca6e9d4f84ff" id="r_ac445248f68c395c64e0eca6e9d4f84ff"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac445248f68c395c64e0eca6e9d4f84ff">DefaultPQ</a> = std::priority_queue&lt;std::shared_ptr&lt;<a class="el" href="class_node.html">Node</a>&gt;, std::vector&lt;std::shared_ptr&lt;<a class="el" href="class_node.html">Node</a>&gt;&gt;, <a class="el" href="struct_node_cmp.html">NodeCmp</a>&gt;</td></tr>
 </table>
+<a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Typedef Documentation</h2>
+<a id="ac445248f68c395c64e0eca6e9d4f84ff" name="ac445248f68c395c64e0eca6e9d4f84ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac445248f68c395c64e0eca6e9d4f84ff">&#9670;&#160;</a></span>DefaultPQ</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#ac445248f68c395c64e0eca6e9d4f84ff">DefaultPQ</a> = std::priority_queue&lt;std::shared_ptr&lt;<a class="el" href="class_node.html">Node</a>&gt;, std::vector&lt;std::shared_ptr&lt;<a class="el" href="class_node.html">Node</a>&gt;&gt;, <a class="el" href="struct_node_cmp.html">NodeCmp</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">

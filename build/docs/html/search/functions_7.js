@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['solvepuzzle_0',['SolvePuzzle',['../class_solver.html#acc04df617f26327bf17d6df348652828',1,'Solver']]],
-  ['solver_1',['Solver',['../class_solver.html#a87481fdf7d7fa9b116b893f7c5a17c88',1,'Solver::Solver(std::vector&lt; int &gt; initialLayout)'],['../class_solver.html#ad74720c80eab48d751a8d66bbbde1650',1,'Solver::Solver(const Node &amp;initialNode)']]]
+  ['operator_21_3d_0',['operator!=',['../class_node.html#a44c0d94954cd23c4d3675e5afe4ae93d',1,'Node']]],
+  ['operator_28_29_1',['operator()',['../struct_node_cmp.html#a8899651c55dc1e29663275a2ccebace7',1,'NodeCmp']]],
+  ['operator_3d_3d_2',['operator==',['../class_node.html#ae5d55492a2ff9b0efc8744076480bb11',1,'Node']]]
 ];
