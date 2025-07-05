@@ -12,7 +12,7 @@
 
 TEST_CASE( "Basic Operations for Max Heap", "[main]" )
 {
-    auto b = BucketQueue<std::string, int>(10);
+    auto b = BucketQueue<std::string, int>();
 
     std::vector<std::string> elements {"low", "medium low",
         "medium", "high", "highest"};
@@ -74,7 +74,7 @@ TEST_CASE( "Basic Operations for Max Heap", "[main]" )
 
 TEST_CASE( "Basic Operations for Min Heap", "[main]" )
 {
-    auto b = BucketQueue<std::string, int, std::greater<int>()>(10);
+    auto b = BucketQueue<std::string, int, std::greater<int>()>();
 
     std::vector<std::string> elements {"highest", "high",
         "medium", "medium low", "low"};
@@ -136,7 +136,7 @@ TEST_CASE( "Basic Operations for Min Heap", "[main]" )
 
 TEST_CASE( "Same Priority", "[main]" )
 {
-    auto b = BucketQueue<std::string, int, std::greater<int>()>(10);
+    auto b = BucketQueue<std::string, int, std::greater<int>()>();
 
     std::vector<std::string> samePriorityElements {"medium1", "medium2"};
 
@@ -161,7 +161,7 @@ TEST_CASE( "Same Priority", "[main]" )
 TEST_CASE( "Basic Operations for Min Heap Node", "[main]" )
 {
 
-    auto b = BucketQueue<Node, unsigned int, std::greater<Node>()>(100);
+    auto b = BucketQueue<Node, unsigned int, std::greater<Node>()>();
     constexpr std::size_t N = 3;
 
     Node startNode({8, 4, 2, 1, constants::EMPTY, 5, 6, 7, 3});

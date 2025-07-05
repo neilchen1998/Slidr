@@ -96,7 +96,7 @@ TEST_CASE( "Priority Queue Solver", "[main]" )
 TEST_CASE( "Bucket Queue Solver", "[main]" )
 {
     using BucketMinPQ = BucketQueue<std::shared_ptr<Node>, unsigned int, std::greater<Node>>;
-    auto pq = BucketMinPQ(50);
+    auto pq = BucketMinPQ();
 
     SECTION("Puzzle 0", "[trivial case]")
     {
