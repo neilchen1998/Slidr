@@ -2,18 +2,17 @@
 #define INCLUDE_CONTAINER_BUCKETQUEUE_H_
 
 #include <vector>   // std::vector
-#include <list>   // std::list
 #include <cstddef>  // std::size_t
-#include <tuple>    // std::tuple
 #include <memory>   // std::shared_ptr
 #include <type_traits>  // std::is_same
 #include <utility>  // std::forward
 #include <bitset>  // std::bitset
+#include <concepts>  // std::unsigned_integral
 
 /// @brief The interface (abstract class) of Bucket Queue class
 /// @tparam T The element type
 /// @tparam PriorityType The priority type
-template<typename T, typename PriorityType = std::size_t>
+template<typename T, std::unsigned_integral PriorityType = std::size_t>
 class BucketQueueBase
 {
     virtual std::size_t size() const noexcept = 0;
@@ -29,7 +28,7 @@ class BucketQueueBase
 /// @tparam PriorityType The priority type (default is std::size_t)
 /// @tparam Compare The compare struct (default is std::less)
 /// @tparam MaxPriorityLimit The number of buckets (default value is 64)
-template<typename T, typename PriorityType = std::size_t, typename Compare = std::less<PriorityType>, std::size_t MaxPriorityLimit = 64>
+template<typename T, std::unsigned_integral PriorityType = std::size_t, typename Compare = std::less<PriorityType>, std::size_t MaxPriorityLimit = 64>
 class BucketQueue : public BucketQueueBase <T, PriorityType>
 {
     // Determine if this is a max queue

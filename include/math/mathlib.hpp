@@ -4,7 +4,6 @@
 #include <cstddef>  // std::size_t
 #include <span> // std::span
 #include <functional>   // std::hash
-#include <numeric>   // std::accumulate, std::reduce
 #include <concepts> // std::integral
 // #include <boost/functional/hash.hpp> // if you want to use boost::hash_combine
 
