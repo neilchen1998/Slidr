@@ -95,14 +95,14 @@ TEST_CASE( "Priority Queue Solver", "[main]" )
 
 TEST_CASE( "Bucket Queue Solver", "[main]" )
 {
-    using BucketPQ = BucketQueue<std::shared_ptr<Node>, unsigned int, std::greater<Node>>;
-    auto pq = BucketPQ(50);
+    using BucketMinPQ = BucketQueue<std::shared_ptr<Node>, unsigned int, std::greater<Node>>;
+    auto pq = BucketMinPQ(50);
 
     SECTION("Puzzle 0", "[trivial case]")
     {
         // 123456780
         std::vector<int> layout {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
-        auto s = Solver<BucketPQ>(layout, pq);
+        auto s = Solver<BucketMinPQ>(layout, pq);
         auto [isSolved, numOfIters] = s.SolvePuzzle();
 
         REQUIRE (isSolved);
@@ -113,7 +113,7 @@ TEST_CASE( "Bucket Queue Solver", "[main]" )
     {
         // 120453786
         std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
-        auto s = Solver<BucketPQ>(layout, pq);
+        auto s = Solver<BucketMinPQ>(layout, pq);
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
         auto solution = s.GetSolution();
@@ -127,7 +127,7 @@ TEST_CASE( "Bucket Queue Solver", "[main]" )
     {
         // 536208417
         std::vector<int> layout {5, 3, 6, 2, constants::EMPTY, 8, 4, 1, 7};
-        auto s = Solver<BucketPQ>(layout, pq);
+        auto s = Solver<BucketMinPQ>(layout, pq);
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
         auto solution = s.GetSolution();
@@ -141,7 +141,7 @@ TEST_CASE( "Bucket Queue Solver", "[main]" )
     {
         // 318652470
         std::vector<int> layout {3, 1, 8, 6, 5, 2, 4, 7, constants::EMPTY};
-        auto s = Solver<BucketPQ>(layout, pq);
+        auto s = Solver<BucketMinPQ>(layout, pq);
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
         auto solution = s.GetSolution();
@@ -155,7 +155,7 @@ TEST_CASE( "Bucket Queue Solver", "[main]" )
     {
         // 231408576
         std::vector<int> layout {2, 3, 1, 4, constants::EMPTY, 8, 5, 7, 6};
-        auto s = Solver<BucketPQ>(layout, pq);
+        auto s = Solver<BucketMinPQ>(layout, pq);
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
         auto solution = s.GetSolution();
@@ -169,7 +169,7 @@ TEST_CASE( "Bucket Queue Solver", "[main]" )
     {
         // 127405836
         std::vector<int> layout {1, 2, 7, 4, constants::EMPTY, 5, 8, 3, 6};
-        auto s = Solver<BucketPQ>(layout, pq);
+        auto s = Solver<BucketMinPQ>(layout, pq);
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
         auto solution = s.GetSolution();

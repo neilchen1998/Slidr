@@ -1,35 +1,18 @@
 #include <vector>   // std::vector
-#include <random>   // std::mt19937
-#include <span> // std::span
-#include <nanobench.h>  // ankerl::nanobench::Bench
-#include <ranges>   // std::views::iota
-#include <algorithm>   // std::shuffle
-#include <chrono>   // std::chrono::steady_clock::now
 #include <fstream>  // std::fstream
-
-#include "constants/constantslib.hpp"
-#include "node/nodelib.hpp"
-
-#include <stdlib.h> // EXIT_SUCCESS, EXIT_FAILURE
-#include <vector>    // std::vector
-#include <algorithm>    // std::ranges::equal
-#include <optional> // std::optional
-#include <chrono>   // std::chrono::high_resolution_clock, std::chrono::duration_cast
-#include <fmt/core.h>   // fmt::print
-#include <random>
+#include <nanobench.h>  // ankerl::nanobench::Bench
 
 #include "solver/solverlib.hpp" // Solver
 #include "constants/constantslib.hpp"   // constants::EMPTY
-#include "prompt/promptlib.hpp" // prompt::parse_string_to_layout
 
-using BucketPQ = BucketQueue<std::shared_ptr<Node>, unsigned int, std::greater<Node>>;
+using BucketMinPQ = BucketQueue<std::shared_ptr<Node>, unsigned int, std::greater<Node>>;
 
 int main()
 {
     std::ofstream file("./build/benchmarks/solver-results.csv");
     ankerl::nanobench::Bench bench;
 
-    auto bucket = BucketPQ(50);
+    auto bucket = BucketMinPQ(30);
 
     std::vector<int> layout0 {1, 7, constants::EMPTY, 8, 4, 3, 5, 2, 6};
     std::vector<int> layout1 {6, 3, 8, 2, 1, 7, constants::EMPTY, 5, 4};
@@ -50,11 +33,11 @@ int main()
     bench.minEpochIterations(10)
         .run("Bucket Queue Solver", [&]
     {
-        Solver<BucketPQ>(layout0, bucket).SolvePuzzle();
-        Solver<BucketPQ>(layout1, bucket).SolvePuzzle();
-        Solver<BucketPQ>(layout2, bucket).SolvePuzzle();
-        Solver<BucketPQ>(layout3, bucket).SolvePuzzle();
-        Solver<BucketPQ>(layout4, bucket).SolvePuzzle();
+        Solver<BucketMinPQ>(layout0, bucket).SolvePuzzle();
+        Solver<BucketMinPQ>(layout1, bucket).SolvePuzzle();
+        Solver<BucketMinPQ>(layout2, bucket).SolvePuzzle();
+        Solver<BucketMinPQ>(layout3, bucket).SolvePuzzle();
+        Solver<BucketMinPQ>(layout4, bucket).SolvePuzzle();
     });
 
     // Render the results to a csv file
