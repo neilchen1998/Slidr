@@ -12,8 +12,8 @@
 template<typename T, typename PriorityType = std::size_t, typename Compare = std::less<PriorityType>>
 class BucketQueue
 {
-    // Determine if this is a min. queue
-    static constexpr bool isMinQueue = std::is_same<Compare, std::less<PriorityType>>::value;
+    // Determine if this is a max queue
+    static constexpr bool isMaxQueue = std::is_same<Compare, std::less<PriorityType>>::value;
 
 public:
     explicit BucketQueue(std::size_t maxPriority) :
@@ -24,7 +24,7 @@ public:
     {
         // Initialize best priority based on the compare type
         // NOTE: if constexpr enables compile-time conditional branching
-        if constexpr (isMinQueue)
+        if constexpr (isMaxQueue)
         {
             bestPriority_ = 0;
         }
@@ -84,7 +84,7 @@ public:
     /// @param priority The priority
     void push(const T& ele, PriorityType priority)
     {
-        if (priority > maxPriority_)
+        if (priority >= maxPriority_)
         {
             throw std::out_of_range("Priority exceeds the max limit.");
         }
@@ -92,7 +92,7 @@ public:
         buckets_[priority].push_back(ele);
         ++size_;
 
-        if constexpr (isMinQueue)
+        if constexpr (isMaxQueue)
         {
             bestPriority_ = (priority > bestPriority_) ? priority : bestPriority_;
         }
@@ -107,7 +107,7 @@ public:
     /// @param priority The priority
     void push(T&& ele, PriorityType priority)
     {
-        if (priority > maxPriority_)
+        if (priority >= maxPriority_)
         {
             throw std::out_of_range("Priority exceeds the max limit.");
         }
@@ -115,7 +115,7 @@ public:
         buckets_[priority].push_back(std::move(ele));
         ++size_;
 
-        if constexpr (isMinQueue)
+        if constexpr (isMaxQueue)
         {
             bestPriority_ = (priority > bestPriority_) ? priority : bestPriority_;
         }
@@ -128,7 +128,7 @@ public:
 private:
     void UpdateHigestPriority()
     {
-        if constexpr (isMinQueue)
+        if constexpr (isMaxQueue)
         {
             for (PriorityType i = bestPriority_; i > 0; --i)
             {
