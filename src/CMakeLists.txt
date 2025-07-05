@@ -26,4 +26,4 @@ target_link_libraries(solver_library INTERFACE node_library container_library)
 target_compile_features(constants_library INTERFACE cxx_std_17)  # requires C++17 for inline variables
 target_compile_features(math_library INTERFACE cxx_std_20)  # requires C++20 for concept
 target_compile_features(prompt_library PUBLIC cxx_std_20)   # requires C++20 for std::span
-target_compile_features(container_library PUBLIC cxx_std_17)  # requires C++17 for constexpr if
+target_compile_features(container_library PUBLIC cxx_std_20)  # requires C++20 for concepts & constexpr if
