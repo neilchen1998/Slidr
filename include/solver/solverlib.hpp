@@ -8,14 +8,13 @@
 #include <tuple>    // std::tuple
 #include <string>    // std::string
 #include <memory> // std::shared_ptr, std::make_shared
-#include <algorithm>    // std::reverse
 #include <type_traits>    // std::is_base_of
 #include <fmt/core.h>   // fmt::print
 
 #include "node/nodelib.hpp" // Node
 #include "solver/solverlib.hpp" // Solver
 #include "constants/constantslib.hpp"   // constants::RIGHT, constants::LEFT, etc.s
-#include "container/bucketqueuelib.hpp"
+#include "container/bucketqueuelib.hpp" // BucketQueueBase
 
 using DefaultPQ = std::priority_queue<std::shared_ptr<Node>,  std::vector<std::shared_ptr<Node>>, NodeCmp>;
 
