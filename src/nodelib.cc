@@ -19,12 +19,12 @@ Node::Node(std::vector<int> input)
     CalculateManhattanDistance();
 }
 
-Node::Node(std::vector<int> input, int posX) : state(input), posX(posX), depth(0), hashValue(hash_range(std::span(state)))
+Node::Node(std::vector<int> input, int posX) : state(input), posX(posX), hashValue(hash_range(std::span(state))), depth(0)
 {
     CalculateManhattanDistance();
 }
 
-Node::Node(std::vector<int> input, int posX, unsigned long d, std::shared_ptr<const Node> p, short m) : state(input), posX(posX), depth(d), parent(p), move(m), hashValue(hash_range(std::span(state)))
+Node::Node(std::vector<int> input, int posX, unsigned long d, std::shared_ptr<const Node> p, short m) : state(input), posX(posX), hashValue(hash_range(std::span(state))), depth(d), parent(p), move(m)
 {
     CalculateManhattanDistance();
 }

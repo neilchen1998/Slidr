@@ -7,7 +7,7 @@
 #include <tuple>    // std::tuple
 #include <memory>   // std::shared_ptr
 #include <type_traits>  // std::is_same
-#include <iostream>
+#include <utility>  // std::forward
 
 template<typename T, typename PriorityType = std::size_t, typename Compare = std::less<PriorityType>>
 class BucketQueue
@@ -36,14 +36,14 @@ public:
 
     /// @brief Returns the number of elements
     /// @return The number of elements
-    inline std::size_t size() const noexcept
+    [[nodiscard]] inline std::size_t size() const noexcept
     {
         return size_;
     }
 
     /// @brief Checks whether the container adaptor is empty
     /// @return True if the container adaptor is empty
-    inline bool empty() const noexcept
+    [[nodiscard]] inline bool empty() const noexcept
     {
         return (size_ == 0);
     }
@@ -51,7 +51,7 @@ public:
     /// @brief Accesses the highest priority element
     /// if there are multiple elements with the same priority, the top one is the last one (LIFO)
     /// @return A const reference to the top element
-    const T& top()
+    [[nodiscard]] const T& top() const
     {
         if (empty())
         {
@@ -84,22 +84,7 @@ public:
     /// @param priority The priority
     void push(const T& ele, PriorityType priority)
     {
-        if (priority >= maxPriority_)
-        {
-            throw std::out_of_range("Priority exceeds the max limit.");
-        }
-
-        buckets_[priority].push_back(ele);
-        ++size_;
-
-        if constexpr (isMaxQueue)
-        {
-            bestPriority_ = (priority > bestPriority_) ? priority : bestPriority_;
-        }
-        else
-        {
-           bestPriority_ = (priority < bestPriority_) ? priority : bestPriority_;
-        }
+        emplace(ele, priority);
     }
 
     /// @brief Push the element into the heap with specified priority
@@ -107,12 +92,21 @@ public:
     /// @param priority The priority
     void push(T&& ele, PriorityType priority)
     {
+        emplace(std::move(ele), priority);
+    }
+
+    /// @brief Empplace the element into the heap with specified priority
+    /// @param ele The element (rvalue)
+    /// @param priority The priority
+    template<typename U>
+    void emplace(U&& ele, PriorityType priority)
+    {
         if (priority >= maxPriority_)
         {
             throw std::out_of_range("Priority exceeds the max limit.");
         }
 
-        buckets_[priority].push_back(std::move(ele));
+        buckets_[priority].push_back(std::forward<U>(ele));
         ++size_;
 
         if constexpr (isMaxQueue)

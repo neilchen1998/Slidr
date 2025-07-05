@@ -1,14 +1,13 @@
 #include <vector>   // std::vector
 #include <random>   // std::mt19937
 #include <span> // std::span
-#include <nanobench.h>  // ankerl::nanobench::Bench
 #include <ranges>   // std::views::iota
 #include <algorithm>   // std::shuffle
 #include <chrono>   // std::chrono::steady_clock::now
 #include <fstream>  // std::fstream
+#include <nanobench.h>  // ankerl::nanobench::Bench
 
-#include "constants/constantslib.hpp"
-#include "node/nodelib.hpp"
+#include "constants/constantslib.hpp"   // constants::EIGHT_PUZZLE_SIZE
 
 int GetManhattanDistance(std::span<int> s)
 {

@@ -17,7 +17,7 @@
 #include "container/bucketqueuelib.hpp"
 
 using DefaultPQ = std::priority_queue<std::shared_ptr<Node>,  std::vector<std::shared_ptr<Node>>, NodeCmp>;
-using BucketPQ = BucketQueue<std::shared_ptr<Node>, unsigned int, std::greater<Node>>;
+using BucketMinPQ = BucketQueue<std::shared_ptr<Node>, unsigned int, std::greater<Node>>;
 
 template<typename PQ = DefaultPQ>
 class Solver
@@ -30,13 +30,13 @@ public:
     {
         std::shared_ptr<Node> n = std::make_shared<Node>(initialLayout);
 
-        if constexpr (std::is_same<PQ, BucketPQ>::value == true)
+        if constexpr (std::is_same<PQ, BucketMinPQ>::value == true)
         {
-            pq_.push(n, n->GetTotalCost());
+            pq_.emplace(n, n->GetTotalCost());
         }
         else
         {
-            pq_.push(n);
+            pq_.emplace(n);
         }
     }
 
@@ -45,13 +45,13 @@ public:
     Solver(const Node& initialNode) : pq_(), iter_(0)
     {
         std::shared_ptr<Node> n = std::make_shared<Node>(initialNode);
-        if constexpr (std::is_same<PQ, BucketPQ>::value == true)
+        if constexpr (std::is_same<PQ, BucketMinPQ>::value == true)
         {
-            pq_.push(n, n->GetTotalCost());
+            pq_.emplace(n, n->GetTotalCost());
         }
         else
         {
-            pq_.push(n);
+            pq_.emplace(n);
         }
     }
 
@@ -87,9 +87,9 @@ public:
                 // Check if we have seen this before
                 if (!visited_.count(curHashValue))
                 {
-                    if constexpr (std::is_same<PQ, BucketPQ>::value == true)
+                    if constexpr (std::is_same<PQ, BucketMinPQ>::value == true)
                     {
-                        pq_.push(std::make_shared<Node>(child), child.GetTotalCost());
+                        pq_.emplace(std::make_shared<Node>(child), child.GetTotalCost());
                     }
                     else
                     {
