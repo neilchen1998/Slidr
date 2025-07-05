@@ -26,7 +26,7 @@ public:
 
     /// @brief The constructor
     /// @param initialLayout the initial layout of the puzzle (vector type)
-    explicit Solver(std::vector<int> initialLayout, PQ pq = PQ()) : pq_(std::move(pq)), iter(0)
+    explicit Solver(std::vector<int> initialLayout, PQ pq = PQ()) : pq_(std::move(pq)), iter_(0)
     {
         std::shared_ptr<Node> n = std::make_shared<Node>(initialLayout);
 
@@ -42,7 +42,7 @@ public:
 
     /// @brief The constructor
     /// @param initialNode the initial layout of the puzzle (vector type)
-    Solver(const Node& initialNode) : pq_(), iter(0)
+    Solver(const Node& initialNode) : pq_(), iter_(0)
     {
         std::shared_ptr<Node> n = std::make_shared<Node>(initialNode);
         if constexpr (std::is_same<PQ, BucketPQ>::value == true)
@@ -65,19 +65,19 @@ public:
         while (!pq_.empty() && i < 1'000'000)
         {
             // Get the top node
-            curNode = pq_.top();
+            curNode_ = pq_.top();
 
             // Check if we have solved the problem
-            if (curNode->IsSolved())
+            if (curNode_->IsSolved())
             {
                 GeneratePath();
-                return std::tuple{curNode->IsSolved(), iter};
+                return std::tuple{curNode_->IsSolved(), iter_};
             }
 
             pq_.pop();
 
             // Get all fessible children
-            std::vector<Node> children = curNode->GetChildNodes(curNode->GetDepth(), curNode);
+            std::vector<Node> children = curNode_->GetChildNodes(curNode_->GetDepth(), curNode_);
 
             // Loop through each child
             for(const Node& child : children)
@@ -85,20 +85,23 @@ public:
                 auto curHashValue = child.GetHashValue();
 
                 // Check if we have seen this before
-                if (visited.count(curHashValue) == 0)
+                if (!visited_.count(curHashValue))
                 {
-                    std::shared_ptr<Node> c = std::make_shared<Node>(child);
                     if constexpr (std::is_same<PQ, BucketPQ>::value == true)
                     {
-                        pq_.push(c, c->GetTotalCost());
+                        pq_.push(std::make_shared<Node>(child), child.GetTotalCost());
                     }
                     else
                     {
-                        pq_.push(c);
+                        pq_.emplace(std::make_shared<Node>(child));
                     }
-                    visited.insert(curHashValue);
+                    visited_.insert(curHashValue);
 
-                    ++iter;
+                    ++iter_;
+                }
+                else
+                {
+                    continue;
                 }
             }
 
@@ -107,7 +110,7 @@ public:
 
         // If we reach here that means we have run out of moves and therefore
         // we cannot solve the puzzle.
-        return std::tuple{false, iter};
+        return std::tuple {false, iter_};
     }
 
     /// @brief Gets the optimal number of moves
@@ -115,38 +118,38 @@ public:
     inline std::size_t GetNumOfMoves() const
     {
         // The path includes the start state
-        return (path.size() - 1);
+        return (path_.size() - 1);
     }
 
     /// @brief Gets the solution
     /// @return The solution
     inline std::string GetSolution() const
     {
-        return solution;
+        return solution_;
     }
 
     /// @brief Gets the path (all the nodes from the start to the end)
     /// @return The path
     inline std::vector<Node> GetPath() const
     {
-        return path;
+        return path_;
     }
 
     /// @brief Print out the path (from the start node to the goal)
     void PrintPath() const
     {
         // Check if the puzzle is solved
-        if (!curNode->IsSolved())
+        if (!curNode_->IsSolved())
         {
             fmt::print("The puzzle could not be solved!\n");
             return;
         }
 
         // Print out the path
-        for (size_t i = 0; i < path.size(); ++i)
+        for (size_t i = 0; i < path_.size(); ++i)
         {
             fmt::print("Step: {}\n", i);
-            path[i].Print();
+            path_[i].Print();
         }
     }
 
@@ -158,17 +161,20 @@ private:
         std::vector<short> sol;
 
         // Start backtracking
-        path.push_back(*curNode);
-        sol.push_back(curNode->GetMove());
-        std::shared_ptr<const Node> p = curNode->GetParent();
+        path_.push_back(*curNode_);
+        sol.push_back(curNode_->GetMove());
+        std::shared_ptr<const Node> p = curNode_->GetParent();
         while (p != nullptr)
         {
-            path.push_back(*p);
+            path_.push_back(*p);
             sol.push_back(p->GetMove());
             p = p->GetParent();
         }
 
-        std::reverse(path.begin(), path.end());
+        std::reverse(path_.begin(), path_.end());
+
+        // Pre-allocate memory for solution string
+        solution_.reserve(sol.size() * sizeof("←"));
 
         // Construct the solution
         auto itr = sol.crbegin();
@@ -178,19 +184,19 @@ private:
             switch (*itr)
             {
             case constants::RIGHT:
-                solution += "←";
+                solution_ += "←";
                 break;
 
             case constants::UP:
-                solution += "↓";
+                solution_ += "↓";
                 break;
 
             case constants::LEFT:
-                solution += "→";
+                solution_ += "→";
                 break;
 
             case constants::DOWN:
-                solution += "↑";
+                solution_ += "↑";
                 break;
 
             default:
@@ -204,23 +210,23 @@ private:
 private:
 
     /// @brief the cache that stores all visited nodes
-    std::unordered_set<std::size_t> visited;
+    std::unordered_set<std::size_t> visited_;
 
     /// @brief the priority queue that stores all candidate nodes
     PQ pq_;
 
     /// @brief the current node
     /// NOTE: since top() returns a T& so this can not be replaced by a pointer
-    std::shared_ptr<Node> curNode;
+    std::shared_ptr<Node> curNode_;
 
     /// @brief the number of iterations
-    unsigned long iter;
+    unsigned long iter_;
 
     /// @brief the solution
-    std::string solution;
+    std::string solution_;
 
     /// @brief the path
-    std::vector<Node> path;
+    std::vector<Node> path_;
 };
 
 #endif // INCLUDE_SOLVER_SOLVERLIB_H_
