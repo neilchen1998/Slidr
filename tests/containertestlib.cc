@@ -161,7 +161,7 @@ TEST_CASE( "Same Priority", "[main]" )
 TEST_CASE( "Basic Operations for Min Heap Node", "[main]" )
 {
 
-    auto b = BucketQueue<Node, unsigned unsigned short, std::greater<Node>()>();
+    auto b = BucketQueue<Node, unsigned short, std::greater<Node>()>();
     constexpr std::size_t N = 3;
 
     Node startNode({8, 4, 2, 1, constants::EMPTY, 5, 6, 7, 3});
