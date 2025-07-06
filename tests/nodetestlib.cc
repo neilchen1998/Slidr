@@ -12,9 +12,9 @@
 
 struct Tester : Node
 {
-    std::vector<int> GetLayout() const { return this-> state; }
+    std::vector<int> GetLayout() const { return this-> state_; }
 
-    int GetPosX() const { return this->posX; }
+    int GetPosX() const { return this->posX_; }
 };
 
 TEST_CASE( "Node Initialization", "[main]" )

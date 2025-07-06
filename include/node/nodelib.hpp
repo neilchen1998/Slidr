@@ -50,7 +50,7 @@ public:
     /// @return True if they are identical
     inline bool operator==(const Node &rhs) const
     {
-        return state == rhs.state;
+        return state_ == rhs.state_;
     }
 
     /// @brief Compares if two nodes (puzzles) are NOT identical
@@ -77,27 +77,30 @@ private:
     /// @brief Calcualte the Manhattan distance
     void CalculateManhattanDistance();
 
+    /// @brief Calcualte the linear conflict value
+    void CalculateLinearConflict();
+
 protected:
     /// @brief The state of the node
-    std::vector<int> state;
+    std::vector<int> state_;
 
     /// @brief The position of The empty piece
-    int posX;
+    int posX_;
 
     /// @brief The Manhattan distance
-    unsigned int manhattanDistance;
+    unsigned int manhattanDistance_;
 
     /// @brief The hash value
-    std::size_t hashValue;
+    std::size_t hashValue_;
 
     /// @brief The depth of the node
-    unsigned int depth;
+    unsigned int depth_;
 
     /// @brief The parent of this node
-    std::shared_ptr<const Node> parent;
+    std::shared_ptr<const Node> parent_;
 
     /// @brief The move used to reach this node in terms of the empty space
-    short move;
+    short move_;
 };
 
 /// @brief the compare function for the priority queue
