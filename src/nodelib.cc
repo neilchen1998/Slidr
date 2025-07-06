@@ -2,6 +2,8 @@
 #include <algorithm> // std::ranges::find
 #include <memory> // std::shared_ptr, std::make_shared
 #include <ranges>   // std::views::iota
+#include <numeric>  // std::reduce
+#include <initializer_list>  // std::reduce
 #include <fmt/core.h>   // fmt::print
 
 #include "math/mathlib.hpp" // hash_range
@@ -176,20 +178,22 @@ short Node::GetMove() const noexcept
 
 void Node::CalculateManhattanDistance()
 {
-    manhattanDistance = std::reduce(
-    std::views::iota(0, constants::EIGHT_PUZZLE_NUM).begin(),
-    std::views::iota(0, constants::EIGHT_PUZZLE_NUM).end(),
-    0,
-    [&](int acc, int i) {
-        if (state[i] == constants::EMPTY)
-            return acc;
+    manhattanDistance = std::reduce
+    (
+        std::views::iota(0, constants::EIGHT_PUZZLE_NUM).begin(),
+        std::views::iota(0, constants::EIGHT_PUZZLE_NUM).end(),
+        0,
+        [&](int acc, int i)
+        {
+            if (state[i] == constants::EMPTY)
+                return acc;
 
-        int curRow = (state[i] - 1) / constants::EIGHT_PUZZLE_SIZE;
-        int curCol = (state[i] - 1) % constants::EIGHT_PUZZLE_SIZE;
-        int goalRow = i / constants::EIGHT_PUZZLE_SIZE;
-        int goalCol = i % constants::EIGHT_PUZZLE_SIZE;
+            int curRow = (state[i] - 1) / constants::EIGHT_PUZZLE_SIZE;
+            int curCol = (state[i] - 1) % constants::EIGHT_PUZZLE_SIZE;
+            int goalRow = i / constants::EIGHT_PUZZLE_SIZE;
+            int goalCol = i % constants::EIGHT_PUZZLE_SIZE;
 
-        return acc + std::abs(goalRow - curRow) + std::abs(goalCol - curCol);
-    }
-);
+            return acc + std::abs(goalRow - curRow) + std::abs(goalCol - curCol);
+        }
+    );
 }
