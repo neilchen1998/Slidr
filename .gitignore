@@ -1,11 +1,6 @@
 # build folder generated from CMake
 build/*
 
-# but want the docs
-!build/docs/html/*.js
-!build/docs/html/*.html
-!build/docs/html/*.css
-
 # vscode
 .vscode/*
 
