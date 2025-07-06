@@ -30,6 +30,10 @@ public:
     /// @return The manhattan distance
     unsigned int GetManhattanDistance() const noexcept;
 
+    /// @brief Gets the linear conflic of the puzzle
+    /// @return The linear conflic
+    unsigned int GetLinearConflict() const noexcept;
+
     /// @brief Gets the hash value of the node
     /// @return The hash value of the node
     std::size_t GetHashValue() const noexcept;
@@ -90,6 +94,9 @@ protected:
     /// @brief The Manhattan distance
     unsigned int manhattanDistance_;
 
+    /// @brief The number of linear conflicts
+    unsigned int linearConflict_;
+
     /// @brief The hash value
     std::size_t hashValue_;
 
@@ -103,7 +110,7 @@ protected:
     short move_;
 };
 
-/// @brief the compare function for the priority queue
+/// @brief The comparison function for the priority queue
 struct NodeCmp
 {
     bool operator()(std::shared_ptr<Node> lhs, std::shared_ptr<Node> rhs)

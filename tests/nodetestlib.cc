@@ -19,7 +19,7 @@ struct Tester : Node
 
 TEST_CASE( "Node Initialization", "[main]" )
 {
-    SECTION("Unsolved", "[some_details]")
+    SECTION("Unsolved with No Linear Conflict", "[some_details]")
     {
         std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
         Node n(layout);
@@ -28,6 +28,21 @@ TEST_CASE( "Node Initialization", "[main]" )
         REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetLayout(), layout));
         REQUIRE (static_cast<const Tester&>(n).GetPosX() == 2);
         REQUIRE (n.GetManhattanDistance() == 2);
+        REQUIRE (n.GetLinearConflict() == 0);
+        REQUIRE (n.GetHashValue() == hash_range(std::span(layout)));
+        REQUIRE (n.IsSolved() == false);
+    }
+
+    SECTION("Unsolved with Some Linear Conflicts", "[some_details]")
+    {
+        std::vector<int> layout {4, 2, 5, 1, constants::EMPTY, 6, 3, 8, 7};
+        Node n(layout);
+
+        // tests all its members upon initialization
+        REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetLayout(), layout));
+        REQUIRE (static_cast<const Tester&>(n).GetPosX() == 4);
+        REQUIRE (n.GetManhattanDistance() == 10);
+        REQUIRE (n.GetLinearConflict() == 2);
         REQUIRE (n.GetHashValue() == hash_range(std::span(layout)));
         REQUIRE (n.IsSolved() == false);
     }
@@ -41,6 +56,7 @@ TEST_CASE( "Node Initialization", "[main]" )
         REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetLayout(), layout));
         REQUIRE (static_cast<const Tester&>(n).GetPosX() == 8);
         REQUIRE (n.GetManhattanDistance() == 0);
+        REQUIRE (n.GetLinearConflict() == 0);
         REQUIRE (n.GetHashValue() == hash_range(std::span(layout)));
         REQUIRE (n.IsSolved());
     }

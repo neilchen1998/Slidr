@@ -12,23 +12,29 @@
 
 Node::Node(std::vector<int> input)
     : state_(input),
-      posX_(std::ranges::find(input, constants::EMPTY) - input.begin()),
-      hashValue_(hash_range(std::span(state_))),
-      depth_(0),
-      parent_(nullptr),
-      move_(-1)
+    posX_(std::ranges::find(input, constants::EMPTY) - input.begin()),
+    linearConflict_(0),
+    hashValue_(hash_range(std::span(state_))),
+    depth_(0),
+    parent_(nullptr),
+    move_(-1)
 {
     CalculateManhattanDistance();
+    CalculateLinearConflict();
 }
 
-Node::Node(std::vector<int> input, int posX) : state_(input), posX_(posX), hashValue_(hash_range(std::span(state_))), depth_(0)
+Node::Node(std::vector<int> input, int posX)
+    : state_(input), posX_(posX), linearConflict_(0), hashValue_(hash_range(std::span(state_))), depth_(0)
 {
     CalculateManhattanDistance();
+    CalculateLinearConflict();
 }
 
-Node::Node(std::vector<int> input, int posX, unsigned long d, std::shared_ptr<const Node> p, short m) : state_(input), posX_(posX), hashValue_(hash_range(std::span(state_))), depth_(d), parent_(p), move_(m)
+Node::Node(std::vector<int> input, int posX, unsigned long d, std::shared_ptr<const Node> p, short m)
+    : state_(input), posX_(posX), linearConflict_(0), hashValue_(hash_range(std::span(state_))), depth_(d), parent_(p), move_(m)
 {
     CalculateManhattanDistance();
+    CalculateLinearConflict();
 }
 
 std::vector<short> Node::AvailableMoves() const
@@ -123,6 +129,11 @@ unsigned int Node::GetManhattanDistance() const noexcept
     return manhattanDistance_;
 }
 
+unsigned int Node::GetLinearConflict() const noexcept
+{
+    return linearConflict_;
+}
+
 std::size_t Node::GetHashValue() const noexcept
 {
     return hashValue_;
@@ -135,7 +146,7 @@ unsigned int Node::GetDepth() const noexcept
 
 unsigned int Node::GetTotalCost() const noexcept
 {
-    return GetManhattanDistance() + GetDepth();
+    return GetManhattanDistance() + 2 * GetLinearConflict() + GetDepth();
 }
 
 void Node::Print() const
@@ -200,5 +211,81 @@ void Node::CalculateManhattanDistance()
 
 void Node::CalculateLinearConflict()
 {
+    // Column-wise comparison
+    for (int row = 0; row < constants::EIGHT_PUZZLE_SIZE; ++row)
+    {
+        for (int col1 = 0; col1 < constants::EIGHT_PUZZLE_SIZE; ++col1)
+        {
+            // Get the index
+            int i = row * constants::EIGHT_PUZZLE_SIZE + col1;
 
+            // Skip if the element is an empty piece
+            if (state_[i] == constants::EMPTY)  continue;
+
+            int a = state_[i] - 1;
+
+            // Check if the element is in its goal row
+            if ((a / constants::EIGHT_PUZZLE_SIZE) != row)   continue;
+
+            for (int col2 = col1 + 1; col2 < constants::EIGHT_PUZZLE_SIZE; ++col2)
+            {
+                // Get the index
+                int j = row * constants::EIGHT_PUZZLE_SIZE + col2;
+
+                // Skip if the element is an empty piece
+                if (state_[j] == constants::EMPTY)  continue;
+
+                int b = state_[j] - 1;
+
+                // Check if the element is in its goal row
+                if ((b / constants::EIGHT_PUZZLE_SIZE) != row)   continue;
+
+                // Check for conflicts
+                // There is a conflict when element A is greater than element B
+                if ((a % constants::EIGHT_PUZZLE_SIZE) >  (b % constants::EIGHT_PUZZLE_SIZE))
+                {
+                    ++linearConflict_;
+                }
+            }
+        }
+    }
+
+    // Column-wise comparison
+    for (int col = 0; col < constants::EIGHT_PUZZLE_SIZE; ++col)
+    {
+        for (int row1 = 0; row1 < constants::EIGHT_PUZZLE_SIZE; ++row1)
+        {
+            // Get the index
+            int i = row1 * constants::EIGHT_PUZZLE_SIZE + col;
+
+            // Skip if the element is an empty piece
+            if (state_[i] == constants::EMPTY)  continue;
+
+            int a = state_[i] - 1;
+
+            // Check if the element is in its goal col
+            if ((a % constants::EIGHT_PUZZLE_SIZE) != col)   continue;
+
+            for (int row2 = row1 + 1; row2 < constants::EIGHT_PUZZLE_SIZE; ++row2)
+            {
+                // Get the index
+                int j = row2 * constants::EIGHT_PUZZLE_SIZE + col;
+
+                // Skip if the element is an empty piece
+                if (state_[j] == constants::EMPTY)  continue;
+
+                int b = state_[j] - 1;
+
+                // Check if the element is in its goal col
+                if ((b % constants::EIGHT_PUZZLE_SIZE) != col)   continue;
+
+                // Check for conflicts
+                // There is a conflict when element A is greater than element B
+                if ((a / constants::EIGHT_PUZZLE_SIZE) >  (b / constants::EIGHT_PUZZLE_SIZE))
+                {
+                    ++linearConflict_;
+                }
+            }
+        }
+    }
 }
