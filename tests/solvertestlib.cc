@@ -91,6 +91,32 @@ TEST_CASE( "Priority Queue Solver", "[main]" )
         REQUIRE (depth == 20);
         REQUIRE (solution == "↑→↓↓←↑←↓→→↑←←↑→↓→↑←←");
     }
+
+    SECTION("Puzzle 6", "[general case]")
+    {
+        // 867254301
+        std::vector<int> layout {8, 6, 7, 2, 5, 4, 3, constants::EMPTY, 1};
+        Solver s = Solver(layout);
+        auto [isSolved, _] = s.SolvePuzzle();
+        auto depth = s.GetNumOfMoves();
+        auto solution = s.GetSolution();
+
+        REQUIRE (isSolved);
+        REQUIRE (depth == 31);
+    }
+
+    SECTION("Puzzle 7", "[general case]")
+    {
+        // 647850321
+        std::vector<int> layout {6, 4, 7, 8, 5, constants::EMPTY, 3, 2, 1};
+        Solver s = Solver(layout);
+        auto [isSolved, _] = s.SolvePuzzle();
+        auto depth = s.GetNumOfMoves();
+        auto solution = s.GetSolution();
+
+        REQUIRE (isSolved);
+        REQUIRE (depth == 31);
+    }
 }
 
 TEST_CASE( "Bucket Queue Solver", "[main]" )
@@ -177,5 +203,31 @@ TEST_CASE( "Bucket Queue Solver", "[main]" )
         REQUIRE (isSolved);
         REQUIRE (depth == 20);
         REQUIRE (solution == "↑→↓↓←↑←↓→→↑←←↑→↓→↑←←");
+    }
+
+    SECTION("Puzzle 6", "[general case]")
+    {
+        // 867254301
+        std::vector<int> layout {8, 6, 7, 2, 5, 4, 3, constants::EMPTY, 1};
+        auto s = Solver<BucketMinPQ>(layout, pq);
+        auto [isSolved, _] = s.SolvePuzzle();
+        auto depth = s.GetNumOfMoves();
+        auto solution = s.GetSolution();
+
+        REQUIRE (isSolved);
+        REQUIRE (depth == 31);
+    }
+
+    SECTION("Puzzle 7", "[general case]")
+    {
+        // 647850321
+        std::vector<int> layout {6, 4, 7, 8, 5, constants::EMPTY, 3, 2, 1};
+        auto s = Solver<BucketMinPQ>(layout, pq);
+        auto [isSolved, _] = s.SolvePuzzle();
+        auto depth = s.GetNumOfMoves();
+        auto solution = s.GetSolution();
+
+        REQUIRE (isSolved);
+        REQUIRE (depth == 31);
     }
 }

@@ -332,16 +332,37 @@ Therefore a better data structure is needed.
 A [bucket queue](https://en.wikipedia.org/wiki/Bucket_queue) is choosen to replace `std::priortiy_queue`.
 A bucket queue has `O(1)` for insertion, `O(#priorities)` for deletion, and `O(1)` for peak operation.
 Therefore, a bucket queue is faster than a `std::priortiy_queue`.
-In the benchmark, a bucket queue with **30** priorities is used.
-The rationale behind the number **30** is because the maximum Manhattan distance of an 8 puzzle problem is 32
-and not all pieces wil be that far away from the goal.
-The improvement is **~12%**.
-NOTE: however, this performance gain is vanished when we switch to using pointers instead of instances.
+The default number of buckets is **64**.
+The rationale behind that is due to the maximum number of moves is [31](http://w01fe.com/blog/2009/01/the-hardest-eight-puzzle-instances-take-31-moves-to-solve/).
+In this benchmark, a *bucket queue* with 32 buckets is added for eductional purposes.
+However, the downsize of using a bucket queue is the underlying container is *std::vector* and reallocations will be needed if there are two many nodes in a single bucket.
+This downside is pronounced when the given puzzle falls under the category of easy (less than 20 steps to solve).
+In this project, 9 test cases are used for benchmarking.
+Those are divided into three categories: **easy**, **medium**, and **hard**.
+**easy** takes less than 20 steps to solve, **medium** takes between 20 and 30, and **hard** takes 31 steps (which is the most steps possible).
+The result is shown in the following table:
 
-| benchmark             | op/s   | ns/op      |
-| :---------------------| :----- | :----------- |
-| Priority Queue Solver | 221.22 | 4,520,419.18 |
-| Bucket Queue Solver   | 246.93 | 4,049,751.35 |
+| Group 1: Easy Puzzles      | op/s     |
+| :------------------------- | :------- |
+| Priority Queue Solver      | 5,567.37 |
+| Bucket Queue Solver        | 4,130.10 |
+| Bucket Queue Solver (32)   | 4,088.10 |
+
+| Group 2: Easy Puzzles      | op/s   |
+| :------------------------- | :----- |
+| Priority Queue Solver      | 334.56 |
+| Bucket Queue Solver        | 424.59 |
+| Bucket Queue Solver (32)   | 426.45 |
+
+| Group 3: Hard Puzzles      | op/s   |
+| :------------------------- | :----- |
+| Priority Queue Solver      | 123.22 |
+| Bucket Queue Solver        | 139.41 |
+
+We can see that *bucket queue* wins in both the second group and the third group.
+This result aligns with the characteristic of *bucket queue* as you saw earlier.
+The *bucket queue* with 32 buckets performs similar to that with 64 buckets.
+However, it fails to solve the third category of puzzles due those puzzles have *f* value greater than 32.
 
 ### Interface Library
 

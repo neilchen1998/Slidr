@@ -50,6 +50,7 @@ int main()
 {
     std::ofstream file("./build/benchmarks/math-results.csv");
     ankerl::nanobench::Bench bench;
+    bench.title("Hash fFunctions");
 
     constexpr std::size_t N {constants::EIGHT_PUZZLE_NUM};
     std::random_device rd;
@@ -62,27 +63,27 @@ int main()
         v = distrib(gen);
     }
 
-    ankerl::nanobench::Bench().run("hash_vector", [&] {
+    bench.run("hash_vector", [&] {
         auto ret = hash_vector(vec);
         ankerl::nanobench::doNotOptimizeAway(ret);
     });
 
-    ankerl::nanobench::Bench().run("hash_range", [&] {
+    bench.run("hash_range", [&] {
         auto ret = hash_range(std::span(vec));
         ankerl::nanobench::doNotOptimizeAway(ret);
     });
 
-    ankerl::nanobench::Bench().run("hash_combine", [&] {
+    bench.run("hash_combine", [&] {
         std::size_t h = distrib(gen);
         hash_combine(h, distrib(gen), distrib(gen));
     });
 
-    ankerl::nanobench::Bench().run("boost_hash_combine", [&] {
+    bench.run("boost_hash_combine", [&] {
         std::size_t h = distrib(gen);
         boost_hash_combine(h, distrib(gen), distrib(gen));
     });
 
-    ankerl::nanobench::Bench().run("simple_hash_combine", [&] {
+    bench.run("simple_hash_combine", [&] {
         std::size_t h = distrib(gen);
         simple_hash_combine(h, distrib(gen), distrib(gen));
     });
