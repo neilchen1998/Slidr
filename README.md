@@ -348,7 +348,7 @@ The result is shown in the following table:
 | Bucket Queue Solver        | 4,130.10 |
 | Bucket Queue Solver (32)   | 4,088.10 |
 
-| Group 2: Easy Puzzles      | op/s   |
+| Group 2: Medium Puzzles      | op/s   |
 | :------------------------- | :----- |
 | Priority Queue Solver      | 334.56 |
 | Bucket Queue Solver        | 424.59 |
@@ -363,6 +363,71 @@ We can see that *bucket queue* wins in both the second group and the third group
 This result aligns with the characteristic of *bucket queue* as you saw earlier.
 The *bucket queue* with 32 buckets performs similar to that with 64 buckets.
 However, it fails to solve the third category of puzzles due those puzzles have *f* value greater than 32.
+
+### Linear Conflict
+
+Piece A (the lower index) and piece B (the higher index) are in a linear confict if both of them are on the goal row (or column) and the value of piece A is greater than that of piece B.
+For instance, **3** and **1** are in a linear conflict since both pieces are in their goaal row and **3** is greater than **1**.
+
+<table>
+  <tr>
+    <td>3</td>
+    <td>x</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>x</td>
+    <td>x</td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td>x</td>
+    <td>x</td>
+    <td>x</td>
+  </tr>
+</table>
+
+However, there is no linear conflict in the following puzzle.
+Notice that **3** and **6** are not in theira goal positions but **3** is smaller than **6**.
+
+<table>
+  <tr>
+    <td>1</td>
+    <td>2</td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>5</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td>8</td>
+    <td>6</td>
+  </tr>
+</table>
+
+The total heuristic value *h(n)* is now the Manhattan distance plus two times the number of linear conflicts of the puzzle. This is still admissible, meaning that the value is still less than the actual number of steps that is required to solve the puzzle.
+
+The following table is the comparison between using the Manhattan distance and using the Manhatatn distance plus the linear conflict. The improvement is huge for easy puzzles. Significant improvement can also be observed for both medium and hard puzzles as well.
+
+| Group 1: Easy Puzzles      | Manhattan Dist. | M. Dist. + Linear Cnflct. | Improvement |
+| :------------------------- | :------- | :------- | :------- |
+| Priority Queue Solver      | 5,567.37 | 13,713.16| 246.3% |
+| Bucket Queue Solver        | 4,130.10 | 7,035.54 | 170.3% |
+| Bucket Queue Solver (32)   | 4,088.10 | 7,010.57 | 171.5% |
+
+| Group 2: Medium Puzzles      | Manhattan Dist. | M. Dist. + Linear Cnflct. | Improvement |
+| :------------------------- | :----- | :------- | :------- |
+| Priority Queue Solver      | 334.56 | 607.25 | 181.5% |
+| Bucket Queue Solver        | 424.59 | 484.35 | 114.1% |
+| Bucket Queue Solver (32)   | 426.45 | 480.73 | 112.7% |
+
+| Group 3: Hard Puzzles      | Manhattan Dist. | M. Dist. + Linear Cnflct. | Improvement |
+| :------------------------- | :----- | :------- | :------- |
+| Priority Queue Solver      | 123.22 | 194.19 | 157.6% |
+| Bucket Queue Solver        | 139.41 | 186.12 | 133.5% |
 
 ### Interface Library
 
@@ -389,3 +454,4 @@ After changing the data type in our `std::priortiy_queue`, a significant perform
 - [Visually Profile C++ Program Performance](https://www.youtube.com/watch?v=zbTtVW64R_I)
 - [Global Constants](https://www.learncpp.com/cpp-tutorial/sharing-global-constants-across-multiple-files-using-inline-variables/)
 - [Gprof Tutorial](https://www.thegeekstuff.com/2012/08/gprof-tutorial/)
+- [Linear Conflict]()

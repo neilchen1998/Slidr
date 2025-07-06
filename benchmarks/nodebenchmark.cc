@@ -78,7 +78,6 @@ int main()
     ankerl::nanobench::Bench bench;
     bench.title("Manhattan Distance Calculations");
 
-    constexpr std::size_t N {constants::EIGHT_PUZZLE_NUM};
     std::mt19937 gen(std::chrono::steady_clock::now().time_since_epoch().count());
 
     auto range = std::views::iota(0, constants::EIGHT_PUZZLE_NUM);
