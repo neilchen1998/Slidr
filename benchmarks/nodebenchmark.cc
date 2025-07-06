@@ -76,6 +76,7 @@ int main()
 {
     std::ofstream file("./build/benchmarks/node-results.csv");
     ankerl::nanobench::Bench bench;
+    bench.title("Manhattan Distance Calculations");
 
     constexpr std::size_t N {constants::EIGHT_PUZZLE_NUM};
     std::mt19937 gen(std::chrono::steady_clock::now().time_since_epoch().count());
@@ -86,17 +87,17 @@ int main()
 
     std::shuffle(vec.begin(), vec.end(), gen);
 
-    ankerl::nanobench::Bench().run("GetManhattanDistance", [&] {
+    bench.run("GetManhattanDistance", [&] {
         auto ret = GetManhattanDistance(std::span(vec));
         ankerl::nanobench::doNotOptimizeAway(ret);
     });
 
-    ankerl::nanobench::Bench().run("GetManhattanDistanceAccumulate", [&] {
+    bench.run("GetManhattanDistanceAccumulate", [&] {
         auto ret = GetManhattanDistanceAccumulate(std::span(vec));
         ankerl::nanobench::doNotOptimizeAway(ret);
     });
 
-    ankerl::nanobench::Bench().run("GetManhattanDistanceReduce", [&] {
+    bench.run("GetManhattanDistanceReduce", [&] {
         auto ret = GetManhattanDistanceReduce(std::span(vec));
         ankerl::nanobench::doNotOptimizeAway(ret);
     });

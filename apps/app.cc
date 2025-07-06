@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
     else
     {
         fmt::print("No additional argument is provided! An example puzzle layout will be used.\n");
-        layout = {5, 3, 6, 2, constants::EMPTY, 8, 4, 1, 7};
+        layout = {6, 4, 7, 8, 5, constants::EMPTY, 3, 2, 1};
     }
 
     auto start = std::chrono::high_resolution_clock::now();
