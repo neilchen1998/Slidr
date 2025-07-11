@@ -4,7 +4,7 @@
 #include <ranges>   // std::views::iota
 #include <algorithm>   // std::shuffle
 #include <chrono>   // std::chrono::steady_clock::now
-#include <fstream>  // std::fstream
+#include <fstream>  // std::ofstream
 #include <nanobench.h>  // ankerl::nanobench::Bench
 
 #include "constants/constantslib.hpp"   // constants::EIGHT_PUZZLE_SIZE

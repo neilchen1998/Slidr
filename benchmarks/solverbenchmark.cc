@@ -1,5 +1,5 @@
 #include <vector>   // std::vector
-#include <fstream>  // std::fstream
+#include <fstream>  // std::ofstream
 #include <nanobench.h>  // ankerl::nanobench::Bench
 
 #include "solver/solverlib.hpp" // Solver

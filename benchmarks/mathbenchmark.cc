@@ -2,14 +2,11 @@
 #include <random>   // std::mt19937
 #include <span> // std::span
 #include <nanobench.h>  // ankerl::nanobench::Bench
-#include <ranges>   // std::views::iota
-#include <algorithm>   // std::shuffle
-#include <chrono>   // std::chrono::steady_clock::now
+#include <fstream>  // std::ofstream
 #include <boost/functional/hash.hpp>    // boost::hash_combine
-#include <fstream>  // std::fstream
 
-#include "constants/constantslib.hpp"
-#include "math/mathlib.hpp"
+#include "constants/constantslib.hpp"   // constants::EMPTY, etc.
+#include "math/mathlib.hpp" // hash_combine, hash_range
 
 template <std::integral T>
 inline std::size_t hash_vector(const std::vector<T>& vec)
@@ -36,7 +33,7 @@ inline void boost_hash_combine(std::size_t& seed, const T& u, const Args&... v)
     (boost::hash_combine(seed, v), ...);
 }
 
-template <std::integral T, std::integral ... Args>
+template <std::integral T, std::integral... Args>
 inline void simple_hash_combine(std::size_t& seed, const T& u, const Args&... v)
 {
     // Hash the first argument
