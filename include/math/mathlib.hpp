@@ -7,7 +7,7 @@
 #include <concepts> // std::integral
 // #include <boost/functional/hash.hpp> // if you want to use boost::hash_combine
 
-/// @brief Hashes multiple arguments with an initial hash value using fold expressions
+/// @brief Hashes multiple arguments with an initial hash value using fold expressions and the variadic arguments
 /// @tparam T The first argument type
 /// @tparam ...Args The second and the rest argument type
 /// @param seed The initial hash value
@@ -18,7 +18,7 @@ inline void hash_combine(std::size_t& seed, const T& u, const Args&... v)
 {
     // Hash the first argument
     seed ^= std::hash<T>{}(u) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-    // boost::hash_combine(seed, u);
+    // boost::hash_combine(seed, u); // or you can use this approach
 
     // Hash the rest of the arguments
     (hash_combine(seed, v), ...);

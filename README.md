@@ -448,10 +448,33 @@ After changing the data type in our `std::priortiy_queue`, a significant perform
 | Bucket Queue Solver   | 1,876.87 | 532,802.08 |
 | Bucket Queue Solver (using pointers)   | 2,139.18 | 467,469.06 |
 
+### Fold Expressions
+
+[Fold expressions](https://en.cppreference.com/w/cpp/language/fold.html?ref=blog.yuo.be) were introduced in C++17.
+This is a way to reduce a template parameter pack over a binary operator.
+A template parameter pack is a template parameter that accepts zero or more arguments.
+*hash_combine* uses fold expressions to take multiple arguments and hashes them in left order.
+For instance, 
+
+```cpp
+hash_combine(h, u, v);
+```
+
+is equivalent to
+
+```cpp
+hash_combine(h, u);
+hash_combine(h, v);
+```
+
+This is extremely useful since we need to hash the value and the position of the current puzzle.
+Hence, we only need to write all the arguments that we need in a single line of code instead of two lines.
+
 ## Reference
 
 - [gprof2dot](https://pypi.org/project/gprof2dot/)
 - [Visually Profile C++ Program Performance](https://www.youtube.com/watch?v=zbTtVW64R_I)
 - [Global Constants](https://www.learncpp.com/cpp-tutorial/sharing-global-constants-across-multiple-files-using-inline-variables/)
 - [Gprof Tutorial](https://www.thegeekstuff.com/2012/08/gprof-tutorial/)
-- [Linear Conflict]()
+- [Linear Conflict](https://cdn.aaai.org/AAAI/1996/AAAI96-178.pdf)
+- [Fold Expressions](https://en.cppreference.com/w/cpp/language/fold.html?ref=blog.yuo.be)
