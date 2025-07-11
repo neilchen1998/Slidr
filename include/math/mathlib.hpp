@@ -13,7 +13,7 @@
 /// @param seed The initial hash value
 /// @param u The first argument
 /// @param ...v The second and the rest argument
-template <std::integral T, std::integral ... Args>
+template <std::integral T, std::integral... Args>
 inline void hash_combine(std::size_t& seed, const T& u, const Args&... v)
 {
     // Hash the first argument
