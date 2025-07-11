@@ -26,14 +26,14 @@ inline std::size_t hash_vector(const std::vector<T>& vec)
     return h;
 }
 
-template <std::integral T, std::integral ... Args>
+template <std::integral T, std::integral... Args>
 inline void boost_hash_combine(std::size_t& seed, const T& u, const Args&... v)
 {
     // Hash the first argument
     boost::hash_combine(seed, u);
 
     // Hash the rest of the arguments
-    (hash_combine(seed, v), ...);
+    (boost::hash_combine(seed, v), ...);
 }
 
 template <std::integral T, std::integral ... Args>
@@ -50,42 +50,52 @@ int main()
 {
     std::ofstream file("./build/benchmarks/math-results.csv");
     ankerl::nanobench::Bench bench;
-    bench.title("Hash fFunctions");
 
-    constexpr std::size_t N {constants::EIGHT_PUZZLE_NUM};
+    // Generate the seed, the generator, and the distribution
     std::random_device rd;
     std::mt19937 gen(rd());
-
+    std::uniform_int_distribution<> distrib(1, constants::EMPTY);
+    
+    // Generate 3 values
+    std::size_t h = distrib(gen);
+    std::size_t u = distrib(gen);
+    std::size_t v = distrib(gen);
+    
+    // Generate the vector
+    constexpr std::size_t N {constants::EIGHT_PUZZLE_NUM};
     std::vector<int> vec(N);
-    std::uniform_int_distribution<> distrib(1, 8);
     for (auto& v : vec)
     {
         v = distrib(gen);
     }
 
-    bench.run("hash_vector", [&] {
+    bench.title("Hash & Combine Two Values")
+        .run("hash_combine", [&]
+    {
+        hash_combine(h, u, v);
+        ankerl::nanobench::doNotOptimizeAway(h);
+    })
+        .run("boost_hash_combine", [&]
+    {
+        boost_hash_combine(h, u, v);
+        ankerl::nanobench::doNotOptimizeAway(h);
+    })
+        .run("simple_hash_combine", [&]
+    {
+        simple_hash_combine(h, u, v);
+        ankerl::nanobench::doNotOptimizeAway(h);
+    });
+
+    bench.title("Hash A Vector")
+        .run("hash_vector", [&]
+    {
         auto ret = hash_vector(vec);
         ankerl::nanobench::doNotOptimizeAway(ret);
-    });
-
-    bench.run("hash_range", [&] {
+    })
+        .run("hash_range", [&]
+    {
         auto ret = hash_range(std::span(vec));
         ankerl::nanobench::doNotOptimizeAway(ret);
-    });
-
-    bench.run("hash_combine", [&] {
-        std::size_t h = distrib(gen);
-        hash_combine(h, distrib(gen), distrib(gen));
-    });
-
-    bench.run("boost_hash_combine", [&] {
-        std::size_t h = distrib(gen);
-        boost_hash_combine(h, distrib(gen), distrib(gen));
-    });
-
-    bench.run("simple_hash_combine", [&] {
-        std::size_t h = distrib(gen);
-        simple_hash_combine(h, distrib(gen), distrib(gen));
     });
 
     // Render the results to a csv file
