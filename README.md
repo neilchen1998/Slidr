@@ -31,6 +31,8 @@ To configure:
 cmake -S . -B build
 ```
 
+Add `--toolchain=./<your_toolchain_file>.toolchain` if you want to use your own toolchain.
+
 Add `-GNinja` if you have Ninja.
 
 To build:
