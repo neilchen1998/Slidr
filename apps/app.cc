@@ -11,11 +11,9 @@
 // #include "solver/solverlib.hpp" // Solver
 // #include "constants/constantslib.hpp"   // constants::EMPTY
 #include "gui/screenlib.hpp"
+#include "gui/loadinglib.hpp"
 
 #define TARGET_FPS 60
-
-/// @brief The number of frames
-unsigned long framesCounter = 0;
 
 int main(void)
 {
@@ -26,6 +24,7 @@ int main(void)
 
     // Initialize all required variables and load all required data here!
     ScreenState screen = ScreenState(screenWidth, screenHeight);
+    LoadingAnimation loading = LoadingAnimation(screenWidth, screenHeight);
 
     // Set desired framerate (frames-per-second)
     SetTargetFPS(TARGET_FPS);
@@ -33,17 +32,18 @@ int main(void)
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
        // Update
-       screen.Update(framesCounter);
+       screen.Update();
+       loading.Update();
 
         // Draw
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
+            loading.Draw();
             screen.Draw();
 
         EndDrawing();
 
-        ++framesCounter;
     }
 
     // Unload all loaded data (textures, fonts, audio) here!

@@ -2,14 +2,15 @@
 
 #include "gui/screenlib.hpp"
 
-void ScreenState::Update(unsigned long framesCounter)
+void ScreenState::Update()
 {
+    ++framesCounter_;
     switch (curState_)
     {
         case GameScreen::LOGO:
         {
-            // Wait for 2 seconds (120 frames) before jumping to TITLE screen
-            if (framesCounter > 90)
+            // Wait for the intro before jumping to TITLE screen
+            if (framesCounter_ > 320)
             {
                 curState_ = GameScreen::TITLE;
             }
@@ -59,7 +60,6 @@ void ScreenState::Draw()
         case GameScreen::LOGO:
         {
             DrawText("LOGO SCREEN", 20, 20, 40, LIGHTGRAY);
-            DrawText("WAIT for 2 SECONDS...", 290, 220, 20, GRAY);
 
             break;
         }

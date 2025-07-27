@@ -18,15 +18,15 @@ public:
     ScreenState(int screenWidth, int screenHeight)
         : curState_(GameScreen::LOGO),
         screenWidth_(screenWidth),
-        screenHeight_(screenHeight)
+        screenHeight_(screenHeight),
+        framesCounter_(0)
     {
     }
 
     ~ScreenState() = default;
 
     /// @brief Update the state
-    /// @param framesCounter Current frame counter
-    void Update(unsigned long framesCounter);
+    void Update();
 
     /// @brief Draw the the state on the screen
     void Draw();
@@ -40,6 +40,8 @@ private:
 
     /// @brief The height of the main screen
     int screenHeight_;
+
+    unsigned long framesCounter_;
 };
 
 #endif // INCLUDE_GUI_SCREENLIB_H_
