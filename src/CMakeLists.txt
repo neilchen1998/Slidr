@@ -12,7 +12,7 @@ add_library(node_library nodelib.cc ${NODE_HEADER_LIST})
 add_library(solver_library INTERFACE)
 add_library(prompt_library promptlib.cc ${PROMPT_HEADER_LIST})
 add_library(container_library INTERFACE)
-add_library(gui_library screen.cc ${GUI_HEADER_LIST})
+add_library(gui_library screenlib.cc ${GUI_HEADER_LIST})
 
 target_include_directories(math_library INTERFACE ../include ${MATH_HEADER_LIST})
 target_include_directories(constants_library INTERFACE ../include ${CONSTANTS_HEADER_LIST})
