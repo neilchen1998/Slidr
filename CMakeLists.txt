@@ -16,7 +16,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 
     # compiler flags
     if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "Test" OR CMAKE_BUILD_TYPE STREQUAL "Benchmark")
-        add_compile_options(-Wall -Wextra -pedantic -O3)
+        add_compile_options(-Wall -Wextra -pedantic -Wconversion -Wsign-conversion -O3)
     elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
         add_compile_options(-Wall -Wextra -pedantic -g3 -fsanitize=address,undefined)
     elseif(CMAKE_BUILD_TYPE STREQUAL "Gprof")
