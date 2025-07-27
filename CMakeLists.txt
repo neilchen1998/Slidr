@@ -62,9 +62,17 @@ FetchContent_Declare(
   raylib
   GIT_REPOSITORY https://github.com/raysan5/raylib
   GIT_TAG        c1ab645ca298a2801097931d1079b10ff7eb9df8)
-set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(BUILD_GAMES OFF CACHE BOOL "" FORCE)
+set(BUILD_EXAMPLES OFF CACHE BOOL "Disable building examples" FORCE)
+set(BUILD_GAMES OFF CACHE BOOL "Disable building example games" FORCE)
 FetchContent_MakeAvailable(raylib)
+
+FetchContent_Declare(
+    json_nlohmann
+    GIT_REPOSITORY https://github.com/nlohmann/json.git
+    GIT_TAG v3.12.0
+    GIT_SHALLOW TRUE)
+set(JSON_BuildTests OFF CACHE BOOL "Disable building nlohmann/json tests" FORCE)
+FetchContent_MakeAvailable(json_nlohmann)
 
 # the compiled library code
 add_subdirectory(src)
