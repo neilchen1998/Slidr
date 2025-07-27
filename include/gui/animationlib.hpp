@@ -1,5 +1,5 @@
-#ifndef INCLUDE_GUI_LOADINGLIB_H_
-#define INCLUDE_GUI_LOADINGLIB_H_
+#ifndef INCLUDE_GUI_ANIMATIONLIB_H_
+#define INCLUDE_GUI_ANIMATIONLIB_H_
 
 #include "raylib.h"
 
@@ -73,4 +73,4 @@ private:
     unsigned totalCnt_;
 };
 
-#endif // INCLUDE_GUI_LOADINGLIB_H_
+#endif // INCLUDE_GUI_ANIMATIONLIB_H_

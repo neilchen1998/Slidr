@@ -2,50 +2,50 @@
 
 #include "gui/screenlib.hpp"
 
-void ScreenState::Update()
+void ScreenManager::Update()
 {
     ++framesCounter_;
     switch (curState_)
     {
-        case GameScreen::LOGO:
+        case GameScreenState::LOGO:
         {
             // Wait for the intro before jumping to TITLE screen
             if (framesCounter_ > 320)
             {
-                curState_ = GameScreen::TITLE;
+                curState_ = GameScreenState::TITLE;
             }
             break;
         }
-        case GameScreen::TITLE:
+        case GameScreenState::TITLE:
         {
             // TODO: Update TITLE screen variables here!
 
             // Press enter to change to GAMEPLAY screen
             if (IsKeyPressed(KEY_ENTER))
             {
-                curState_ = GameScreen::GAMEPLAY;
+                curState_ = GameScreenState::GAMEPLAY;
             }
             break;
         }
-        case GameScreen::GAMEPLAY:
+        case GameScreenState::GAMEPLAY:
         {
             // TODO: Update GAMEPLAY screen variables here!
 
             // Press enter to change to ENDING screen
             if (IsKeyPressed(KEY_ENTER))
             {
-                curState_ = GameScreen::ENDING;
+                curState_ = GameScreenState::ENDING;
             }
             break;
         }
-        case GameScreen::ENDING:
+        case GameScreenState::ENDING:
         {
             // TODO: Update ENDING screen variables here!
 
             // Press enter to return to TITLE screen
             if (IsKeyPressed(KEY_ENTER))
             {
-                curState_ = GameScreen::TITLE;
+                curState_ = GameScreenState::TITLE;
             }
             break;
         }
@@ -53,17 +53,17 @@ void ScreenState::Update()
     }
 }
 
-void ScreenState::Draw()
+void ScreenManager::Draw()
 {
     switch(curState_)
     {
-        case GameScreen::LOGO:
+        case GameScreenState::LOGO:
         {
             DrawText("LOGO SCREEN", 20, 20, 40, LIGHTGRAY);
 
             break;
         }
-        case GameScreen::TITLE:
+        case GameScreenState::TITLE:
         {
             DrawRectangle(0, 0, screenWidth_, screenHeight_, GREEN);
             DrawText("TITLE SCREEN", 20, 20, 40, DARKGREEN);
@@ -71,7 +71,7 @@ void ScreenState::Draw()
 
             break;
         }
-        case GameScreen::GAMEPLAY:
+        case GameScreenState::GAMEPLAY:
         {
             DrawRectangle(0, 0, screenWidth_, screenHeight_, PURPLE);
             DrawText("GAMEPLAY SCREEN", 20, 20, 40, MAROON);
@@ -79,7 +79,7 @@ void ScreenState::Draw()
 
             break;
         }
-        case GameScreen::ENDING:
+        case GameScreenState::ENDING:
         {
             DrawRectangle(0, 0, screenWidth_, screenHeight_, BLUE);
             DrawText("ENDING SCREEN", 20, 20, 40, DARKBLUE);

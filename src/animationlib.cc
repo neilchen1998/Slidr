@@ -1,7 +1,7 @@
 #include "raylib.h"
 #include "fmt/core.h"
 
-#include "gui/loadinglib.hpp"
+#include "gui/animationlib.hpp"
 
 void LoadingAnimation::Update()
 {

@@ -4,7 +4,7 @@
 #include "raylib.h"
 
 /// @brief The states of the game
-enum struct GameScreen : int
+enum struct GameScreenState : int
 {
     LOGO = 0,
     TITLE,
@@ -12,18 +12,18 @@ enum struct GameScreen : int
     ENDING
 };
 
-class ScreenState
+class ScreenManager
 {
 public:
-    ScreenState(int screenWidth, int screenHeight)
-        : curState_(GameScreen::LOGO),
+    ScreenManager(int screenWidth, int screenHeight)
+        : curState_(GameScreenState::LOGO),
         screenWidth_(screenWidth),
         screenHeight_(screenHeight),
         framesCounter_(0)
     {
     }
 
-    ~ScreenState() = default;
+    ~ScreenManager() = default;
 
     /// @brief Update the state
     void Update();
@@ -33,7 +33,7 @@ public:
 
 private:
     /// @brief The current state of the game
-    GameScreen curState_;
+    GameScreenState curState_;
 
     /// @brief The width of the main screen
     int screenWidth_;
@@ -42,6 +42,8 @@ private:
     int screenHeight_;
 
     unsigned long framesCounter_;
+
+    
 };
 
 #endif // INCLUDE_GUI_SCREENLIB_H_
