@@ -3,9 +3,8 @@
 
 #include "gui/animationlib.hpp"
 
-void LoadingAnimation::Update()
+void RaylibAnimation::Update()
 {
-    ++totalCnt_;
     switch (curState_)
     {
         case LoadingState::SMALL_BOX_BLINKING:
@@ -22,7 +21,6 @@ void LoadingAnimation::Update()
         {
             topSideRecWidth_ += 4;
             leftSideRecHeight_ += 4;
-
 
             // Check the upper left box has completed
             if (topSideRecWidth_ == 256)
@@ -48,9 +46,9 @@ void LoadingAnimation::Update()
             ++framesCounter_;
 
             // Increase a letter by one for every 6 frames
-            if (framesCounter_/6)
+            if (framesCounter_ / 6)
             {
-                lettersCount_++;
+                ++lettersCount_;
                 framesCounter_ = 0;
             }
 
@@ -76,7 +74,7 @@ void LoadingAnimation::Update()
     }
 }
 
-void LoadingAnimation::Draw()
+void RaylibAnimation::Draw() const
 {
     switch (curState_)
     {
@@ -112,16 +110,6 @@ void LoadingAnimation::Draw()
             DrawRectangle(GetScreenWidth()/2 - 112, GetScreenHeight()/2 - 112, 224, 224, Fade(RAYWHITE, alpha_));
 
             DrawText(TextSubtext("raylib", 0, lettersCount_), GetScreenWidth()/2 - 44, GetScreenHeight()/2 + 48, 50, Fade(BLACK, alpha_));
-            break;
-        }
-        case LoadingState::ENDING:
-        {
-            static bool first = false;
-            if (!first)
-            {
-                fmt::println("Total cnt: {}", totalCnt_);
-                first = true;
-            }
             break;
         }
         default: break;

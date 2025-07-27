@@ -1,8 +1,6 @@
 #ifndef INCLUDE_GUI_ANIMATIONLIB_H_
 #define INCLUDE_GUI_ANIMATIONLIB_H_
 
-#include "raylib.h"
-
 /// @brief The states of the game
 enum struct LoadingState : int
 {
@@ -13,10 +11,10 @@ enum struct LoadingState : int
     ENDING
 };
 
-class LoadingAnimation
+class RaylibAnimation
 {
 public:
-    LoadingAnimation(int screenWidth, int screenHeight)
+    explicit RaylibAnimation(int screenWidth, int screenHeight)
         : curState_(LoadingState::SMALL_BOX_BLINKING),
         screenWidth_(screenWidth),
         screenHeight_(screenHeight),
@@ -28,18 +26,24 @@ public:
         rightSideRecHeight_(16),
         lettersCount_(0),
         framesCounter_(0),
-        alpha_(1.0f),
-        totalCnt_(0)
+        alpha_(1.0f)
     {
     }
 
-    ~LoadingAnimation() = default;
+    ~RaylibAnimation() = default;
 
-    /// @brief Update the state
+    /// @brief Updates the state
     void Update();
 
-    /// @brief Draw the the state on the screen
-    void Draw();
+    /// @brief Draws the animation on the screen according to the current state
+    void Draw() const;
+
+    /// @brief Checks if the animation is finished
+    /// @return TRUE if the animation is done
+    inline bool IsDone() const noexcept
+    {
+        return (curState_ == LoadingState::ENDING);
+    }
 
 private:
     /// @brief The current state of the game
@@ -69,8 +73,6 @@ private:
     int rightSideRecHeight_;
 
     unsigned long framesCounter_;
-
-    unsigned totalCnt_;
 };
 
 #endif // INCLUDE_GUI_ANIMATIONLIB_H_

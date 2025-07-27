@@ -1,16 +1,18 @@
 #include "raylib.h"
 
 #include "gui/screenlib.hpp"
+#include "gui/animationlib.hpp"
 
 void ScreenManager::Update()
 {
-    ++framesCounter_;
     switch (curState_)
     {
         case GameScreenState::LOGO:
         {
+            raylibAnimationPtr_->Update();
+
             // Wait for the intro before jumping to TITLE screen
-            if (framesCounter_ > 320)
+            if (raylibAnimationPtr_->IsDone())
             {
                 curState_ = GameScreenState::TITLE;
             }
@@ -53,13 +55,15 @@ void ScreenManager::Update()
     }
 }
 
-void ScreenManager::Draw()
+void ScreenManager::Draw() const
 {
     switch(curState_)
     {
         case GameScreenState::LOGO:
         {
             DrawText("LOGO SCREEN", 20, 20, 40, LIGHTGRAY);
+
+            raylibAnimationPtr_->Draw();
 
             break;
         }
