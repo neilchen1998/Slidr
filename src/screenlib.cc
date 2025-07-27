@@ -1,6 +1,6 @@
 #include "raylib.h"
 
-#include "gui/screen.hpp"
+#include "gui/screenlib.hpp"
 
 void ScreenState::Update(unsigned long framesCounter)
 {

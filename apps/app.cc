@@ -10,7 +10,7 @@
 
 // #include "solver/solverlib.hpp" // Solver
 // #include "constants/constantslib.hpp"   // constants::EMPTY
-#include "gui/screen.hpp"
+#include "gui/screenlib.hpp"
 
 #define TARGET_FPS 60
 
