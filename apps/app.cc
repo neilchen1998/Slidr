@@ -1,55 +1,146 @@
-#include <stdlib.h> // EXIT_SUCCESS, EXIT_FAILURE
-#include <vector>    // std::vector
-#include <algorithm>    // std::ranges::equal
-#include <optional> // std::optional
-#include <chrono>   // std::chrono::high_resolution_clock, std::chrono::duration_cast
-#include <fmt/core.h>   // fmt::print
-#include <random>
+#include <stdlib.h> // EXIT_SUCCESS
+// #include <vector>    // std::vector
+// #include <algorithm>    // std::ranges::equal
+// #include <optional> // std::optional
+// #include <chrono>   // std::chrono::high_resolution_clock, std::chrono::duration_cast
+// #include <random>
 
-#include "solver/solverlib.hpp" // Solver
-#include "constants/constantslib.hpp"   // constants::EMPTY
-#include "prompt/promptlib.hpp" // prompt::parse_string_to_layout
+#include "raylib.h"
+// #include <fmt/core.h>   // fmt::print
 
-int main(int argc, char* argv[])
+// #include "solver/solverlib.hpp" // Solver
+// #include "constants/constantslib.hpp"   // constants::EMPTY
+
+#define TARGET_FPS 60
+
+enum struct GameScreen : id_t
 {
-    // Check if there is an additional argument (the total # of arguments should be 2)
-    if (argc > 2)
-    {
-        fmt::print("Provide the puzzle!\nThe puzzle should only contains numbers from 1 to 8 and use 'x' or 'X' to denote the empty piece.\n");
-        return EXIT_FAILURE;
-    }
+    LOGO = 0,
+    TITLE,
+    GAMEPLAY,
+    ENDING
+};
 
-    // Check if an additional input is provided
-    // otherwise an example input is used
-    std::vector<int> layout;
-    if (argc == 2)
+int main(void)
+{
+    const int screenWidth = 800;
+    const int screenHeight = 450;
+
+    InitWindow(screenWidth, screenHeight, "raylib [core] example - basic screen manager");
+
+    GameScreen currentScreen = GameScreen::LOGO;
+
+    // TODO: Initialize all required variables and load all required data here!
+
+    int framesCounter = 0;          // Useful to count frames
+
+    // Set desired framerate (frames-per-second)
+    SetTargetFPS(TARGET_FPS);
+
+    while (!WindowShouldClose())    // Detect window close button or ESC key
     {
-        auto res = prompt::parse_string_to_layout(argv[1]);
-        if (!res)
+        switch (currentScreen)
         {
-            fmt::print("Provide the puzzle!\nThe puzzle should only contains numbers from 1 to 8 and use 'x' or 'X' to denote the empty piece.\n");
-            return EXIT_FAILURE;
+            case GameScreen::LOGO:
+            {
+                // TODO: Update LOGO screen variables here!
+                framesCounter++;    // Count frames
+
+                // Wait for 2 seconds (120 frames) before jumping to TITLE screen
+                if (framesCounter > 120)
+                {
+                    currentScreen = GameScreen::TITLE;
+                }
+                break;
+            }
+            case GameScreen::TITLE:
+            {
+                // TODO: Update TITLE screen variables here!
+
+                // Press enter to change to GAMEPLAY screen
+                if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
+                {
+                    currentScreen = GameScreen::GAMEPLAY;
+                }
+                break;
+            }
+            case GameScreen::GAMEPLAY:
+            {
+                // TODO: Update GAMEPLAY screen variables here!
+
+                // Press enter to change to ENDING screen
+                if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
+                {
+                    currentScreen = GameScreen::ENDING;
+                }
+                break;
+            }
+            case GameScreen::ENDING:
+            {
+                // TODO: Update ENDING screen variables here!
+
+                // Press enter to return to TITLE screen
+                if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
+                {
+                    currentScreen = GameScreen::TITLE;
+                }
+                break;
+            }
+            default: break;
         }
 
-        layout = res.value();
+        // Draw
+        BeginDrawing();
+
+            ClearBackground(RAYWHITE);
+
+            switch(currentScreen)
+            {
+                case GameScreen::LOGO:
+                {
+                    // TODO: Draw LOGO screen here!
+                    DrawText("LOGO SCREEN", 20, 20, 40, LIGHTGRAY);
+                    DrawText("WAIT for 2 SECONDS...", 290, 220, 20, GRAY);
+
+                    break;
+                }
+                case GameScreen::TITLE:
+                {
+                    // TODO: Draw TITLE screen here!
+                    DrawRectangle(0, 0, screenWidth, screenHeight, GREEN);
+                    DrawText("TITLE SCREEN", 20, 20, 40, DARKGREEN);
+                    DrawText("PRESS ENTER or TAP to JUMP to GAMEPLAY SCREEN", 120, 220, 20, DARKGREEN);
+
+                    break;
+                }
+                case GameScreen::GAMEPLAY:
+                {
+                    // TODO: Draw GAMEPLAY screen here!
+                    DrawRectangle(0, 0, screenWidth, screenHeight, PURPLE);
+                    DrawText("GAMEPLAY SCREEN", 20, 20, 40, MAROON);
+                    DrawText("PRESS ENTER or TAP to JUMP to ENDING SCREEN", 130, 220, 20, MAROON);
+
+                    break;
+                }
+                case GameScreen::ENDING:
+                {
+                    // TODO: Draw ENDING screen here!
+                    DrawRectangle(0, 0, screenWidth, screenHeight, BLUE);
+                    DrawText("ENDING SCREEN", 20, 20, 40, DARKBLUE);
+                    DrawText("PRESS ENTER or TAP to RETURN to TITLE SCREEN", 120, 220, 20, DARKBLUE);
+
+                    break;
+                }
+                default: break;
+            }
+
+        EndDrawing();
     }
-    else
-    {
-        fmt::print("No additional argument is provided! An example puzzle layout will be used.\n");
-        layout = {6, 4, 7, 8, 5, constants::EMPTY, 3, 2, 1};
-    }
 
-    auto start = std::chrono::high_resolution_clock::now();
-    Solver s = Solver(layout);
-    auto [isSolved, totalIters] = s.SolvePuzzle();
+    // TODO: Unload all loaded data (textures, fonts, audio) here!
 
-    auto end = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-
-    fmt::print("Done in: {} µs\t# of iterations: {}\tTotal moves: {}\n", duration.count(), totalIters, s.GetNumOfMoves());
-    s.PrintPath();
-
-    fmt::print("Moves: {}\n", s.GetSolution());
+    // Close window and OpenGL context
+    CloseWindow();
 
     return EXIT_SUCCESS;
 }
