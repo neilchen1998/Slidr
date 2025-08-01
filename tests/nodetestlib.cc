@@ -47,6 +47,20 @@ TEST_CASE( "Node Initialization", "[main]" )
         REQUIRE (n.IsSolved() == false);
     }
 
+    SECTION("Solved with Default Constructor", "[some_details]")
+    {
+        std::vector<int> layout {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
+        Node n {};
+
+        // tests all its members upon initialization
+        REQUIRE (std::ranges::equal(static_cast<const Tester&>(n).GetLayout(), layout));
+        REQUIRE (static_cast<const Tester&>(n).GetPosX() == 8);
+        REQUIRE (n.GetManhattanDistance() == 0);
+        REQUIRE (n.GetLinearConflict() == 0);
+        REQUIRE (n.GetHashValue() == hash_range(std::span(layout)));
+        REQUIRE (n.IsSolved());
+    }
+
     SECTION("Solved", "[some_details]")
     {
         std::vector<int> layout {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
