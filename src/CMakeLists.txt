@@ -31,3 +31,4 @@ target_compile_features(constants_library INTERFACE cxx_std_17)  # requires C++1
 target_compile_features(math_library INTERFACE cxx_std_20)  # requires C++20 for concept
 target_compile_features(prompt_library PUBLIC cxx_std_20)   # requires C++20 for std::span
 target_compile_features(container_library INTERFACE cxx_std_20)  # requires C++20 for concepts & constexpr if
+target_compile_features(gui_library PUBLIC cxx_std_14)  # requires C++14 for std::make_unique

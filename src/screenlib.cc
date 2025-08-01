@@ -12,7 +12,8 @@ void ScreenManager::Update()
             raylibAnimationPtr_->Update();
 
             // Wait for the intro before jumping to TITLE screen
-            if (raylibAnimationPtr_->IsDone())
+            // if (raylibAnimationPtr_->IsDone())
+            if (true)
             {
                 curState_ = GameScreenState::TITLE;
             }
@@ -23,7 +24,8 @@ void ScreenManager::Update()
             // TODO: Update TITLE screen variables here!
 
             // Press enter to change to GAMEPLAY screen
-            if (IsKeyPressed(KEY_ENTER))
+            // if (IsKeyPressed(KEY_ENTER))
+            if (true)
             {
                 curState_ = GameScreenState::GAMEPLAY;
             }
@@ -61,7 +63,7 @@ void ScreenManager::Draw() const
     {
         case GameScreenState::LOGO:
         {
-            DrawText("LOGO SCREEN", 20, 20, 40, LIGHTGRAY);
+            DrawText("LOGO SCREEN", 20, 20, 20, LIGHTGRAY);
 
             raylibAnimationPtr_->Draw();
 
@@ -70,7 +72,7 @@ void ScreenManager::Draw() const
         case GameScreenState::TITLE:
         {
             DrawRectangle(0, 0, screenWidth_, screenHeight_, GREEN);
-            DrawText("TITLE SCREEN", 20, 20, 40, DARKGREEN);
+            DrawText("TITLE SCREEN", 20, 20, 20, DARKGREEN);
             DrawText("PRESS ENTER to JUMP to GAMEPLAY SCREEN", 120, 220, 20, DARKGREEN);
 
             break;
@@ -78,15 +80,43 @@ void ScreenManager::Draw() const
         case GameScreenState::GAMEPLAY:
         {
             DrawRectangle(0, 0, screenWidth_, screenHeight_, PURPLE);
-            DrawText("GAMEPLAY SCREEN", 20, 20, 40, MAROON);
-            DrawText("PRESS ENTER to JUMP to ENDING SCREEN", 130, 220, 20, MAROON);
+            DrawText("GAMEPLAY SCREEN", 20, 20, 20, MAROON);
+
+            const int boxWidth = 300;
+            const int boxHeight = 300;
+            const int borderThickness = 10;
+            const float boxX = (screenWidth_ - boxWidth) / 2;
+            const float boxY = (screenHeight_ - boxHeight) / 2;
+
+            constexpr int gridSize = 3;
+            constexpr float cellWidth = boxWidth / gridSize;
+            constexpr float cellHeight = boxHeight / gridSize;
+
+            Rectangle box { boxX, boxY, boxWidth, boxHeight };
+
+            DrawRectangleLinesEx(box, borderThickness, DARKBLUE);
+
+            for (int i = 1; i < gridSize; i++)
+            {
+                // Draw horizontal lines
+                float y = boxY + (i * cellHeight);
+                Vector2 startPos = { boxX, y };
+                Vector2 endPos = { boxX + boxWidth, y };
+                DrawLineEx(startPos, endPos, borderThickness, DARKBLUE);
+
+                // Draw vertical lines
+                float x = boxX + (i * cellWidth);
+                startPos = { x, boxY };
+                endPos = { x, boxY + boxHeight };
+                DrawLineEx(startPos, endPos, borderThickness, DARKBLUE);
+            }
 
             break;
         }
         case GameScreenState::ENDING:
         {
             DrawRectangle(0, 0, screenWidth_, screenHeight_, BLUE);
-            DrawText("ENDING SCREEN", 20, 20, 40, DARKBLUE);
+            DrawText("ENDING SCREEN", 20, 20, 20, DARKBLUE);
             DrawText("PRESS ENTER to RETURN to TITLE SCREEN", 120, 220, 20, DARKBLUE);
 
             break;
