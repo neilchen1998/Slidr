@@ -200,6 +200,11 @@ short Node::GetMove() const noexcept
     return move_;
 }
 
+std::span<const int> Node::GetState() const
+{
+    return state_;
+}
+
 void Node::CalculateManhattanDistance()
 {
     manhattanDistance_ = std::reduce

@@ -16,7 +16,7 @@ add_library(gui_library screenlib.cc animationlib.cc boardlib.cc ${GUI_HEADER_LI
 
 target_include_directories(math_library INTERFACE ../include ${MATH_HEADER_LIST})
 target_include_directories(constants_library INTERFACE ../include ${CONSTANTS_HEADER_LIST})
-target_include_directories(node_library PUBLIC ../include)
+target_include_directories(node_library PUBLIC ../include ${NODE_HEADER_LIST})
 target_include_directories(solver_library INTERFACE ../include ${SOLVER_HEADER_LIST})
 target_include_directories(prompt_library PUBLIC ../include)
 target_include_directories(container_library INTERFACE ../include ${CONTAINER_HEADER_LIST})
@@ -30,5 +30,6 @@ target_link_libraries(gui_library PUBLIC node_library raylib fmt::fmt)
 target_compile_features(constants_library INTERFACE cxx_std_17)  # requires C++17 for inline variables
 target_compile_features(math_library INTERFACE cxx_std_20)  # requires C++20 for concept
 target_compile_features(prompt_library PUBLIC cxx_std_20)   # requires C++20 for std::span
+target_compile_features(node_library PUBLIC cxx_std_20)   # requires C++20 for std::span
 target_compile_features(container_library INTERFACE cxx_std_20)  # requires C++20 for concepts & constexpr if
-target_compile_features(gui_library PUBLIC cxx_std_14)  # requires C++14 for std::make_unique
+target_compile_features(gui_library PUBLIC cxx_std_20)  # requires C++20 for std::span

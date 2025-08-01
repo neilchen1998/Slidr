@@ -5,6 +5,7 @@
 #include <cstddef>  // std::size_t
 #include <tuple>    // std::tuple
 #include <memory>   // std::shared_ptr
+#include <span>     // std::span
 
 class Node
 {
@@ -77,10 +78,9 @@ public:
     /// @return The move
     short GetMove() const noexcept;
 
-    inline std::vector<int> GetState() const
-    {
-        return state_;
-    }
+    /// @brief Gets the state of the node
+    /// @return The state
+    std::span<const int> GetState() const;
 
 private:
     /// @brief Calcualte the Manhattan distance
