@@ -1,7 +1,7 @@
 #include <memory>   // std::make_unique
 #include <span>     // std::span
 
-#include "raylib.h" // LoadTexture
+#include "raylib.h" // LoadTexture, Vector2, Rectangle
 
 #include "gui/board.hpp"
 
@@ -22,8 +22,8 @@ Board::Board(int screenWidth, int screenHeight)
     h(numbers_.height / 2.0f),
     offsetW_(cellWidth_ / 5),
     offsetH_(cellHeight_ / 8)
-    {
-    }
+{
+}
 
 Board::~Board()
 {
