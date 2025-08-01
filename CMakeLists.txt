@@ -8,10 +8,14 @@ project(
     LANGUAGES C CXX
 )
 
-# checks if we are in the main CMakeLists
+# set C++ standard
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# check if we are in the main CMakeLists
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 
-    # ensures -std=c++xx instead of -std=g++xx for protability purposes
+    # ensure -std=c++xx instead of -std=g++xx for protability purposes
     set(CMAKE_CXX_EXTENSIONS OFF)
 
     # compiler flags
@@ -30,7 +34,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
         add_link_options(-pg)
     endif()
 
-    # uses CTest
+    # use CTest
     # NOTE: this needs to be done in the main CMakeLists
     include(CTest)
 
@@ -47,11 +51,11 @@ endif()
 # NOTE: available after CMake 3.11
 include(FetchContent)
 
-# all required packages
-find_package(Boost REQUIRED)
-find_package(Boost COMPONENTS program_options REQUIRED) # boost::program_options
+# all required packages (system)
+# find_package(Boost REQUIRED)
+# find_package(Boost COMPONENTS program_options REQUIRED) # boost::program_options
 
-# all required packages
+# all required packages (will be downloaded automatically)
 FetchContent_Declare(
   fmt
   GIT_REPOSITORY https://github.com/fmtlib/fmt.git
