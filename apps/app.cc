@@ -43,6 +43,7 @@ int main(void)
     }
 
     // Unload all loaded data (textures, fonts, audio) here!
+    manager.~ScreenManager();
 
     // Close window and OpenGL context
     CloseWindow();

@@ -9,7 +9,7 @@
 class Node
 {
 public:
-    Node() = default;   // TODO: fix the initialization in Solver
+    Node();
     Node(std::vector<int> input);
     Node(std::vector<int> input, int posX);
     Node(std::vector<int> input, int posX, unsigned long d, std::shared_ptr<const Node> p, short m);
@@ -76,6 +76,11 @@ public:
     /// @brief Gets the move used to reach this node
     /// @return The move
     short GetMove() const noexcept;
+
+    inline std::vector<int> GetState() const
+    {
+        return state_;
+    }
 
 private:
     /// @brief Calcualte the Manhattan distance

@@ -2,7 +2,9 @@
 #define INCLUDE_GUI_SCREENLIB_H_
 
 #include <memory>   // std::unique_ptr, std::make_unique
+
 #include "gui/animationlib.hpp"
+#include "gui/board.hpp"
 
 /// @brief The states of the game
 enum struct GameScreenState : int
@@ -20,7 +22,8 @@ public:
         : curState_(GameScreenState::LOGO),
         screenWidth_(screenWidth),
         screenHeight_(screenHeight),
-        raylibAnimationPtr_(std::make_unique<RaylibAnimation>(screenWidth_, screenHeight_))
+        raylibAnimationPtr_(std::make_unique<RaylibAnimation>(screenWidth_, screenHeight_)),
+        boardPtr_(std::make_unique<Board>(screenWidth_, screenHeight_))
     {
     }
 
@@ -44,6 +47,9 @@ private:
 
     /// @brief The pointer that points to the ray animation class
     std::unique_ptr<RaylibAnimation> raylibAnimationPtr_;
+
+    /// @brief The pointer that points to the class
+    std::unique_ptr<Board> boardPtr_;
 };
 
 #endif // INCLUDE_GUI_SCREENLIB_H_

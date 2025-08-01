@@ -10,6 +10,19 @@
 #include "node/nodelib.hpp" // Node
 #include "constants/constantslib.hpp"   // constants::RIGHT, constants::LEFT, etc.
 
+Node::Node()
+    : state_({1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY}),
+    posX_(constants::EIGHT_PUZZLE_NUM - 1),
+    linearConflict_(0),
+    hashValue_(hash_range(std::span(state_))),
+    depth_(0),
+    parent_(nullptr),
+    move_(-1)
+{
+    CalculateManhattanDistance();
+    CalculateLinearConflict();
+}
+
 Node::Node(std::vector<int> input)
     : state_(input),
     posX_(std::ranges::find(input, constants::EMPTY) - input.begin()),

@@ -82,34 +82,7 @@ void ScreenManager::Draw() const
             DrawRectangle(0, 0, screenWidth_, screenHeight_, PURPLE);
             DrawText("GAMEPLAY SCREEN", 20, 20, 20, MAROON);
 
-            const int boxWidth = 300;
-            const int boxHeight = 300;
-            const int borderThickness = 10;
-            const float boxX = (screenWidth_ - boxWidth) / 2;
-            const float boxY = (screenHeight_ - boxHeight) / 2;
-
-            constexpr int gridSize = 3;
-            constexpr float cellWidth = boxWidth / gridSize;
-            constexpr float cellHeight = boxHeight / gridSize;
-
-            Rectangle box { boxX, boxY, boxWidth, boxHeight };
-
-            DrawRectangleLinesEx(box, borderThickness, DARKBLUE);
-
-            for (int i = 1; i < gridSize; i++)
-            {
-                // Draw horizontal lines
-                float y = boxY + (i * cellHeight);
-                Vector2 startPos = { boxX, y };
-                Vector2 endPos = { boxX + boxWidth, y };
-                DrawLineEx(startPos, endPos, borderThickness, DARKBLUE);
-
-                // Draw vertical lines
-                float x = boxX + (i * cellWidth);
-                startPos = { x, boxY };
-                endPos = { x, boxY + boxHeight };
-                DrawLineEx(startPos, endPos, borderThickness, DARKBLUE);
-            }
+            boardPtr_->Draw();
 
             break;
         }
