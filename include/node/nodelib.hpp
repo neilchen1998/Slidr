@@ -82,6 +82,18 @@ public:
     /// @return The state
     std::span<const int> GetState() const;
 
+    /// @brief Get the position of the empty piece
+    /// @return The position of the empty piece
+    inline int GetPosX() const noexcept
+    {
+        return posX_;
+    }
+
+    /// @brief Move the empty piece
+    /// @param dir The direction of the empty piece
+    /// @return True if the empty piece is successfully moved
+    bool Move(short dir);
+
 private:
     /// @brief Calcualte the Manhattan distance
     void CalculateManhattanDistance();

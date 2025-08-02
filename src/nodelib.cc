@@ -205,6 +205,39 @@ std::span<const int> Node::GetState() const
     return state_;
 }
 
+bool Node::Move(short dir)
+{
+    int xRow = posX_ / constants::EIGHT_PUZZLE_SIZE;
+    int xCol = posX_ % constants::EIGHT_PUZZLE_SIZE;
+
+    if ((xCol + 1 < constants::EIGHT_PUZZLE_SIZE) && (dir == constants::RIGHT))
+    {
+        std::swap(state_[posX_], state_[posX_ + 1]);
+        posX_ += 1;
+        return true;
+    }
+    else if ((xRow >= 1) && (dir == constants::UP))
+    {
+        std::swap(state_[posX_], state_[posX_ - constants::EIGHT_PUZZLE_SIZE]);
+        posX_ -= constants::EIGHT_PUZZLE_SIZE;
+        return true;
+    }
+    else if ((xCol >= 1) && (dir == constants::LEFT))
+    {
+        std::swap(state_[posX_], state_[posX_ - 1]);
+        posX_ -= 1;
+        return true;
+    }
+    else if (xRow + 1 < (constants::EIGHT_PUZZLE_SIZE) && (dir == constants::DOWN))
+    {
+        std::swap(state_[posX_], state_[posX_ + constants::EIGHT_PUZZLE_SIZE]);
+        posX_ += constants::EIGHT_PUZZLE_SIZE;
+        return true;
+    }
+
+    return false;
+}
+
 void Node::CalculateManhattanDistance()
 {
     manhattanDistance_ = std::reduce
