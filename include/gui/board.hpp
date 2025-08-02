@@ -1,6 +1,9 @@
 #ifndef INCLUDE_GUI_BOARDLIB_H_
 #define INCLUDE_GUI_BOARDLIB_H_
 
+#include <memory>    // std::unique_ptr
+#include <stack>    // std::stack
+
 #include "raylib.h"
 
 #include "constants/constantslib.hpp"   // constants::EMPTY
@@ -64,9 +67,6 @@ private:
     /// @brief the texture of the board pieces
     Texture2D numbers_;
 
-    /// @brief the pointer that points to the node of the board
-    std::unique_ptr<Node> nodePtr_;
-
     /// @brief the width of the board
     int boardWidth__;
 
@@ -81,6 +81,24 @@ private:
 
     /// @brief the y position of the board
     float boxY_;
+
+    /// @brief the width of the board“
+    float buttonWidth_;
+
+    /// @brief the height of the board
+    float buttonHeight_;
+
+    /// @brief the x position of the undo button
+    float undoBtnX_;
+
+    /// @brief the y position of the undo button
+    float undoBtnY_;
+
+    /// @brief the x position of the restart button
+    float restartBtnX_;
+
+    /// @brief the y position of the restart button
+    float restartBtnY_;
 
     /// @brief the number of grids in the board
     int N_;
@@ -104,6 +122,8 @@ private:
     float offsetH_;
 
     std::vector<Rectangle> buttonPositions;
+
+    std::stack<std::shared_ptr<Node>> history_;
 };
 
 #endif // INCLUDE_GUI_BOARDLIB_H_
