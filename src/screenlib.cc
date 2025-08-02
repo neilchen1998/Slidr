@@ -33,7 +33,7 @@ void ScreenManager::Update()
         }
         case GameScreenState::GAMEPLAY:
         {
-            // TODO: Update GAMEPLAY screen variables here!
+            boardPtr_->Update(GetMousePosition());
 
             // Press enter to change to ENDING screen
             if (IsKeyPressed(KEY_ENTER))

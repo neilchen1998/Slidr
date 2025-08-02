@@ -32,4 +32,4 @@ target_compile_features(math_library INTERFACE cxx_std_20)  # requires C++20 for
 target_compile_features(prompt_library PUBLIC cxx_std_20)   # requires C++20 for std::span
 target_compile_features(node_library PUBLIC cxx_std_20)   # requires C++20 for std::span
 target_compile_features(container_library INTERFACE cxx_std_20)  # requires C++20 for concepts & constexpr if
-target_compile_features(gui_library PUBLIC cxx_std_20)  # requires C++20 for std::span
+target_compile_features(gui_library PUBLIC cxx_std_23)  # requires C++23 for std::to_underlying

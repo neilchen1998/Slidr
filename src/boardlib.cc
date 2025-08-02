@@ -1,7 +1,10 @@
 #include <memory>   // std::make_unique
 #include <span>     // std::span
+#include <utility>  // std::to_underlying
+#include <vector>   // std::vector
 
-#include "raylib.h" // LoadTexture, Vector2, Rectangle
+#include "raylib.h"     // LoadTexture, Vector2, Rectangle
+#include "fmt/core.h"   // fmt::println
 
 #include "gui/board.hpp"
 
@@ -23,6 +26,17 @@ Board::Board(int screenWidth, int screenHeight)
     offsetW_(cellWidth_ / 5),
     offsetH_(cellHeight_ / 8)
 {
+    buttonPositions.resize(std::to_underlying(bd::Button::ButtonN));
+
+    // Calculate the position of each piece of the puzzle
+    for (size_t i = 0; i < constants::EIGHT_PUZZLE_NUM; i++)
+    {
+        float posX = boxX_ + ((i % 3) * cellWidth_);
+        float posY = boxY_ + ((i / 3) * cellHeight_);
+        buttonPositions[i] = Rectangle {posX, posY, cellWidth_, cellHeight_};
+    }
+
+    // buttonPositions[std::to_underlying(bd::Button::NewGame)] = Rectangle {, , buttonWidth_, buttonHeight_};
 }
 
 Board::~Board()
@@ -31,8 +45,40 @@ Board::~Board()
     UnloadTexture(numbers_);
 }
 
-void Board::Update()
+void Board::Update(const Vector2& mousePoint)
 {
+    bd::Button btn = CheckWhichButtonIsPressed(mousePoint);
+
+    if ((btn != bd::Button::Invalid) && IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+    {
+        std::vector<short> moves = nodePtr_->AvailableMoves();
+
+        int posX = nodePtr_->GetPosX();
+
+        int xRow = posX / constants::EIGHT_PUZZLE_SIZE;
+        int xCol = posX % constants::EIGHT_PUZZLE_SIZE;
+
+        int btnRow = std::to_underlying(btn) / constants::EIGHT_PUZZLE_SIZE;
+        int btnCol = std::to_underlying(btn) % constants::EIGHT_PUZZLE_SIZE;
+
+        // Check if the condition for moving to the direction is satisfied
+        if ((xCol + 1 == btnCol) && (xRow == btnRow))
+        {
+            nodePtr_->Move(constants::RIGHT);
+        }
+        else if ((xCol - 1 == btnCol) && (xRow == btnRow))
+        {
+            nodePtr_->Move(constants::LEFT);
+        }
+        else if ((xRow + 1 == btnRow) && (xCol == btnCol))
+        {
+            nodePtr_->Move(constants::DOWN);
+        }
+        else if ((xRow - 1 == btnRow) && (xCol == btnCol))
+        {
+            nodePtr_->Move(constants::UP);
+        }
+    }
 }
 
 void Board::Draw() const
@@ -78,4 +124,19 @@ void Board::Draw() const
             DrawTextureRec(numbers_, sourceRec, position, WHITE);
         }
     }
+}
+
+bd::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePoint)
+{
+    // Loop through all pieces on the board
+    for (size_t i = 0; i < constants::EIGHT_PUZZLE_NUM; i++)
+    {
+        if (CheckCollisionPointRec(mousePoint, buttonPositions[i]))
+        {
+            return (bd::Button)i;
+        }
+    }
+
+    // Not button is pressed
+    return bd::Button::Invalid;
 }

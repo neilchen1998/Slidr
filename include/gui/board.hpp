@@ -6,6 +6,30 @@
 #include "constants/constantslib.hpp"   // constants::EMPTY
 #include "node/nodelib.hpp" // Node, GetState()
 
+namespace bd
+{
+    enum class Button
+    {
+        PieceOne = 0,
+        PieceTwo,
+        PieceThree,
+        PieceFour,
+        PieceFive,
+        PieceSix,
+        PieceSeven,
+        PieceEight,
+        PieceNine,
+
+        NewGame,
+        Restart,
+        Undo,
+
+        Invalid,
+
+        ButtonN
+    };
+}   // namespace bd
+
 class Board
 {
 public:
@@ -19,10 +43,16 @@ public:
     Board() = delete;
 
     /// @brief Updates the state
-    void Update();
+    void Update(const Vector2& mousePoint);
 
     /// @brief Draws the animation on the screen according to the current state
     void Draw() const;
+
+private:
+    /// @brief Check which button is pressed
+    /// @param mousePoint The vector of the mouse cursor
+    /// @return The button that is pressed
+    bd::Button CheckWhichButtonIsPressed(const Vector2& mousePoint);
 
 private:
     /// @brief The width of the main screen
@@ -72,6 +102,8 @@ private:
 
     /// @brief the height offset for the puzzle piece image
     float offsetH_;
+
+    std::vector<Rectangle> buttonPositions;
 };
 
 #endif // INCLUDE_GUI_BOARDLIB_H_

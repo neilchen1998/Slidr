@@ -17,7 +17,7 @@
 int main(void)
 {
     const int screenWidth = 800;
-    const int screenHeight = 450;
+    const int screenHeight = 800;
 
     InitWindow(screenWidth, screenHeight, "8 Puzzle");
 
