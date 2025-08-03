@@ -58,52 +58,82 @@ Board::~Board()
 
 void Board::Update(const Vector2& mousePoint)
 {
-    bd::Button btn = CheckWhichButtonIsPressed(mousePoint);
-
-    if ((btn != bd::Button::Invalid) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    // Check if the button is clicked
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
-        auto top = history_.top();
-        int posX = top->GetPosX();
+        bd::Button btn = CheckWhichButtonIsPressed(mousePoint);
+        switch (btn)
+        {
+        case bd::Button::PieceOne:
+        case bd::Button::PieceTwo:
+        case bd::Button::PieceThree:
+        case bd::Button::PieceFour:
+        case bd::Button::PieceFive:
+        case bd::Button::PieceSix:
+        case bd::Button::PieceSeven:
+        case bd::Button::PieceEight:
+        case bd::Button::PieceNine:
+        {
+            const std::shared_ptr<Node> top = history_.top();
 
-        int xRow = posX / constants::EIGHT_PUZZLE_SIZE;
-        int xCol = posX % constants::EIGHT_PUZZLE_SIZE;
+            // Get the position of the empty piece
+            int posX = top->GetPosX();
+            int xRow = posX / constants::EIGHT_PUZZLE_SIZE;
+            int xCol = posX % constants::EIGHT_PUZZLE_SIZE;
 
-        int btnRow = std::to_underlying(btn) / constants::EIGHT_PUZZLE_SIZE;
-        int btnCol = std::to_underlying(btn) % constants::EIGHT_PUZZLE_SIZE;
+            // Get the position of the piece that is clicked
+            int btnRow = std::to_underlying(btn) / constants::EIGHT_PUZZLE_SIZE;
+            int btnCol = std::to_underlying(btn) % constants::EIGHT_PUZZLE_SIZE;
 
-        // Check if the condition for moving to the direction is satisfied
-        if (((xCol + 1) == btnCol) && (xRow == btnRow))
-        {
-            auto [childLayout, childPosX] = top->GetNextLayout(constants::RIGHT);
-            history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::RIGHT));
+            // Check if the condition for moving to the direction is satisfied
+            if (((xCol + 1) == btnCol) && (xRow == btnRow))
+            {
+                auto [childLayout, childPosX] = top->GetNextLayout(constants::RIGHT);
+                history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::RIGHT));
+            }
+            else if (((xCol - 1) == btnCol) && (xRow == btnRow))
+            {
+                auto [childLayout, childPosX] = top->GetNextLayout(constants::LEFT);
+                history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::LEFT));
+            }
+            else if (((xRow + 1) == btnRow) && (xCol == btnCol))
+            {
+                auto [childLayout, childPosX] = top->GetNextLayout(constants::DOWN);
+                history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::DOWN));
+            }
+            else if (((xRow - 1) == btnRow) && (xCol == btnCol))
+            {
+                auto [childLayout, childPosX] = top->GetNextLayout(constants::UP);
+                history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::UP));
+            }
+            break;
         }
-        else if (((xCol - 1) == btnCol) && (xRow == btnRow))
-        {
-            auto [childLayout, childPosX] = top->GetNextLayout(constants::LEFT);
-            history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::LEFT));
-        }
-        else if (((xRow + 1) == btnRow) && (xCol == btnCol))
-        {
-            auto [childLayout, childPosX] = top->GetNextLayout(constants::DOWN);
-            history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::DOWN));
-        }
-        else if (((xRow - 1) == btnRow) && (xCol == btnCol))
-        {
-            auto [childLayout, childPosX] = top->GetNextLayout(constants::UP);
-            history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::UP));
-        }
-        else if ((btn == bd::Button::Undo) && (history_.size() > 1))
-        {
-            // Pop the stack (history) iff there are more than one element in the stack
-            history_.pop();
-        }
-        else if ((btn == bd::Button::Restart))
+        case bd::Button::Restart:
         {
             // Pop the stack until there is only one element in the stack
             while (history_.size() > 1)
             {
                 history_.pop();
             }
+            break;
+        }
+        case bd::Button::Undo:
+        {
+            // Pop the stack (history) iff there are more than one element in the stack
+            if (history_.size() > 1)
+            {
+                history_.pop();
+            }
+            break;
+        }
+        case bd::Button::NewGame:
+        {
+            break;
+        }
+        default:
+        {
+            break;
+        }
         }
     }
 }
