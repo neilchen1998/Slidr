@@ -121,7 +121,7 @@ private:
     /// @brief the height offset for the puzzle piece image
     float offsetH_;
 
-    std::vector<Rectangle> buttonPositions;
+    std::vector<Rectangle> buttonPositions_;
 
     std::stack<std::shared_ptr<Node>> history_;
 };

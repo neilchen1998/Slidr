@@ -12,17 +12,17 @@ Board::Board(int screenWidth, int screenHeight)
     : screenWidth_(screenWidth),
     screenHeight_(screenHeight),
     numbers_(LoadTexture("resources/numbers.png")),
-    boardWidth__(300),
-    boardHeight_(300),
+    boardWidth__(500),
+    boardHeight_(500),
     borderThickness_(10),
     boxX_((screenWidth_ - boardWidth__) / 2),
     boxY_((screenHeight_ - boardHeight_) / 2),
-    buttonWidth_(60),
-    buttonHeight_(100),
-    undoBtnX_((screenHeight_ - boardHeight_) / 2),
-    undoBtnY_((screenHeight_ - boardHeight_) / 2 - 100),
-    restartBtnX_((screenHeight_ - boardHeight_) / 2 + buttonWidth_ + 10),
-    restartBtnY_((screenHeight_ - boardHeight_) / 2 - 100),
+    buttonWidth_(200),
+    buttonHeight_(80),
+    undoBtnX_((screenHeight_ + boardHeight_) / 2 + 10),
+    undoBtnY_((screenHeight_ - boardHeight_) / 2),
+    restartBtnX_((screenHeight_ + boardHeight_) / 2 + 10),
+    restartBtnY_(undoBtnY_ + buttonHeight_ + 10),
     N_(constants::EIGHT_PUZZLE_SIZE),
     cellWidth_(boardWidth__ / N_),
     cellHeight_(boardHeight_ / N_),
@@ -31,18 +31,18 @@ Board::Board(int screenWidth, int screenHeight)
     offsetW_(cellWidth_ / 5),
     offsetH_(cellHeight_ / 8)
 {
-    buttonPositions.resize(std::to_underlying(bd::Button::ButtonN));
+    buttonPositions_.resize(std::to_underlying(bd::Button::ButtonN));
 
     // Calculate the position of each piece of the puzzle
     for (size_t i = 0; i < constants::EIGHT_PUZZLE_NUM; i++)
     {
         float posX = boxX_ + ((i % 3) * cellWidth_);
         float posY = boxY_ + ((i / 3) * cellHeight_);
-        buttonPositions[i] = Rectangle {posX, posY, cellWidth_, cellHeight_};
+        buttonPositions_[i] = Rectangle {posX, posY, cellWidth_, cellHeight_};
     }
 
-    buttonPositions[std::to_underlying(bd::Button::Undo)] = Rectangle {undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_};
-    buttonPositions[std::to_underlying(bd::Button::Restart)] = Rectangle {restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_};
+    buttonPositions_[std::to_underlying(bd::Button::Undo)] = Rectangle {undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_};
+    buttonPositions_[std::to_underlying(bd::Button::Restart)] = Rectangle {restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_};
 
     std::vector<int> initalLayout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
     std::shared_ptr<Node> startNode = std::make_shared<Node>(initalLayout);
@@ -72,33 +72,34 @@ void Board::Update(const Vector2& mousePoint)
         int btnCol = std::to_underlying(btn) % constants::EIGHT_PUZZLE_SIZE;
 
         // Check if the condition for moving to the direction is satisfied
-        if ((xCol + 1 == btnCol) && (xRow == btnRow))
+        if (((xCol + 1) == btnCol) && (xRow == btnRow))
         {
             auto [childLayout, childPosX] = top->GetNextLayout(constants::RIGHT);
             history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::RIGHT));
         }
-        else if ((xCol - 1 == btnCol) && (xRow == btnRow))
+        else if (((xCol - 1) == btnCol) && (xRow == btnRow))
         {
             auto [childLayout, childPosX] = top->GetNextLayout(constants::LEFT);
             history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::LEFT));
         }
-        else if ((xRow + 1 == btnRow) && (xCol == btnCol))
+        else if (((xRow + 1) == btnRow) && (xCol == btnCol))
         {
             auto [childLayout, childPosX] = top->GetNextLayout(constants::DOWN);
             history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::DOWN));
         }
-        else if ((xRow - 1 == btnRow) && (xCol == btnCol))
+        else if (((xRow - 1) == btnRow) && (xCol == btnCol))
         {
             auto [childLayout, childPosX] = top->GetNextLayout(constants::UP);
             history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::UP));
         }
         else if ((btn == bd::Button::Undo) && (history_.size() > 1))
         {
-            // Pop the stack (history) but then we need to keep the initial node
+            // Pop the stack (history) iff there are more than one element in the stack
             history_.pop();
         }
-        else if ((btn == bd::Button::Restart) && (history_.size() > 1))
+        else if ((btn == bd::Button::Restart))
         {
+            // Pop the stack until there is only one element in the stack
             while (history_.size() > 1)
             {
                 history_.pop();
@@ -156,6 +157,13 @@ void Board::Draw() const
             DrawTextureRec(numbers_, sourceRec, position, WHITE);
         }
     }
+
+    // Draw text on the buttons
+    DrawText(TextFormat("Undo"), undoBtnX_ + 15, undoBtnY_ + 15, 40, ORANGE);
+    DrawText(TextFormat("Restart"), restartBtnX_ + 15, restartBtnY_ + 15, 40, RED);
+
+    // Draw text on the top
+    DrawText(TextFormat("Moves: %02i", history_.top()->GetDepth()), (screenWidth_ - boardWidth__) / 2, (screenHeight_ - boardHeight_) / 2 - 40, 40, BLUE);
 }
 
 bd::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePoint)
@@ -163,7 +171,7 @@ bd::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePoint)
     // Loop through all pieces on the board
     for (size_t i = 0; i < std::to_underlying(bd::Button::ButtonN); i++)
     {
-        if (CheckCollisionPointRec(mousePoint, buttonPositions[i]))
+        if (CheckCollisionPointRec(mousePoint, buttonPositions_[i]))
         {
             return (bd::Button)i;
         }
