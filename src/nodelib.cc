@@ -10,6 +10,19 @@
 #include "node/nodelib.hpp" // Node
 #include "constants/constantslib.hpp"   // constants::RIGHT, constants::LEFT, etc.
 
+Node::Node()
+    : state_({1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY}),
+    posX_(constants::EIGHT_PUZZLE_NUM - 1),
+    linearConflict_(0),
+    hashValue_(hash_range(std::span(state_))),
+    depth_(0),
+    parent_(nullptr),
+    move_(-1)
+{
+    CalculateManhattanDistance();
+    CalculateLinearConflict();
+}
+
 Node::Node(std::vector<int> input)
     : state_(input),
     posX_(std::ranges::find(input, constants::EMPTY) - input.begin()),
@@ -185,6 +198,44 @@ std::shared_ptr<const Node> Node::GetParent() const noexcept
 short Node::GetMove() const noexcept
 {
     return move_;
+}
+
+std::span<const int> Node::GetState() const
+{
+    return state_;
+}
+
+bool Node::Move(short dir)
+{
+    int xRow = posX_ / constants::EIGHT_PUZZLE_SIZE;
+    int xCol = posX_ % constants::EIGHT_PUZZLE_SIZE;
+
+    if ((xCol + 1 < constants::EIGHT_PUZZLE_SIZE) && (dir == constants::RIGHT))
+    {
+        std::swap(state_[posX_], state_[posX_ + 1]);
+        posX_ += 1;
+        return true;
+    }
+    else if ((xRow >= 1) && (dir == constants::UP))
+    {
+        std::swap(state_[posX_], state_[posX_ - constants::EIGHT_PUZZLE_SIZE]);
+        posX_ -= constants::EIGHT_PUZZLE_SIZE;
+        return true;
+    }
+    else if ((xCol >= 1) && (dir == constants::LEFT))
+    {
+        std::swap(state_[posX_], state_[posX_ - 1]);
+        posX_ -= 1;
+        return true;
+    }
+    else if (xRow + 1 < (constants::EIGHT_PUZZLE_SIZE) && (dir == constants::DOWN))
+    {
+        std::swap(state_[posX_], state_[posX_ + constants::EIGHT_PUZZLE_SIZE]);
+        posX_ += constants::EIGHT_PUZZLE_SIZE;
+        return true;
+    }
+
+    return false;
 }
 
 void Node::CalculateManhattanDistance()

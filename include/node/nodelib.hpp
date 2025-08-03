@@ -5,11 +5,12 @@
 #include <cstddef>  // std::size_t
 #include <tuple>    // std::tuple
 #include <memory>   // std::shared_ptr
+#include <span>     // std::span
 
 class Node
 {
 public:
-    Node() = default;   // TODO: fix the initialization in Solver
+    Node();
     Node(std::vector<int> input);
     Node(std::vector<int> input, int posX);
     Node(std::vector<int> input, int posX, unsigned long d, std::shared_ptr<const Node> p, short m);
@@ -76,6 +77,22 @@ public:
     /// @brief Gets the move used to reach this node
     /// @return The move
     short GetMove() const noexcept;
+
+    /// @brief Gets the state of the node
+    /// @return The state
+    std::span<const int> GetState() const;
+
+    /// @brief Get the position of the empty piece
+    /// @return The position of the empty piece
+    inline int GetPosX() const noexcept
+    {
+        return posX_;
+    }
+
+    /// @brief Move the empty piece
+    /// @param dir The direction of the empty piece
+    /// @return True if the empty piece is successfully moved
+    bool Move(short dir);
 
 private:
     /// @brief Calcualte the Manhattan distance
