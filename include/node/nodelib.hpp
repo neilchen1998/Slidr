@@ -5,6 +5,7 @@
 #include <cstddef>  // std::size_t
 #include <tuple>    // std::tuple
 #include <memory>   // std::shared_ptr
+#include <span>     // std::span
 
 class Node
 {
@@ -77,10 +78,21 @@ public:
     /// @return The move
     short GetMove() const noexcept;
 
-    inline std::vector<int> GetState() const
+    /// @brief Gets the state of the node
+    /// @return The state
+    std::span<const int> GetState() const;
+
+    /// @brief Get the position of the empty piece
+    /// @return The position of the empty piece
+    inline int GetPosX() const noexcept
     {
-        return state_;
+        return posX_;
     }
+
+    /// @brief Move the empty piece
+    /// @param dir The direction of the empty piece
+    /// @return True if the empty piece is successfully moved
+    bool Move(short dir);
 
 private:
     /// @brief Calcualte the Manhattan distance

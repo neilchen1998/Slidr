@@ -203,3 +203,177 @@ TEST_CASE( "Operators", "[main]" )
         REQUIRE (n2 != n1);
     }
 }
+
+TEST_CASE( "Move", "[main]" )
+{
+    Node middle ({1, 2, 3, 4, constants::EMPTY, 6, 7, 5, 8});
+    Node topLeft ({constants::EMPTY, 2, 3, 4, 1, 6, 7, 5, 8});
+    Node topRight ({1, 2, constants::EMPTY, 4, 3, 6, 7, 5, 8});
+    Node bottomLeft ({1, 2, 3, 4, 7, 6, constants::EMPTY, 5, 8});
+    Node bottomRight ({1, 2, 3, 4, 8, 6, 7, 5, constants::EMPTY});
+
+    // Middle
+    SECTION ( "Move Right", "[main]" )
+    {
+        bool ret = middle.Move(constants::RIGHT);
+
+        REQUIRE (ret);
+        REQUIRE (middle.GetPosX() == 5);
+    }
+
+    SECTION ( "Move Up", "[main]" )
+    {
+        bool ret = middle.Move(constants::UP);
+
+        REQUIRE (ret);
+        REQUIRE (middle.GetPosX() == 1);
+    }
+
+    SECTION ( "Move Left", "[main]" )
+    {
+        bool ret = middle.Move(constants::LEFT);
+
+        REQUIRE (ret);
+        REQUIRE (middle.GetPosX() == 3);
+    }
+
+    SECTION ( "Move Down", "[main]" )
+    {
+        bool ret = middle.Move(constants::DOWN);
+
+        REQUIRE (ret);
+        REQUIRE (middle.GetPosX() == 7);
+    }
+
+    // TopLeft 
+    SECTION ( "Move Right", "[main]" )
+    {
+        bool ret = topLeft.Move(constants::RIGHT);
+
+        REQUIRE (ret);
+        REQUIRE (topLeft.GetPosX() == 1);
+    }
+
+    SECTION ( "Move Up", "[main]" )
+    {
+        bool ret = topLeft.Move(constants::UP);
+
+        REQUIRE_FALSE (ret);
+        REQUIRE (topLeft.GetPosX() == 0);
+    }
+
+    SECTION ( "Move Left", "[main]" )
+    {
+        bool ret = topLeft.Move(constants::LEFT);
+
+        REQUIRE_FALSE (ret);
+        REQUIRE (topLeft.GetPosX() == 0);
+    }
+
+    SECTION ( "Move Down", "[main]" )
+    {
+        bool ret = topLeft.Move(constants::DOWN);
+
+        REQUIRE (ret);
+        REQUIRE (topLeft.GetPosX() == 3);
+    }
+
+    // TopRight 
+    SECTION ( "Move Right", "[main]" )
+    {
+        bool ret = topRight.Move(constants::RIGHT);
+
+        REQUIRE_FALSE (ret);
+        REQUIRE (topRight.GetPosX() == 2);
+    }
+
+    SECTION ( "Move Up", "[main]" )
+    {
+        bool ret = topRight.Move(constants::UP);
+
+        REQUIRE_FALSE (ret);
+        REQUIRE (topRight.GetPosX() == 2);
+    }
+
+    SECTION ( "Move Left", "[main]" )
+    {
+        bool ret = topRight.Move(constants::LEFT);
+
+        REQUIRE (ret);
+        REQUIRE (topRight.GetPosX() == 1);
+    }
+
+    SECTION ( "Move Down", "[main]" )
+    {
+        bool ret = topRight.Move(constants::DOWN);
+
+        REQUIRE (ret);
+        REQUIRE (topRight.GetPosX() == 5);
+    }
+
+    // BottomLeft 
+    SECTION ( "Move Right", "[main]" )
+    {
+        bool ret = bottomLeft.Move(constants::RIGHT);
+
+        REQUIRE (ret);
+        REQUIRE (bottomLeft.GetPosX() == 7);
+    }
+
+    SECTION ( "Move Up", "[main]" )
+    {
+        bool ret = bottomLeft.Move(constants::UP);
+
+        REQUIRE (ret);
+        REQUIRE (bottomLeft.GetPosX() == 3);
+    }
+
+    SECTION ( "Move Left", "[main]" )
+    {
+        bool ret = bottomLeft.Move(constants::LEFT);
+
+        REQUIRE_FALSE (ret);
+        REQUIRE (bottomLeft.GetPosX() == 6);
+    }
+
+    SECTION ( "Move Down", "[main]" )
+    {
+        bool ret = bottomLeft.Move(constants::DOWN);
+
+        REQUIRE_FALSE (ret);
+        REQUIRE (bottomLeft.GetPosX() == 6);
+    }
+
+    // BottomRight 
+    SECTION ( "Move Right", "[main]" )
+    {
+        bool ret = bottomRight.Move(constants::RIGHT);
+
+        REQUIRE_FALSE (ret);
+        REQUIRE (bottomRight.GetPosX() == 8);
+    }
+
+    SECTION ( "Move Up", "[main]" )
+    {
+        bool ret = bottomRight.Move(constants::UP);
+
+        REQUIRE (ret);
+        REQUIRE (bottomRight.GetPosX() == 5);
+    }
+
+    SECTION ( "Move Left", "[main]" )
+    {
+        bool ret = bottomRight.Move(constants::LEFT);
+
+        REQUIRE (ret);
+        REQUIRE (bottomRight.GetPosX() == 7);
+    }
+
+    SECTION ( "Move Down", "[main]" )
+    {
+        bool ret = bottomRight.Move(constants::DOWN);
+
+        REQUIRE_FALSE (ret);
+        REQUIRE (bottomRight.GetPosX() == 8);
+    }
+}
