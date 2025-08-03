@@ -3,6 +3,8 @@
 #include "gui/screenlib.hpp"
 #include "gui/animationlib.hpp"
 
+#define BEIGE  CLITERAL(Color){ 245, 245, 220, 126 }      // Beige
+
 void ScreenManager::Update()
 {
     switch (curState_)
@@ -79,7 +81,7 @@ void ScreenManager::Draw() const
         }
         case GameScreenState::GAMEPLAY:
         {
-            DrawRectangle(0, 0, screenWidth_, screenHeight_, PURPLE);
+            DrawRectangle(0, 0, screenWidth_, screenHeight_, BEIGE);
             DrawText("GAMEPLAY SCREEN", 20, 20, 20, MAROON);
 
             boardPtr_->Draw();

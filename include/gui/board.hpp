@@ -31,6 +31,13 @@ namespace bd
 
         ButtonN
     };
+
+    enum class ButtonState
+    {
+        Unselected,
+        Hovered,
+        Selected
+    };
 }   // namespace bd
 
 class Board
@@ -124,6 +131,18 @@ private:
     std::vector<Rectangle> buttonPositions_;
 
     std::stack<std::shared_ptr<Node>> history_;
+
+    /// @brief The state of restart button
+    bd::ButtonState restartBtnState_;
+
+    /// @brief The state of undo button
+    bd::ButtonState undoBtnState_;
+
+    /// @brief The action of the restart button
+    bool restartBtnAction_;
+
+    /// @brief The action of the undo button
+    bool undoBtnAction_;
 };
 
 #endif // INCLUDE_GUI_BOARDLIB_H_

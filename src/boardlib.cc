@@ -8,6 +8,12 @@
 
 #include "gui/board.hpp"
 
+#define CRIMSON    CLITERAL(Color){ 210, 31, 60, 255 }       // Crimson
+#define FIREBRICK  CLITERAL(Color){ 178, 34, 34, 255 }       // Fire Brick
+#define TIGER      CLITERAL(Color){ 249, 104, 21, 255 }      // Tiger
+#define TANGERINE  CLITERAL(Color){ 247, 135, 2, 255 }       // Tangerine
+#define APRICOT    CLITERAL(Color){ 237, 130, 14, 255 }      // Apricot
+
 Board::Board(int screenWidth, int screenHeight)
     : screenWidth_(screenWidth),
     screenHeight_(screenHeight),
@@ -29,7 +35,9 @@ Board::Board(int screenWidth, int screenHeight)
     w(numbers_.width / 5.0f),
     h(numbers_.height / 2.0f),
     offsetW_(cellWidth_ / 5),
-    offsetH_(cellHeight_ / 8)
+    offsetH_(cellHeight_ / 8),
+    restartBtnState_(bd::ButtonState::Unselected),
+    undoBtnState_(bd::ButtonState::Unselected)
 {
     buttonPositions_.resize(std::to_underlying(bd::Button::ButtonN));
 
@@ -58,10 +66,55 @@ Board::~Board()
 
 void Board::Update(const Vector2& mousePoint)
 {
+    bd::Button btn = CheckWhichButtonIsPressed(mousePoint);
+
+    restartBtnAction_ = false;
+    undoBtnAction_ = false;
+
+    if (CheckCollisionPointRec(mousePoint, buttonPositions_[std::to_underlying(bd::Button::Restart)]))
+    {
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+        {
+            restartBtnState_ = bd::ButtonState::Selected;
+        }
+        else
+        {
+            restartBtnState_ = bd::ButtonState::Hovered;
+        }
+
+        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+        {
+            restartBtnAction_ = true;
+        }
+    }
+    else
+    {
+        restartBtnState_ = bd::ButtonState::Unselected;
+    }
+
+    if (CheckCollisionPointRec(mousePoint, buttonPositions_[std::to_underlying(bd::Button::Undo)]))
+    {
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+        {
+            undoBtnState_ = bd::ButtonState::Selected;
+        }
+        else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+        {
+            undoBtnAction_ = true;
+        }
+        else
+        {
+            undoBtnState_ = bd::ButtonState::Hovered;
+        }
+    }
+    else
+    {
+        undoBtnState_ = bd::ButtonState::Unselected;
+    }
+
     // Check if the button is clicked
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
-        bd::Button btn = CheckWhichButtonIsPressed(mousePoint);
         switch (btn)
         {
         case bd::Button::PieceOne:
@@ -108,32 +161,28 @@ void Board::Update(const Vector2& mousePoint)
             }
             break;
         }
-        case bd::Button::Restart:
-        {
-            // Pop the stack until there is only one element in the stack
-            while (history_.size() > 1)
-            {
-                history_.pop();
-            }
-            break;
-        }
-        case bd::Button::Undo:
-        {
-            // Pop the stack (history) iff there are more than one element in the stack
-            if (history_.size() > 1)
-            {
-                history_.pop();
-            }
-            break;
-        }
-        case bd::Button::NewGame:
-        {
-            break;
-        }
         default:
         {
             break;
         }
+        }
+    }
+
+    if (restartBtnAction_)
+    {
+        // Pop the stack until there is only one element in the stack
+        while (history_.size() > 1)
+        {
+            history_.pop();
+        }
+    }
+
+    if (undoBtnAction_)
+    {
+        // Pop the stack (history) iff there are more than one element in the stack
+        if (history_.size() > 1)
+        {
+            history_.pop();
         }
     }
 }
@@ -143,12 +192,6 @@ void Board::Draw() const
     // Draw the board
     Rectangle box { boxX_, boxY_, (float)boardWidth__, (float)boardHeight_ };
     DrawRectangleLinesEx(box, borderThickness_, DARKBLUE);
-
-    Rectangle undoBox { undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_ };
-    DrawRectangleLinesEx(undoBox, borderThickness_, ORANGE);
-
-    Rectangle restartBox { restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_ };
-    DrawRectangleLinesEx(restartBox, borderThickness_, RED);
 
     // Draw the lines
     for (int i = 1; i < N_; i++)
@@ -189,8 +232,39 @@ void Board::Draw() const
     }
 
     // Draw text on the buttons
-    DrawText(TextFormat("Undo"), undoBtnX_ + 15, undoBtnY_ + 15, 40, ORANGE);
-    DrawText(TextFormat("Restart"), restartBtnX_ + 15, restartBtnY_ + 15, 40, RED);
+    Rectangle undoBox { undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_ };
+    if (undoBtnState_ == bd::ButtonState::Selected)
+    {
+        DrawRectangle(undoBox.x, undoBox.y, undoBox.width, undoBox.height, TANGERINE);
+        DrawText(TextFormat("Undo"), undoBtnX_ + 15, undoBtnY_ + 15, 40, WHITE);
+    }
+    else if (undoBtnState_ == bd::ButtonState::Hovered)
+    {
+        DrawRectangle(undoBox.x, undoBox.y, undoBox.width, undoBox.height, TIGER);
+        DrawText(TextFormat("Undo"), undoBtnX_ + 15, undoBtnY_ + 15, 40, WHITE);
+    }
+    else
+    {
+        DrawRectangle(undoBox.x, undoBox.y, undoBox.width, undoBox.height, APRICOT);
+        DrawText(TextFormat("Undo"), undoBtnX_ + 15, undoBtnY_ + 15, 40, WHITE);
+    }
+
+    Rectangle restartBox { restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_ };
+    if (restartBtnState_ == bd::ButtonState::Selected)
+    {
+        DrawRectangle(restartBox.x, restartBox.y, restartBox.width, restartBox.height, CRIMSON);
+        DrawText(TextFormat("Restart"), restartBtnX_ + 15, restartBtnY_ + 15, 40, WHITE);
+    }
+    else if (restartBtnState_ == bd::ButtonState::Hovered)
+    {
+        DrawRectangle(restartBox.x, restartBox.y, restartBox.width, restartBox.height, FIREBRICK);
+        DrawText(TextFormat("Restart"), restartBtnX_ + 15, restartBtnY_ + 15, 40, WHITE);
+    }
+    else
+    {
+        DrawRectangle(restartBox.x, restartBox.y, restartBox.width, restartBox.height, MAROON);
+        DrawText(TextFormat("Restart"), restartBtnX_ + 15, restartBtnY_ + 15, 40, WHITE);
+    }
 
     // Draw text on the top
     DrawText(TextFormat("Moves: %02i", history_.top()->GetDepth()), (screenWidth_ - boardWidth__) / 2, (screenHeight_ - boardHeight_) / 2 - 40, 40, BLUE);
@@ -199,7 +273,7 @@ void Board::Draw() const
 bd::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePoint)
 {
     // Loop through all pieces on the board
-    for (size_t i = 0; i < std::to_underlying(bd::Button::ButtonN); i++)
+    for (size_t i = 0; i <= std::to_underlying(bd::Button::PieceNine); i++)
     {
         if (CheckCollisionPointRec(mousePoint, buttonPositions_[i]))
         {
