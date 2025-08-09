@@ -270,11 +270,6 @@ void Board::Draw() const
 
     // Draw text on the top
     DrawText(TextFormat("Moves: %02i", history_.top()->GetDepth()), (screenWidth_ - boardWidth__) / 2, (screenHeight_ - boardHeight_) / 2 - 40, 40, BLUE);
-
-    if (isSolved_)
-    {
-
-    }
 }
 
 bd::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePoint)

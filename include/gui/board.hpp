@@ -63,6 +63,17 @@ public:
         return isSolved_;
     }
 
+    void Reset()
+    {
+        std::stack<std::shared_ptr<Node>> newHistory;
+        std::vector<int> initalLayout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
+        std::shared_ptr<Node> startNode = std::make_shared<Node>(initalLayout);
+
+        newHistory.push(startNode);
+        history_.swap(newHistory);
+        isSolved_ = false;
+    }
+
 private:
     /// @brief Check which button is pressed
     /// @param mousePoint The vector of the mouse cursor

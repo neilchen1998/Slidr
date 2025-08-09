@@ -2,8 +2,7 @@
 
 #include "gui/screenlib.hpp"
 #include "gui/animationlib.hpp"
-
-#define BEIGE  CLITERAL(Color){ 245, 245, 220, 126 }      // Beige
+#include "gui/colourlib.hpp"
 
 void ScreenManager::Update()
 {
@@ -40,13 +39,13 @@ void ScreenManager::Update()
             // Press enter to change to ENDING screen
             if (boardPtr_->IsFinished())
             {
+                boardPtr_->Reset();
                 curState_ = GameScreenState::ENDING;
             }
             break;
         }
         case GameScreenState::ENDING:
         {
-            // TODO: Update ENDING screen variables here!
             celebrationPtr_->Update();
 
             // Press enter to return to TITLE screen
