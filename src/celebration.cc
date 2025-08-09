@@ -38,7 +38,7 @@ void Celebration::Update()
             // Calculate the new position & angular position
             itr->position.x += itr->velocity.x * deltaT;
             itr->position.y += itr->velocity.y * deltaT;
-            itr->rotation += itr->omega * deltaT;
+            itr->orientation += itr->omega * deltaT;
 
             // Check if the confetti is still on the screen
             if (itr->position.y > GetScreenHeight() + 10)
@@ -61,7 +61,7 @@ void Celebration::Draw() const
             Rectangle rec = { itr->position.x, itr->position.y, itr->size.x, itr->size.y };
             Vector2 origin = { (itr->position.x / 2), (itr->position.y / 2) };
 
-            DrawRectanglePro(rec, origin, itr->rotation, itr->color);
+            DrawRectanglePro(rec, origin, itr->orientation, itr->color);
         }
         ++itr;
     }
@@ -78,7 +78,7 @@ void Celebration::SpawnConfetti()
             itr->position = (Vector2){ (float)GetRandomValue(0, GetScreenWidth()), (float)GetRandomValue(-GetScreenHeight() * 0.25, 0) };
             itr->velocity = (Vector2){ (float)GetNormalFloatDist(-100, 100), (float)GetNormalFloatDist(-100, 100) };
             itr->size = (Vector2){ (float)GetRandomValue(5, 12), (float)GetRandomValue(8, 20) };
-            itr->rotation = (float)GetRandomValue(0, 360);
+            itr->orientation = (float)GetRandomValue(0, 360);
             itr->omega = (float)GetNormalFloatDist(-150, 150);
             itr->color = CONFETTI_COLOURS[GetUniformIntDist(0, CONFETTI_COLOURS.size() - 1)];
             break;
