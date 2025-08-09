@@ -6,10 +6,10 @@
 #include <functional>   // std::hash
 #include <concepts> // std::integral
 // #include <boost/functional/hash.hpp> // if you want to use boost::hash_combine
-#include <random>
+#include <random>   // std::random_device, std::mt19937, std::uniform_int_distribution, std::normal_distribution
 
 static std::random_device rd;
-static std::mt19937 gen(rd());
+static std::mt19937 gen {rd()};
 
 /// @brief Hashes multiple arguments with an initial hash value using fold expressions and the variadic arguments
 /// @tparam T The first argument type
@@ -53,7 +53,6 @@ inline std::size_t hash_range(std::span<T> s)
 /// @return An integer
 inline int GetUniformIntDist(int low, int high)
 {
-
     std::uniform_int_distribution<> distrib(low, high);
     return distrib(gen);
 }
@@ -63,7 +62,7 @@ inline int GetUniformIntDist(int low, int high)
 /// @param high The upper bound
 /// @return A float
 inline int GetNormalFloatDist(float low, float high)
-{ 
+{
     std::normal_distribution distrib {low, high};
     return distrib(gen);
 }
