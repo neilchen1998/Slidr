@@ -58,6 +58,11 @@ public:
     /// @brief Draws the animation on the screen according to the current state
     void Draw() const;
 
+    inline bool IsFinished() noexcept
+    {
+        return isSolved_;
+    }
+
 private:
     /// @brief Check which button is pressed
     /// @param mousePoint The vector of the mouse cursor
@@ -143,6 +148,9 @@ private:
 
     /// @brief The action of the undo button
     bool undoBtnAction_;
+
+    /// @brief True if the puzzle is solved
+    bool isSolved_;
 };
 
 #endif // INCLUDE_GUI_BOARDLIB_H_

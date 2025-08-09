@@ -7,12 +7,7 @@
 #include "fmt/core.h"   // fmt::println
 
 #include "gui/board.hpp"
-
-#define CRIMSON    CLITERAL(Color){ 210, 31, 60, 255 }       // Crimson
-#define FIREBRICK  CLITERAL(Color){ 178, 34, 34, 255 }       // Fire Brick
-#define TIGER      CLITERAL(Color){ 249, 104, 21, 255 }      // Tiger
-#define TANGERINE  CLITERAL(Color){ 247, 135, 2, 255 }       // Tangerine
-#define APRICOT    CLITERAL(Color){ 237, 130, 14, 255 }      // Apricot
+#include "gui/colourlib.hpp"
 
 Board::Board(int screenWidth, int screenHeight)
     : screenWidth_(screenWidth),
@@ -37,7 +32,8 @@ Board::Board(int screenWidth, int screenHeight)
     offsetW_(cellWidth_ / 5),
     offsetH_(cellHeight_ / 8),
     restartBtnState_(bd::ButtonState::Unselected),
-    undoBtnState_(bd::ButtonState::Unselected)
+    undoBtnState_(bd::ButtonState::Unselected),
+    isSolved_(false)
 {
     buttonPositions_.resize(std::to_underlying(bd::Button::ButtonN));
 
@@ -184,6 +180,12 @@ void Board::Update(const Vector2& mousePoint)
         {
             history_.pop();
         }
+    }
+
+    // Check if the puzzle is completed
+    if (history_.top()->IsSolved())
+    {
+        isSolved_ = true;
     }
 }
 
