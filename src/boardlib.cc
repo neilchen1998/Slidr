@@ -274,12 +274,16 @@ void Board::Draw() const
 
 void Board::Reset()
 {
+    // Create a new history
     std::stack<std::shared_ptr<Node>> newHistory;
     std::vector<int> initalLayout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
     std::shared_ptr<Node> startNode = std::make_shared<Node>(initalLayout);
-
     newHistory.push(startNode);
+
+    // Swap the old history with the new one
     history_.swap(newHistory);
+
+    
     isSolved_ = false;
 }
 
