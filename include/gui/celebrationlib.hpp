@@ -43,7 +43,7 @@ namespace
 class Celebration
 {
 public:
-    Celebration() = default;
+    Celebration();
 
     ~Celebration() = default;
 
