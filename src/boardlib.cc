@@ -272,6 +272,17 @@ void Board::Draw() const
     DrawText(TextFormat("Moves: %02i", history_.top()->GetDepth()), (screenWidth_ - boardWidth__) / 2, (screenHeight_ - boardHeight_) / 2 - 40, 40, BLUE);
 }
 
+void Board::Reset()
+{
+    std::stack<std::shared_ptr<Node>> newHistory;
+    std::vector<int> initalLayout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
+    std::shared_ptr<Node> startNode = std::make_shared<Node>(initalLayout);
+
+    newHistory.push(startNode);
+    history_.swap(newHistory);
+    isSolved_ = false;
+}
+
 bd::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePoint)
 {
     // Loop through all pieces on the board
