@@ -22,11 +22,8 @@ void ScreenManager::Update()
         }
         case GameScreenState::TITLE:
         {
-            // TODO: Update TITLE screen variables here!
-
-            // Press enter to change to GAMEPLAY screen
-            // if (IsKeyPressed(KEY_ENTER))
-            if (true)
+            // Press enter or left click to change to GAMEPLAY screen
+            if (IsKeyPressed(KEY_ENTER) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             {
                 curState_ = GameScreenState::GAMEPLAY;
             }
@@ -36,10 +33,44 @@ void ScreenManager::Update()
         {
             boardPtr_->Update(GetMousePosition());
 
-            // Press enter to change to ENDING screen
             if (boardPtr_->IsFinished())
             {
                 boardPtr_->Reset();
+                curState_ = GameScreenState::CELEBRATION;
+            }
+            else if (boardPtr_->RequestedHelp())
+            {
+                curState_ = GameScreenState::HELP;
+            }
+
+            break;
+        }
+        case GameScreenState::HELP:
+        {
+            boardPtr_->UpdateSolution();
+
+            if (boardPtr_->IsFinished())
+            {
+                curState_ = GameScreenState::SAD;
+            }
+            break;
+        }
+        case GameScreenState::CELEBRATION:
+        {
+            celebrationPtr_->Update();
+
+            // Press enter or left click to change to GAMEPLAY screen
+            if (IsKeyPressed(KEY_ENTER) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            {
+                curState_ = GameScreenState::ENDING;
+            }
+            break;
+        }
+        case GameScreenState::SAD:
+        {
+            // Press enter or left click to change to GAMEPLAY screen
+            if (IsKeyPressed(KEY_ENTER) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            {
                 curState_ = GameScreenState::ENDING;
             }
             break;
@@ -77,6 +108,10 @@ void ScreenManager::Draw() const
             DrawText("TITLE SCREEN", 20, 20, 20, DARKGREEN);
             DrawText("PRESS ENTER to JUMP to GAMEPLAY SCREEN", 120, 220, 20, DARKGREEN);
 
+            std::string titleText = "Welcome to 8 Puzzle";
+            int titleTextWidth = MeasureText(titleText.c_str(), 60);
+            DrawText(titleText.c_str(), (GetScreenWidth() - titleTextWidth) / 2, GetScreenHeight() / 3, 60, BLACK);
+
             break;
         }
         case GameScreenState::GAMEPLAY:
@@ -88,12 +123,36 @@ void ScreenManager::Draw() const
 
             break;
         }
+        case GameScreenState::HELP:
+        {
+            DrawRectangle(0, 0, screenWidth_, screenHeight_, RED);
+            DrawText("Help", 20, 20, 20, GRAY);
+
+            boardPtr_->DrawSolution();
+
+            break;
+        }
+        case GameScreenState::CELEBRATION:
+        {
+            DrawRectangle(0, 0, screenWidth_, screenHeight_, BEIGE);
+            DrawText("Celebration", 20, 20, 20, GRAY);
+
+            celebrationPtr_->Draw();
+
+            break;
+        }
+        case GameScreenState::SAD:
+        {
+            DrawRectangle(0, 0, screenWidth_, screenHeight_, RED);
+            DrawText("Sad", 20, 20, 20, GRAY);
+
+            break;
+        }
         case GameScreenState::ENDING:
         {
             DrawRectangle(0, 0, screenWidth_, screenHeight_, BLUE);
             DrawText("ENDING SCREEN", 20, 20, 20, DARKBLUE);
             DrawText("PRESS ENTER to RETURN to TITLE SCREEN", 120, 220, 20, DARKBLUE);
-            celebrationPtr_->Draw();
 
             break;
         }

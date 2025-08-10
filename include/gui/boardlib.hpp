@@ -3,6 +3,7 @@
 
 #include <memory>    // std::unique_ptr
 #include <stack>    // std::stack
+#include <string>    // std::string
 
 #include "raylib.h"
 
@@ -13,22 +14,26 @@ namespace bd
 {
     enum class Button
     {
-        PieceOne = 0,
-        PieceTwo,
-        PieceThree,
-        PieceFour,
-        PieceFive,
-        PieceSix,
-        PieceSeven,
-        PieceEight,
-        PieceNine,
+        // Puzzle pieces
+        FirstPiece = 0,
+        SecondPiece,
+        ThirdPiece,
+        FourthPiece,
+        FifthPiece,
+        SixthPiece,
+        SeventhPiece,
+        EighthPiece,
+        NinthPiece,
 
+        // Buttons
         NewGame,
         Restart,
         Undo,
+        Help,
 
         Invalid,
 
+        // The size of the enum
         ButtonN
     };
 
@@ -58,11 +63,24 @@ public:
     /// @brief Draws the animation on the screen according to the current state
     void Draw() const;
 
+    /// @brief Update the solution
+    void UpdateSolution();
+
+    /// @brief Draws the animation on the screen according to the current state
+    void DrawSolution() const;
+
     /// @brief Checks if the game is finished
     /// @return True if the game is finished
     inline bool IsFinished() noexcept
     {
         return isSolved_;
+    }
+
+    /// @brief Checks if the game is finished
+    /// @return True if the game is finished
+    inline bool RequestedHelp() noexcept
+    {
+        return requestedHelp_;
     }
 
     /// @brief Resets the board
@@ -73,6 +91,9 @@ private:
     /// @param mousePoint The vector of the mouse cursor
     /// @return The button that is pressed
     bd::Button CheckWhichButtonIsPressed(const Vector2& mousePoint);
+
+    /// @brief Draw the board
+    void DrawBoard() const;
 
 private:
     /// @brief The width of the main screen
@@ -117,6 +138,12 @@ private:
     /// @brief the y position of the restart button
     float restartBtnY_;
 
+    /// @brief the x position of the help button
+    float helpBtnX_;
+
+    /// @brief the y position of the help button
+    float helpBtnY_;
+
     /// @brief the number of grids in the board
     int N_;
 
@@ -148,14 +175,25 @@ private:
     /// @brief The state of undo button
     bd::ButtonState undoBtnState_;
 
+    /// @brief The state of help button
+    bd::ButtonState helpBtnState_;
+
     /// @brief The action of the restart button
     bool restartBtnAction_;
 
     /// @brief The action of the undo button
     bool undoBtnAction_;
 
+    /// @brief The action of the help button
+    bool helpBtnAction_;
+
     /// @brief True if the puzzle is solved
     bool isSolved_;
+
+    /// @brief True if the user requests for help
+    bool requestedHelp_;
+
+    std::vector<short> solutionDir_;
 };
 
 #endif // INCLUDE_GUI_BOARDLIB_H_

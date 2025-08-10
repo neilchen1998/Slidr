@@ -4,7 +4,7 @@
 #include <memory>   // std::unique_ptr, std::make_unique
 
 #include "gui/animationlib.hpp"
-#include "gui/board.hpp"
+#include "gui/boardlib.hpp"
 #include "gui/celebrationlib.hpp"   // Celebration
 
 /// @brief The states of the game
@@ -13,6 +13,9 @@ enum struct GameScreenState : int
     LOGO = 0,
     TITLE,
     GAMEPLAY,
+    HELP,
+    SAD,
+    CELEBRATION,
     ENDING
 };
 

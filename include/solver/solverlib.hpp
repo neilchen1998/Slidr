@@ -9,6 +9,7 @@
 #include <string>    // std::string
 #include <memory> // std::shared_ptr, std::make_shared
 #include <type_traits>    // std::is_base_of
+#include <algorithm>    // std::reverse
 #include <fmt/core.h>   // fmt::print
 
 #include "node/nodelib.hpp" // Node
@@ -121,10 +122,17 @@ public:
     }
 
     /// @brief Gets the solution
-    /// @return The solution
+    /// @return The solution in string
     inline std::string GetSolution() const
     {
         return solution_;
+    }
+
+    /// @brief Gets the solution
+    /// @return The solution in string
+    inline std::vector<short> GetSolutionDirection() const
+    {
+        return solutionDir_;
     }
 
     /// @brief Gets the path (all the nodes from the start to the end)
@@ -175,6 +183,9 @@ private:
         // Pre-allocate memory for solution string
         solution_.reserve(sol.size() * sizeof("←"));
 
+        // Reserve the capacity of the vector
+        solutionDir_.reserve(sol.size());
+
         // Construct the solution
         auto itr = sol.crbegin();
         while (itr != sol.crend())
@@ -202,6 +213,8 @@ private:
                 break;
             }
 
+            solutionDir_.push_back(*itr);
+
             ++itr;
         }
     }
@@ -223,6 +236,9 @@ private:
 
     /// @brief the solution
     std::string solution_;
+
+    /// @brief the solution (in direction)
+    std::vector<short> solutionDir_;
 
     /// @brief the path
     std::vector<Node> path_;

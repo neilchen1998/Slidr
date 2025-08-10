@@ -6,8 +6,9 @@
 #include "raylib.h"     // LoadTexture, Vector2, Rectangle
 #include "fmt/core.h"   // fmt::println
 
-#include "gui/board.hpp"
+#include "gui/boardlib.hpp"
 #include "gui/colourlib.hpp"
+#include "solver/solverlib.hpp"
 
 Board::Board(int screenWidth, int screenHeight)
     : screenWidth_(screenWidth),
@@ -24,6 +25,8 @@ Board::Board(int screenWidth, int screenHeight)
     undoBtnY_((screenHeight_ - boardHeight_) / 2),
     restartBtnX_((screenHeight_ + boardHeight_) / 2 + 10),
     restartBtnY_(undoBtnY_ + buttonHeight_ + 10),
+    helpBtnX_((screenHeight_ + boardHeight_) / 2 + 10),
+    helpBtnY_(restartBtnY_ + buttonHeight_ + 10),
     N_(constants::EIGHT_PUZZLE_SIZE),
     cellWidth_(boardWidth__ / N_),
     cellHeight_(boardHeight_ / N_),
@@ -33,7 +36,9 @@ Board::Board(int screenWidth, int screenHeight)
     offsetH_(cellHeight_ / 8),
     restartBtnState_(bd::ButtonState::Unselected),
     undoBtnState_(bd::ButtonState::Unselected),
-    isSolved_(false)
+    helpBtnState_(bd::ButtonState::Unselected),
+    isSolved_(false),
+    requestedHelp_(false)
 {
     buttonPositions_.resize(std::to_underlying(bd::Button::ButtonN));
 
@@ -47,6 +52,7 @@ Board::Board(int screenWidth, int screenHeight)
 
     buttonPositions_[std::to_underlying(bd::Button::Undo)] = Rectangle {undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_};
     buttonPositions_[std::to_underlying(bd::Button::Restart)] = Rectangle {restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_};
+    buttonPositions_[std::to_underlying(bd::Button::Help)] = Rectangle {helpBtnX_, helpBtnY_, buttonWidth_, buttonHeight_};
 
     std::vector<int> initalLayout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
     std::shared_ptr<Node> startNode = std::make_shared<Node>(initalLayout);
@@ -66,7 +72,9 @@ void Board::Update(const Vector2& mousePoint)
 
     restartBtnAction_ = false;
     undoBtnAction_ = false;
+    helpBtnAction_ = false;
 
+    // Check if the restart button is hovered or pressed
     if (CheckCollisionPointRec(mousePoint, buttonPositions_[std::to_underlying(bd::Button::Restart)]))
     {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
@@ -88,6 +96,7 @@ void Board::Update(const Vector2& mousePoint)
         restartBtnState_ = bd::ButtonState::Unselected;
     }
 
+    // Check if the undo button is hovered or pressed
     if (CheckCollisionPointRec(mousePoint, buttonPositions_[std::to_underlying(bd::Button::Undo)]))
     {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
@@ -108,20 +117,41 @@ void Board::Update(const Vector2& mousePoint)
         undoBtnState_ = bd::ButtonState::Unselected;
     }
 
+    // Check if the help butoon is hovered or pressed
+    if (CheckCollisionPointRec(mousePoint, buttonPositions_[std::to_underlying(bd::Button::Help)]))
+    {
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+        {
+            helpBtnState_ = bd::ButtonState::Selected;
+        }
+        else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+        {
+            helpBtnAction_ = true;
+        }
+        else
+        {
+            helpBtnState_ = bd::ButtonState::Hovered;
+        }
+    }
+    else
+    {
+        helpBtnState_ = bd::ButtonState::Unselected;
+    }
+
     // Check if the button is clicked
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
         switch (btn)
         {
-        case bd::Button::PieceOne:
-        case bd::Button::PieceTwo:
-        case bd::Button::PieceThree:
-        case bd::Button::PieceFour:
-        case bd::Button::PieceFive:
-        case bd::Button::PieceSix:
-        case bd::Button::PieceSeven:
-        case bd::Button::PieceEight:
-        case bd::Button::PieceNine:
+        case bd::Button::FirstPiece:
+        case bd::Button::SecondPiece:
+        case bd::Button::ThirdPiece:
+        case bd::Button::FourthPiece:
+        case bd::Button::FifthPiece:
+        case bd::Button::SixthPiece:
+        case bd::Button::SeventhPiece:
+        case bd::Button::EighthPiece:
+        case bd::Button::NinthPiece:
         {
             const std::shared_ptr<Node> top = history_.top();
 
@@ -164,6 +194,7 @@ void Board::Update(const Vector2& mousePoint)
         }
     }
 
+    // Check if the restart button needs to take action
     if (restartBtnAction_)
     {
         // Pop the stack until there is only one element in the stack
@@ -173,6 +204,7 @@ void Board::Update(const Vector2& mousePoint)
         }
     }
 
+    // Check if the undo button needs to take action
     if (undoBtnAction_)
     {
         // Pop the stack (history) iff there are more than one element in the stack
@@ -180,6 +212,18 @@ void Board::Update(const Vector2& mousePoint)
         {
             history_.pop();
         }
+    }
+
+    // Check if the help button needs to take action
+    if (helpBtnAction_)
+    {
+        requestedHelp_ = true;
+        Solver s {*history_.top()};
+
+        s.SolvePuzzle();
+
+        solutionDir_ = s.GetSolutionDirection();
+        auto sol = s.GetSolution();
     }
 
     // Check if the puzzle is completed
@@ -190,6 +234,142 @@ void Board::Update(const Vector2& mousePoint)
 }
 
 void Board::Draw() const
+{
+    DrawBoard();
+
+    // Draw text on the buttons
+    Rectangle undoBox { undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_ };
+    if (undoBtnState_ == bd::ButtonState::Selected)
+    {
+        DrawRectangle(undoBox.x, undoBox.y, undoBox.width, undoBox.height, TANGERINE);
+        DrawText(TextFormat("Undo"), undoBtnX_ + 15, undoBtnY_ + 15, 40, WHITE);
+    }
+    else if (undoBtnState_ == bd::ButtonState::Hovered)
+    {
+        DrawRectangle(undoBox.x, undoBox.y, undoBox.width, undoBox.height, TIGER);
+        DrawText(TextFormat("Undo"), undoBtnX_ + 15, undoBtnY_ + 15, 40, WHITE);
+    }
+    else
+    {
+        DrawRectangle(undoBox.x, undoBox.y, undoBox.width, undoBox.height, APRICOT);
+        DrawText(TextFormat("Undo"), undoBtnX_ + 15, undoBtnY_ + 15, 40, WHITE);
+    }
+
+    Rectangle restartBox { restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_ };
+    if (restartBtnState_ == bd::ButtonState::Selected)
+    {
+        DrawRectangle(restartBox.x, restartBox.y, restartBox.width, restartBox.height, CRIMSON);
+        DrawText(TextFormat("Restart"), restartBtnX_ + 15, restartBtnY_ + 15, 40, WHITE);
+    }
+    else if (restartBtnState_ == bd::ButtonState::Hovered)
+    {
+        DrawRectangle(restartBox.x, restartBox.y, restartBox.width, restartBox.height, FIREBRICK);
+        DrawText(TextFormat("Restart"), restartBtnX_ + 15, restartBtnY_ + 15, 40, WHITE);
+    }
+    else
+    {
+        DrawRectangle(restartBox.x, restartBox.y, restartBox.width, restartBox.height, MAROON);
+        DrawText(TextFormat("Restart"), restartBtnX_ + 15, restartBtnY_ + 15, 40, WHITE);
+    }
+
+    Rectangle helpBox { helpBtnX_, helpBtnY_, buttonWidth_, buttonHeight_ };
+    if (helpBtnState_ == bd::ButtonState::Selected)
+    {
+        DrawRectangle(helpBox.x, helpBox.y, helpBox.width, helpBox.height, DEEP_SKY_BLUE);
+        DrawText(TextFormat("Help"), helpBtnX_ + 15, helpBtnY_ + 15, 40, WHITE);
+    }
+    else if (helpBtnState_ == bd::ButtonState::Hovered)
+    {
+        DrawRectangle(helpBox.x, helpBox.y, helpBox.width, helpBox.height, STEEL_BLUE);
+        DrawText(TextFormat("Help"), helpBtnX_ + 15, helpBtnY_ + 15, 40, WHITE);
+    }
+    else
+    {
+        DrawRectangle(helpBox.x, helpBox.y, helpBox.width, helpBox.height, CAROLINE_BLUE);
+        DrawText(TextFormat("Help"), helpBtnX_ + 15, helpBtnY_ + 15, 40, WHITE);
+    }
+
+    // Draw text on the top
+    DrawText(TextFormat("Moves: %02i", history_.top()->GetDepth()), (screenWidth_ - boardWidth__) / 2, (screenHeight_ - boardHeight_) / 2 - 40, 40, BLUE);
+}
+
+void Board::UpdateSolution()
+{
+    static double prevTime = GetTime();
+    static auto itr = solutionDir_.cbegin();
+    double curTime = GetTime();
+    if (((curTime - prevTime) > 1.0) && (itr != solutionDir_.cend()))
+    {
+        const std::shared_ptr<Node> top = history_.top();
+
+        bd::Button btn = static_cast<bd::Button>(*itr);
+
+        // Check if the condition for moving to the direction is satisfied
+        if (*itr == constants::RIGHT)
+        {
+            auto [childLayout, childPosX] = top->GetNextLayout(constants::RIGHT);
+            history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::RIGHT));
+        }
+        else if (*itr == constants::LEFT)
+        {
+            auto [childLayout, childPosX] = top->GetNextLayout(constants::LEFT);
+            history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::LEFT));
+        }
+        else if (*itr == constants::DOWN)
+        {
+            auto [childLayout, childPosX] = top->GetNextLayout(constants::DOWN);
+            history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::DOWN));
+        }
+        else if (*itr == constants::UP)
+        {
+            auto [childLayout, childPosX] = top->GetNextLayout(constants::UP);
+            history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::UP));
+        }
+
+        prevTime = curTime;
+
+        ++itr;
+    }
+}
+
+void Board::DrawSolution() const
+{
+    DrawBoard();
+
+    // Draw text on the top
+    DrawText(TextFormat("Moves: %02i", history_.top()->GetDepth()), (screenWidth_ - boardWidth__) / 2, (screenHeight_ - boardHeight_) / 2 - 40, 40, BLUE);
+}
+
+void Board::Reset()
+{
+    // Create a new history
+    std::stack<std::shared_ptr<Node>> newHistory;
+    std::vector<int> initalLayout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
+    std::shared_ptr<Node> startNode = std::make_shared<Node>(initalLayout);
+    newHistory.push(startNode);
+
+    // Swap the old history with the new one
+    history_.swap(newHistory);
+
+    isSolved_ = false;
+}
+
+bd::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePoint)
+{
+    // Loop through all pieces on the board
+    for (size_t i = 0; i <= std::to_underlying(bd::Button::NinthPiece); i++)
+    {
+        if (CheckCollisionPointRec(mousePoint, buttonPositions_[i]))
+        {
+            return (bd::Button)i;
+        }
+    }
+
+    // Not button is pressed
+    return bd::Button::Invalid;
+}
+
+void Board::DrawBoard() const
 {
     // Draw the board
     Rectangle box { boxX_, boxY_, (float)boardWidth__, (float)boardHeight_ };
@@ -232,72 +412,4 @@ void Board::Draw() const
             DrawTextureRec(numbers_, sourceRec, position, WHITE);
         }
     }
-
-    // Draw text on the buttons
-    Rectangle undoBox { undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_ };
-    if (undoBtnState_ == bd::ButtonState::Selected)
-    {
-        DrawRectangle(undoBox.x, undoBox.y, undoBox.width, undoBox.height, TANGERINE);
-        DrawText(TextFormat("Undo"), undoBtnX_ + 15, undoBtnY_ + 15, 40, WHITE);
-    }
-    else if (undoBtnState_ == bd::ButtonState::Hovered)
-    {
-        DrawRectangle(undoBox.x, undoBox.y, undoBox.width, undoBox.height, TIGER);
-        DrawText(TextFormat("Undo"), undoBtnX_ + 15, undoBtnY_ + 15, 40, WHITE);
-    }
-    else
-    {
-        DrawRectangle(undoBox.x, undoBox.y, undoBox.width, undoBox.height, APRICOT);
-        DrawText(TextFormat("Undo"), undoBtnX_ + 15, undoBtnY_ + 15, 40, WHITE);
-    }
-
-    Rectangle restartBox { restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_ };
-    if (restartBtnState_ == bd::ButtonState::Selected)
-    {
-        DrawRectangle(restartBox.x, restartBox.y, restartBox.width, restartBox.height, CRIMSON);
-        DrawText(TextFormat("Restart"), restartBtnX_ + 15, restartBtnY_ + 15, 40, WHITE);
-    }
-    else if (restartBtnState_ == bd::ButtonState::Hovered)
-    {
-        DrawRectangle(restartBox.x, restartBox.y, restartBox.width, restartBox.height, FIREBRICK);
-        DrawText(TextFormat("Restart"), restartBtnX_ + 15, restartBtnY_ + 15, 40, WHITE);
-    }
-    else
-    {
-        DrawRectangle(restartBox.x, restartBox.y, restartBox.width, restartBox.height, MAROON);
-        DrawText(TextFormat("Restart"), restartBtnX_ + 15, restartBtnY_ + 15, 40, WHITE);
-    }
-
-    // Draw text on the top
-    DrawText(TextFormat("Moves: %02i", history_.top()->GetDepth()), (screenWidth_ - boardWidth__) / 2, (screenHeight_ - boardHeight_) / 2 - 40, 40, BLUE);
-}
-
-void Board::Reset()
-{
-    // Create a new history
-    std::stack<std::shared_ptr<Node>> newHistory;
-    std::vector<int> initalLayout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
-    std::shared_ptr<Node> startNode = std::make_shared<Node>(initalLayout);
-    newHistory.push(startNode);
-
-    // Swap the old history with the new one
-    history_.swap(newHistory);
-
-    
-    isSolved_ = false;
-}
-
-bd::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePoint)
-{
-    // Loop through all pieces on the board
-    for (size_t i = 0; i <= std::to_underlying(bd::Button::PieceNine); i++)
-    {
-        if (CheckCollisionPointRec(mousePoint, buttonPositions_[i]))
-        {
-            return (bd::Button)i;
-        }
-    }
-
-    // Not button is pressed
-    return bd::Button::Invalid;
 }
