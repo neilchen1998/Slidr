@@ -6,7 +6,7 @@
 #include "raylib.h"     // LoadTexture, Vector2, Rectangle
 #include "fmt/core.h"   // fmt::println
 
-#include "gui/board.hpp"
+#include "gui/boardlib.hpp"
 #include "gui/colourlib.hpp"
 #include "solver/solverlib.hpp"
 

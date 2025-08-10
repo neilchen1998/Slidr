@@ -14,6 +14,7 @@ namespace bd
 {
     enum class Button
     {
+        // Puzzle pieces
         FirstPiece = 0,
         SecondPiece,
         ThirdPiece,
@@ -24,6 +25,7 @@ namespace bd
         EighthPiece,
         NinthPiece,
 
+        // Buttons
         NewGame,
         Restart,
         Undo,
@@ -31,6 +33,7 @@ namespace bd
 
         Invalid,
 
+        // The size of the enum
         ButtonN
     };
 
