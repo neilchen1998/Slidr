@@ -13,19 +13,20 @@ namespace bd
 {
     enum class Button
     {
-        PieceOne = 0,
-        PieceTwo,
-        PieceThree,
-        PieceFour,
-        PieceFive,
-        PieceSix,
-        PieceSeven,
-        PieceEight,
-        PieceNine,
+        FirstPiece = 0,
+        SecondPiece,
+        ThirdPiece,
+        FourthPiece,
+        FifthPiece,
+        SixthPiece,
+        SeventhPiece,
+        EighthPiece,
+        NinthPiece,
 
         NewGame,
         Restart,
         Undo,
+        Help,
 
         Invalid,
 
@@ -117,6 +118,12 @@ private:
     /// @brief the y position of the restart button
     float restartBtnY_;
 
+    /// @brief the x position of the help button
+    float helpBtnX_;
+
+    /// @brief the y position of the help button
+    float helpBtnY_;
+
     /// @brief the number of grids in the board
     int N_;
 
@@ -148,11 +155,17 @@ private:
     /// @brief The state of undo button
     bd::ButtonState undoBtnState_;
 
+    /// @brief The state of help button
+    bd::ButtonState helpBtnState_;
+
     /// @brief The action of the restart button
     bool restartBtnAction_;
 
     /// @brief The action of the undo button
     bool undoBtnAction_;
+
+    /// @brief The action of the help button
+    bool helpBtnAction_;
 
     /// @brief True if the puzzle is solved
     bool isSolved_;

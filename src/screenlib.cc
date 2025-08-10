@@ -77,6 +77,10 @@ void ScreenManager::Draw() const
             DrawText("TITLE SCREEN", 20, 20, 20, DARKGREEN);
             DrawText("PRESS ENTER to JUMP to GAMEPLAY SCREEN", 120, 220, 20, DARKGREEN);
 
+            std::string titleText = "Welcome to 8 Puzzle";
+            int titleTextWidth = MeasureText(titleText.c_str(), 60);
+            DrawText(titleText.c_str(), (GetScreenWidth() - titleTextWidth) / 2, GetScreenHeight() / 3, 60, BLACK);
+
             break;
         }
         case GameScreenState::GAMEPLAY:

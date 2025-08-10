@@ -11,6 +11,9 @@
 #define TIGER       CLITERAL(Color){ 249, 104, 21, 255 }
 #define TANGERINE   CLITERAL(Color){ 247, 135, 2, 255 }
 #define APRICOT     CLITERAL(Color){ 237, 130, 14, 255 }
-#define BEIGE       CLITERAL(Color){ 245, 245, 220, 126 }
+#define BEIGE       CLITERAL(Color){ 245, 245, 220, 255 }
+#define STEEL_BLUE  CLITERAL(Color){ 070, 130, 180, 255 }   // #4682B4
+#define CAROLINE_BLUE CLITERAL(Color){ 75, 156, 211, 255 }   // #4B9CD3
+#define DEEP_SKY_BLUE CLITERAL(Color){ 0, 191, 255, 255 }   // #4B9CD3
 
 #endif // INCLUDE_GUI_COLORLIB_H_

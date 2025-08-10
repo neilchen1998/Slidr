@@ -9,6 +9,7 @@
 #include <string>    // std::string
 #include <memory> // std::shared_ptr, std::make_shared
 #include <type_traits>    // std::is_base_of
+#include <algorithm>    // std::reverse
 #include <fmt/core.h>   // fmt::print
 
 #include "node/nodelib.hpp" // Node
