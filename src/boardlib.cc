@@ -37,7 +37,8 @@ Board::Board(int screenWidth, int screenHeight)
     restartBtnState_(bd::ButtonState::Unselected),
     undoBtnState_(bd::ButtonState::Unselected),
     helpBtnState_(bd::ButtonState::Unselected),
-    isSolved_(false)
+    isSolved_(false),
+    requestedHelp_(false)
 {
     buttonPositions_.resize(std::to_underlying(bd::Button::ButtonN));
 
@@ -216,13 +217,13 @@ void Board::Update(const Vector2& mousePoint)
     // Check if the help button needs to take action
     if (helpBtnAction_)
     {
+        requestedHelp_ = true;
         Solver s {*history_.top()};
 
         s.SolvePuzzle();
 
-        std::string sol = s.GetSolution();
-
-        fmt::println("Sol: {}", sol);
+        solutionDir_ = s.GetSolutionDirection();
+        auto sol = s.GetSolution();
     }
 
     // Check if the puzzle is completed
@@ -234,47 +235,7 @@ void Board::Update(const Vector2& mousePoint)
 
 void Board::Draw() const
 {
-    // Draw the board
-    Rectangle box { boxX_, boxY_, (float)boardWidth__, (float)boardHeight_ };
-    DrawRectangleLinesEx(box, borderThickness_, DARKBLUE);
-
-    // Draw the lines
-    for (int i = 1; i < N_; i++)
-    {
-        // Draw horizontal lines
-        float y = boxY_ + (i * cellHeight_);
-        Vector2 startPos = { boxX_, y };
-        Vector2 endPos = { boxX_ + boardWidth__, y };
-        DrawLineEx(startPos, endPos, borderThickness_, DARKBLUE);
-
-        // Draw vertical lines
-        float x = boxX_ + (i * cellWidth_);
-        startPos = { x, boxY_ };
-        endPos = { x, boxY_ + boardHeight_ };
-        DrawLineEx(startPos, endPos, borderThickness_, DARKBLUE);
-    }
-
-    // Loop through all the elements in the node and draw all the pieces
-    std::span<const int> curState = history_.top()->GetState();
-    for (size_t i = 0; i < curState.size(); i++)
-    {
-        // Only draw the number if the current piece is non-empty
-        if (int num = curState[i]; num != constants::EMPTY)
-        {
-            // Calculate the position of the number located on the texture (sprite sheet technique)
-            int recX = (num - 1) % 5;
-            int recY = (num - 1) / 5;
-            Rectangle sourceRec = { recX * w, recY * h, w, h };
-
-            // Calculate the position of the texture
-            float posX = boxX_ + ((i % 3) * cellWidth_) + offsetW_;
-            float posY = boxY_ + ((i / 3) * cellHeight_) + offsetH_;
-            Vector2 position = { posX, posY };
-
-            // Draw a fraction of the texture
-            DrawTextureRec(numbers_, sourceRec, position, WHITE);
-        }
-    }
+    DrawBoard();
 
     // Draw text on the buttons
     Rectangle undoBox { undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_ };
@@ -332,6 +293,53 @@ void Board::Draw() const
     DrawText(TextFormat("Moves: %02i", history_.top()->GetDepth()), (screenWidth_ - boardWidth__) / 2, (screenHeight_ - boardHeight_) / 2 - 40, 40, BLUE);
 }
 
+void Board::UpdateSolution()
+{
+    static double prevTime = GetTime();
+    static auto itr = solutionDir_.cbegin();
+    double curTime = GetTime();
+    if (((curTime - prevTime) > 1.0) && (itr != solutionDir_.cend()))
+    {
+        const std::shared_ptr<Node> top = history_.top();
+
+        bd::Button btn = static_cast<bd::Button>(*itr);
+
+        // Check if the condition for moving to the direction is satisfied
+        if (*itr == constants::RIGHT)
+        {
+            auto [childLayout, childPosX] = top->GetNextLayout(constants::RIGHT);
+            history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::RIGHT));
+        }
+        else if (*itr == constants::LEFT)
+        {
+            auto [childLayout, childPosX] = top->GetNextLayout(constants::LEFT);
+            history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::LEFT));
+        }
+        else if (*itr == constants::DOWN)
+        {
+            auto [childLayout, childPosX] = top->GetNextLayout(constants::DOWN);
+            history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::DOWN));
+        }
+        else if (*itr == constants::UP)
+        {
+            auto [childLayout, childPosX] = top->GetNextLayout(constants::UP);
+            history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::UP));
+        }
+
+        prevTime = curTime;
+
+        ++itr;
+    }
+}
+
+void Board::DrawSolution() const
+{
+    DrawBoard();
+
+    // Draw text on the top
+    DrawText(TextFormat("Moves: %02i", history_.top()->GetDepth()), (screenWidth_ - boardWidth__) / 2, (screenHeight_ - boardHeight_) / 2 - 40, 40, BLUE);
+}
+
 void Board::Reset()
 {
     // Create a new history
@@ -343,7 +351,6 @@ void Board::Reset()
     // Swap the old history with the new one
     history_.swap(newHistory);
 
-    
     isSolved_ = false;
 }
 
@@ -360,4 +367,49 @@ bd::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePoint)
 
     // Not button is pressed
     return bd::Button::Invalid;
+}
+
+void Board::DrawBoard() const
+{
+    // Draw the board
+    Rectangle box { boxX_, boxY_, (float)boardWidth__, (float)boardHeight_ };
+    DrawRectangleLinesEx(box, borderThickness_, DARKBLUE);
+
+    // Draw the lines
+    for (int i = 1; i < N_; i++)
+    {
+        // Draw horizontal lines
+        float y = boxY_ + (i * cellHeight_);
+        Vector2 startPos = { boxX_, y };
+        Vector2 endPos = { boxX_ + boardWidth__, y };
+        DrawLineEx(startPos, endPos, borderThickness_, DARKBLUE);
+
+        // Draw vertical lines
+        float x = boxX_ + (i * cellWidth_);
+        startPos = { x, boxY_ };
+        endPos = { x, boxY_ + boardHeight_ };
+        DrawLineEx(startPos, endPos, borderThickness_, DARKBLUE);
+    }
+
+    // Loop through all the elements in the node and draw all the pieces
+    std::span<const int> curState = history_.top()->GetState();
+    for (size_t i = 0; i < curState.size(); i++)
+    {
+        // Only draw the number if the current piece is non-empty
+        if (int num = curState[i]; num != constants::EMPTY)
+        {
+            // Calculate the position of the number located on the texture (sprite sheet technique)
+            int recX = (num - 1) % 5;
+            int recY = (num - 1) / 5;
+            Rectangle sourceRec = { recX * w, recY * h, w, h };
+
+            // Calculate the position of the texture
+            float posX = boxX_ + ((i % 3) * cellWidth_) + offsetW_;
+            float posY = boxY_ + ((i / 3) * cellHeight_) + offsetH_;
+            Vector2 position = { posX, posY };
+
+            // Draw a fraction of the texture
+            DrawTextureRec(numbers_, sourceRec, position, WHITE);
+        }
+    }
 }

@@ -13,6 +13,9 @@ enum struct GameScreenState : int
     LOGO = 0,
     TITLE,
     GAMEPLAY,
+    HELP,
+    SAD,
+    CELEBRATION,
     ENDING
 };
 
