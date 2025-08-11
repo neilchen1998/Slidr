@@ -22,7 +22,7 @@ int main(void)
     InitWindow(screenWidth, screenHeight, "8 Puzzle");
 
     // Initialize all required variables and load all required data here!
-    ScreenManager manager = ScreenManager(screenWidth, screenHeight);
+    ScreenManager manager {};
 
     // Set desired framerate (frames-per-second)
     SetTargetFPS(TARGET_FPS);

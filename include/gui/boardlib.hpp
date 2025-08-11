@@ -3,7 +3,6 @@
 
 #include <memory>    // std::unique_ptr
 #include <stack>    // std::stack
-#include <string>    // std::string
 
 #include "raylib.h"
 
@@ -48,25 +47,24 @@ namespace bd
 class Board
 {
 public:
-    /// @brief The constructor of this class
-    /// @param screenWidth the width of the screen in pixel
-    /// @param screenHeight the height of the screen in pixel
-    explicit Board(int screenWidth, int screenHeight);
+
+    Board();
 
     ~Board();
 
-    Board() = delete;
-
     /// @brief Updates the state
-    void Update(const Vector2& mousePoint);
+    void Update();
 
     /// @brief Draws the animation on the screen according to the current state
     void Draw() const;
 
+    /// @brief Draws the animation on the result
+    void DrawResult() const;
+
     /// @brief Update the solution
     void UpdateSolution();
 
-    /// @brief Draws the animation on the screen according to the current state
+    /// @brief Draws the animation on the screen showing the solution
     void DrawSolution() const;
 
     /// @brief Checks if the game is finished
@@ -194,6 +192,12 @@ private:
     bool requestedHelp_;
 
     std::vector<short> solutionDir_;
+
+    /// @brief The number of moves that the user makes to reach the end
+    unsigned moves_;
+
+    /// @brief The optimal moves for the puzzle
+    unsigned optimalMoves_;
 };
 
 #endif // INCLUDE_GUI_BOARDLIB_H_

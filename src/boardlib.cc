@@ -10,9 +10,19 @@
 #include "gui/colourlib.hpp"
 #include "solver/solverlib.hpp"
 
-Board::Board(int screenWidth, int screenHeight)
-    : screenWidth_(screenWidth),
-    screenHeight_(screenHeight),
+namespace
+{
+    constexpr int counterWidth = 250;
+    constexpr int counterHeight = 60;
+    constexpr float cornerRadius = 0.3f;
+    constexpr int segments = 10;
+    constexpr int instructionFontSize = 20;
+    constexpr int moveCounterFontSize = 25;
+}
+
+Board::Board()
+    : screenWidth_(GetScreenWidth()),
+    screenHeight_(GetScreenHeight()),
     numbers_(LoadTexture("resources/numbers.png")),
     boardWidth__(500),
     boardHeight_(500),
@@ -38,7 +48,8 @@ Board::Board(int screenWidth, int screenHeight)
     undoBtnState_(bd::ButtonState::Unselected),
     helpBtnState_(bd::ButtonState::Unselected),
     isSolved_(false),
-    requestedHelp_(false)
+    requestedHelp_(false),
+    moves_(INT_MAX)
 {
     buttonPositions_.resize(std::to_underlying(bd::Button::ButtonN));
 
@@ -58,6 +69,12 @@ Board::Board(int screenWidth, int screenHeight)
     std::shared_ptr<Node> startNode = std::make_shared<Node>(initalLayout);
 
     history_.push(startNode);
+
+    Solver s {*history_.top()};
+
+    s.SolvePuzzle();
+
+    optimalMoves_ = (s.GetSolutionDirection().size() - 1);
 }
 
 Board::~Board()
@@ -66,8 +83,9 @@ Board::~Board()
     UnloadTexture(numbers_);
 }
 
-void Board::Update(const Vector2& mousePoint)
+void Board::Update()
 {
+    const Vector2 mousePoint = GetMousePosition();
     bd::Button btn = CheckWhichButtonIsPressed(mousePoint);
 
     restartBtnAction_ = false;
@@ -230,6 +248,9 @@ void Board::Update(const Vector2& mousePoint)
     if (history_.top()->IsSolved())
     {
         isSolved_ = true;
+
+        // Update the stats
+        moves_ = (history_.size() - 1);
     }
 }
 
@@ -291,6 +312,31 @@ void Board::Draw() const
 
     // Draw text on the top
     DrawText(TextFormat("Moves: %02i", history_.top()->GetDepth()), (screenWidth_ - boardWidth__) / 2, (screenHeight_ - boardHeight_) / 2 - 40, 40, BLUE);
+}
+
+void Board::DrawResult() const
+{
+    // Calculate the positions
+    const float rectX = (screenWidth_ - counterWidth) / 2;
+    const float optimalMovesRectY = screenHeight_ / 2 - counterHeight - 10;
+    const float userMovesRectY = screenHeight_ / 2 + 10;
+
+    // Construct the text
+    std::string optimalMovesText = fmt::format("Optimal Moves: {}", optimalMoves_);
+    std::string userMovesText = fmt::format("User Moves: {}", moves_);
+
+    // Calculate the width of the text
+    int textWidth = std::max(MeasureText(optimalMovesText.c_str(), moveCounterFontSize), MeasureText(userMovesText.c_str(), moveCounterFontSize));
+
+    // Construct and draw the rectangles
+    Rectangle optimalMovesRect = { rectX, optimalMovesRectY, counterWidth, counterHeight };
+    Rectangle userMovesRect = { rectX, userMovesRectY, counterWidth, counterHeight };
+    DrawRectangleRounded(optimalMovesRect, cornerRadius, segments, LIGHTGRAY);
+    DrawRectangleRounded(userMovesRect, cornerRadius, segments, LIGHTGRAY);
+
+    // Draw the text
+    DrawText(optimalMovesText.c_str(), rectX + (counterWidth - textWidth) / 2, optimalMovesRectY + (counterHeight - moveCounterFontSize) / 2, moveCounterFontSize, DARKBLUE);
+    DrawText(userMovesText.c_str(), rectX + (counterWidth - textWidth) / 2, userMovesRectY + (counterHeight - moveCounterFontSize) / 2, moveCounterFontSize, MAROON);
 }
 
 void Board::UpdateSolution()
