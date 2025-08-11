@@ -13,7 +13,6 @@
 #include <fmt/core.h>   // fmt::print
 
 #include "node/nodelib.hpp" // Node
-#include "solver/solverlib.hpp" // Solver
 #include "constants/constantslib.hpp"   // constants::RIGHT, constants::LEFT, etc.s
 #include "container/bucketqueuelib.hpp" // BucketQueueBase
 
