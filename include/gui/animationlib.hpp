@@ -14,12 +14,12 @@ enum struct LoadingState : int
 class RaylibAnimation
 {
 public:
-    explicit RaylibAnimation(int screenWidth, int screenHeight)
+    RaylibAnimation()
         : curState_(LoadingState::SMALL_BOX_BLINKING),
-        screenWidth_(screenWidth),
-        screenHeight_(screenHeight),
-        logoPositionX_(screenWidth/2 - 128),
-        logoPositionY_(screenHeight/2 - 128),
+        screenWidth_(GetScreenHeight()),
+        screenHeight_(GetScreenHeight()),
+        logoPositionX_(screenWidth_/2 - 128),
+        logoPositionY_(screenHeight_/2 - 128),
         leftSideRecHeight_(16),
         topSideRecWidth_(16),
         bottomSideRecWidth_(16),

@@ -22,12 +22,12 @@ enum struct GameScreenState : int
 class ScreenManager
 {
 public:
-    ScreenManager(int screenWidth, int screenHeight)
+    ScreenManager()
         : curState_(GameScreenState::LOGO),
-        screenWidth_(screenWidth),
-        screenHeight_(screenHeight),
-        raylibAnimationPtr_(std::make_unique<RaylibAnimation>(screenWidth_, screenHeight_)),
-        boardPtr_(std::make_unique<Board>(screenWidth_, screenHeight_)),
+        screenWidth_(GetScreenWidth()),
+        screenHeight_(GetScreenHeight()),
+        raylibAnimationPtr_(std::make_unique<RaylibAnimation>()),
+        boardPtr_(std::make_unique<Board>()),
         celebrationPtr_(std::make_unique<Celebration>())
     {
     }

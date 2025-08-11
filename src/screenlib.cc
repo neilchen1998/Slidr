@@ -31,7 +31,7 @@ void ScreenManager::Update()
         }
         case GameScreenState::GAMEPLAY:
         {
-            boardPtr_->Update(GetMousePosition());
+            boardPtr_->Update();
 
             if (boardPtr_->IsFinished())
             {
@@ -80,7 +80,7 @@ void ScreenManager::Update()
             celebrationPtr_->Update();
 
             // Press enter to return to TITLE screen
-            if (IsKeyPressed(KEY_ENTER))
+            if (IsKeyPressed(KEY_ENTER) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             {
                 curState_ = GameScreenState::TITLE;
             }
@@ -137,6 +137,7 @@ void ScreenManager::Draw() const
             DrawRectangle(0, 0, screenWidth_, screenHeight_, BEIGE);
             DrawText("Celebration", 20, 20, 20, GRAY);
 
+            boardPtr_->DrawResult();
             celebrationPtr_->Draw();
 
             break;
