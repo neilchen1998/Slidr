@@ -15,13 +15,13 @@ namespace creator
     {
         int cnt = 0;
 
-        for (size_t i = 0; i < constants::EIGHT_PUZZLE_SIZE; i++)
+        for (size_t i = 0; i < constants::EIGHT_PUZZLE_NUM - 1; i++)
         {
-            for (size_t j = 0; j < constants::EIGHT_PUZZLE_SIZE - 1; j++)
+            for (size_t j = i + 1; j < constants::EIGHT_PUZZLE_NUM; j++)
             {
-                int left = layout[i * constants::EIGHT_PUZZLE_SIZE + j];
-                int right = layout[i * constants::EIGHT_PUZZLE_SIZE + j + 1];
-                if ((left != constants::EMPTY) && (right != constants::EMPTY) && (right > left))
+                int left = layout[i];
+                int right = layout[j];
+                if ((left != constants::EMPTY) && (right != constants::EMPTY) && (left > right))
                 {
                     ++cnt;
                 }
