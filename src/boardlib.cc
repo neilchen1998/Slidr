@@ -4,11 +4,12 @@
 #include <vector>   // std::vector
 
 #include "raylib.h"     // LoadTexture, Vector2, Rectangle
-#include "fmt/core.h"   // fmt::println
+#include "fmt/core.h"   // fmt::format
 
 #include "gui/boardlib.hpp"
 #include "gui/colourlib.hpp"
 #include "solver/solverlib.hpp"
+#include "creator/creatorlib.hpp"
 
 namespace
 {
@@ -65,7 +66,7 @@ Board::Board()
     buttonPositions_[std::to_underlying(bd::Button::Restart)] = Rectangle {restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_};
     buttonPositions_[std::to_underlying(bd::Button::Help)] = Rectangle {helpBtnX_, helpBtnY_, buttonWidth_, buttonHeight_};
 
-    std::vector<int> initalLayout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
+    std::vector<int> initalLayout = creator::GetRandomLayout();
     std::shared_ptr<Node> startNode = std::make_shared<Node>(initalLayout);
 
     history_.push(startNode);
@@ -344,7 +345,7 @@ void Board::UpdateSolution()
     static double prevTime = GetTime();
     static auto itr = solutionDir_.cbegin();
     double curTime = GetTime();
-    if (((curTime - prevTime) > 1.0) && (itr != solutionDir_.cend()))
+    if (((curTime - prevTime) > 0.8) && (itr != solutionDir_.cend()))
     {
         const std::shared_ptr<Node> top = history_.top();
 
@@ -375,6 +376,11 @@ void Board::UpdateSolution()
         prevTime = curTime;
 
         ++itr;
+    }
+
+    if (((curTime - prevTime) > 1.0) && (itr == solutionDir_.cend()))
+    {
+        isSolved_ = true;
     }
 }
 

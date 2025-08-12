@@ -71,7 +71,7 @@ void ScreenManager::Update()
             // Press enter or left click to change to GAMEPLAY screen
             if (IsKeyPressed(KEY_ENTER) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             {
-                curState_ = GameScreenState::ENDING;
+                curState_ = GameScreenState::TITLE;
             }
             break;
         }
@@ -136,6 +136,7 @@ void ScreenManager::Draw() const
         {
             DrawRectangle(0, 0, screenWidth_, screenHeight_, BEIGE);
             DrawText("Celebration", 20, 20, 20, GRAY);
+            DrawText("PRESS ENTER to RETURN to TITLE SCREEN", 120, 220, 20, DARKBLUE);
 
             boardPtr_->DrawResult();
             celebrationPtr_->Draw();
@@ -146,6 +147,7 @@ void ScreenManager::Draw() const
         {
             DrawRectangle(0, 0, screenWidth_, screenHeight_, RED);
             DrawText("Sad", 20, 20, 20, GRAY);
+            DrawText("PRESS ENTER to RETURN to TITLE SCREEN", 120, 220, 20, DARKBLUE);
 
             break;
         }
