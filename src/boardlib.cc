@@ -311,8 +311,16 @@ void Board::Draw() const
         DrawText(TextFormat("Help"), helpBtnX_ + 15, helpBtnY_ + 15, 40, WHITE);
     }
 
-    // Draw text on the top
-    DrawText(TextFormat("Moves: %02i", history_.top()->GetDepth()), (screenWidth_ - boardWidth__) / 2, (screenHeight_ - boardHeight_) / 2 - 40, 40, BLUE);
+    // Draw the number of steps (depth) on the top
+    const int depth = history_.top()->GetDepth();
+    if (depth < 100)
+    {
+        DrawText(TextFormat("Moves: %02i", depth), (screenWidth_ - boardWidth__) / 2, (screenHeight_ - boardHeight_) / 2 - 40, 40, BLUE);
+    }
+    else
+    {
+        DrawText(TextFormat("Moves: %03i", depth), (screenWidth_ - boardWidth__) / 2, (screenHeight_ - boardHeight_) / 2 - 40, 40, BLUE);
+    }
 }
 
 void Board::DrawResult() const

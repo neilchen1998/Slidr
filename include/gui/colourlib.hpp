@@ -15,5 +15,6 @@
 #define STEEL_BLUE  CLITERAL(Color){ 070, 130, 180, 255 }   // #4682B4
 #define CAROLINE_BLUE CLITERAL(Color){ 75, 156, 211, 255 }   // #4B9CD3
 #define DEEP_SKY_BLUE CLITERAL(Color){ 0, 191, 255, 255 }   // #4B9CD3
+#define JADE_GREEN CLITERAL(Color){ 0, 168, 107, 255 }   // #00A86B
 
 #endif // INCLUDE_GUI_COLORLIB_H_

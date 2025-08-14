@@ -198,6 +198,9 @@ private:
 
     /// @brief The optimal moves for the puzzle
     unsigned optimalMoves_;
+
+    /// @brief The sound effect for buttons
+    Sound fxButton;
 };
 
 #endif // INCLUDE_GUI_BOARDLIB_H_

@@ -1,6 +1,9 @@
 #ifndef INCLUDE_GUI_ANIMATIONLIB_H_
 #define INCLUDE_GUI_ANIMATIONLIB_H_
 
+#include <string>
+#include "raylib.h"
+
 /// @brief The states of the game
 enum struct LoadingState : int
 {
@@ -26,7 +29,8 @@ public:
         rightSideRecHeight_(16),
         lettersCount_(0),
         framesCounter_(0),
-        alpha_(1.0f)
+        alpha_(1.0f),
+        author_("Neil")
     {
     }
 
@@ -73,6 +77,9 @@ private:
     int rightSideRecHeight_;
 
     unsigned long framesCounter_;
+
+    /// @brief the name of the author
+    std::string author_;
 };
 
 #endif // INCLUDE_GUI_ANIMATIONLIB_H_
