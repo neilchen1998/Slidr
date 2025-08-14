@@ -13,8 +13,7 @@ void ScreenManager::Update()
             raylibAnimationPtr_->Update();
 
             // Wait for the intro before jumping to TITLE screen
-            // if (raylibAnimationPtr_->IsDone())
-            if (true)
+            if (raylibAnimationPtr_->IsDone())
             {
                 curState_ = GameScreenState::TITLE;
             }
@@ -77,8 +76,6 @@ void ScreenManager::Update()
         }
         case GameScreenState::ENDING:
         {
-            celebrationPtr_->Update();
-
             // Press enter to return to TITLE screen
             if (IsKeyPressed(KEY_ENTER) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             {
@@ -96,28 +93,26 @@ void ScreenManager::Draw() const
     {
         case GameScreenState::LOGO:
         {
-            DrawText("LOGO SCREEN", 20, 20, 20, LIGHTGRAY);
-
             raylibAnimationPtr_->Draw();
 
             break;
         }
         case GameScreenState::TITLE:
         {
-            DrawRectangle(0, 0, screenWidth_, screenHeight_, GREEN);
-            DrawText("TITLE SCREEN", 20, 20, 20, DARKGREEN);
-            DrawText("PRESS ENTER to JUMP to GAMEPLAY SCREEN", 120, 220, 20, DARKGREEN);
+            DrawRectangle(0, 0, screenWidth_, screenHeight_, JADE_GREEN);
 
             std::string titleText = "Welcome to 8 Puzzle";
             int titleTextWidth = MeasureText(titleText.c_str(), 60);
             DrawText(titleText.c_str(), (GetScreenWidth() - titleTextWidth) / 2, GetScreenHeight() / 3, 60, BLACK);
+
+            const int subTxtWidth = MeasureText("PRESS ENTER to start", 20);
+            DrawText("PRESS ENTER to start", (GetScreenWidth() - subTxtWidth) / 2, 220, 20, DARKBLUE);
 
             break;
         }
         case GameScreenState::GAMEPLAY:
         {
             DrawRectangle(0, 0, screenWidth_, screenHeight_, BEIGE);
-            DrawText("GAMEPLAY SCREEN", 20, 20, 20, MAROON);
 
             boardPtr_->Draw();
 
@@ -126,7 +121,6 @@ void ScreenManager::Draw() const
         case GameScreenState::HELP:
         {
             DrawRectangle(0, 0, screenWidth_, screenHeight_, RED);
-            DrawText("Help", 20, 20, 20, GRAY);
 
             boardPtr_->DrawSolution();
 
@@ -135,8 +129,9 @@ void ScreenManager::Draw() const
         case GameScreenState::CELEBRATION:
         {
             DrawRectangle(0, 0, screenWidth_, screenHeight_, BEIGE);
-            DrawText("Celebration", 20, 20, 20, GRAY);
-            DrawText("PRESS ENTER to RETURN to TITLE SCREEN", 120, 220, 20, DARKBLUE);
+
+            const int subTxtWidth = MeasureText("PRESS ENTER to RETURN to TITLE SCREEN", 20);
+            DrawText("PRESS ENTER to RETURN to TITLE SCREEN", (GetScreenWidth() - subTxtWidth) / 2, 220 + 150, 20, DARKBLUE);
 
             boardPtr_->DrawResult();
             celebrationPtr_->Draw();
@@ -146,16 +141,18 @@ void ScreenManager::Draw() const
         case GameScreenState::SAD:
         {
             DrawRectangle(0, 0, screenWidth_, screenHeight_, RED);
-            DrawText("Sad", 20, 20, 20, GRAY);
-            DrawText("PRESS ENTER to RETURN to TITLE SCREEN", 120, 220, 20, DARKBLUE);
+
+            const int subTxtWidth = MeasureText("PRESS ENTER to RETURN to TITLE SCREEN", 20);
+            DrawText("PRESS ENTER to RETURN to TITLE SCREEN", (GetScreenWidth() - subTxtWidth) / 2, 220, 20, DARKBLUE);
 
             break;
         }
         case GameScreenState::ENDING:
         {
             DrawRectangle(0, 0, screenWidth_, screenHeight_, BLUE);
-            DrawText("ENDING SCREEN", 20, 20, 20, DARKBLUE);
-            DrawText("PRESS ENTER to RETURN to TITLE SCREEN", 120, 220, 20, DARKBLUE);
+
+            const int subTxtWidth = MeasureText("PRESS ENTER to RETURN to TITLE SCREEN", 20);
+            DrawText("PRESS ENTER to RETURN to TITLE SCREEN", (GetScreenWidth() - subTxtWidth) / 2, 220, 20, DARKBLUE);
 
             break;
         }

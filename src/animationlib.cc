@@ -55,7 +55,7 @@ void RaylibAnimation::Update()
             // Check if all letters have appeared
             if (lettersCount_ >= 10)
             {
-                alpha_ -= 0.02f;
+                alpha_ -= 0.015f;
 
                 // Check if the logo has faded out by looking at alpha value
                 if (alpha_ <= 0.0f)
@@ -110,6 +110,13 @@ void RaylibAnimation::Draw() const
             DrawRectangle(GetScreenWidth()/2 - 112, GetScreenHeight()/2 - 112, 224, 224, Fade(RAYWHITE, alpha_));
 
             DrawText(TextSubtext("raylib", 0, lettersCount_), GetScreenWidth()/2 - 44, GetScreenHeight()/2 + 48, 50, Fade(BLACK, alpha_));
+
+            // Only show the subtext when the first letter of raylib comes out
+            if (lettersCount_)
+            {
+                const int subTxtWidth = MeasureText("made by blood, sweat, and tears", 30);
+                DrawText("made with blood, sweat, and tears", (GetScreenWidth() - subTxtWidth) / 2, GetScreenHeight()/2 + 150, 30, Fade(LIME, alpha_));
+            }
             break;
         }
         default: break;
