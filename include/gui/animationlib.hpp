@@ -5,7 +5,7 @@
 #include "raylib.h"
 
 /// @brief The states of the game
-enum struct LoadingState : int
+enum struct LoadingState : unsigned short
 {
     SMALL_BOX_BLINKING = 0,
     LEFT_BOX_GROWING,

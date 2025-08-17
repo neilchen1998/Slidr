@@ -355,7 +355,7 @@ void Board::UpdateSolution()
 {
     static double prevTime = GetTime();
     double curTime = GetTime();
-    if (((curTime - prevTime) > 0.5) && (itr_ != solutionDir_.cend()))
+    if (((curTime - prevTime) > 0.8) && (itr_ != solutionDir_.cend()))
     {
         const std::shared_ptr<Node> top = history_.top();
 
