@@ -8,6 +8,7 @@
 
 #include "gui/boardlib.hpp"
 #include "gui/colourlib.hpp"
+#include "gui/buttonlib.hpp"
 #include "solver/solverlib.hpp"
 #include "creator/creatorlib.hpp"
 
@@ -15,8 +16,6 @@ namespace
 {
     constexpr int counterWidth = 250;
     constexpr int counterHeight = 60;
-    constexpr float cornerRadius = 0.3f;
-    constexpr int segments = 10;
     constexpr int instructionFontSize = 20;
     constexpr int moveCounterFontSize = 25;
 }
@@ -75,7 +74,11 @@ Board::Board()
 
     s.SolvePuzzle();
 
-    optimalMoves_ = (s.GetSolutionDirection().size() - 1);
+    solutionDir_ = s.GetSolutionDirection();
+
+    itr_ = solutionDir_.cbegin();
+
+    optimalMoves_ = (solutionDir_.size() - 1);
 }
 
 Board::~Board()
@@ -237,12 +240,12 @@ void Board::Update()
     if (helpBtnAction_)
     {
         requestedHelp_ = true;
-        Solver s {*history_.top()};
 
-        s.SolvePuzzle();
-
-        solutionDir_ = s.GetSolutionDirection();
-        auto sol = s.GetSolution();
+        // Clear the history since the solution will take over
+        while (history_.size() > 1)
+        {
+            history_.pop();
+        }
     }
 
     // Check if the puzzle is completed
@@ -340,8 +343,8 @@ void Board::DrawResult() const
     // Construct and draw the rectangles
     Rectangle optimalMovesRect = { rectX, optimalMovesRectY, counterWidth, counterHeight };
     Rectangle userMovesRect = { rectX, userMovesRectY, counterWidth, counterHeight };
-    DrawRectangleRounded(optimalMovesRect, cornerRadius, segments, LIGHTGRAY);
-    DrawRectangleRounded(userMovesRect, cornerRadius, segments, LIGHTGRAY);
+    DrawRectangleRounded(optimalMovesRect, gui::cornerRadius, gui::segments, LIGHTGRAY);
+    DrawRectangleRounded(userMovesRect, gui::cornerRadius, gui::segments, LIGHTGRAY);
 
     // Draw the text
     DrawText(optimalMovesText.c_str(), rectX + (counterWidth - textWidth) / 2, optimalMovesRectY + (counterHeight - moveCounterFontSize) / 2, moveCounterFontSize, DARKBLUE);
@@ -351,42 +354,20 @@ void Board::DrawResult() const
 void Board::UpdateSolution()
 {
     static double prevTime = GetTime();
-    static auto itr = solutionDir_.cbegin();
     double curTime = GetTime();
-    if (((curTime - prevTime) > 0.8) && (itr != solutionDir_.cend()))
+    if (((curTime - prevTime) > 0.8) && (itr_ != solutionDir_.cend()))
     {
         const std::shared_ptr<Node> top = history_.top();
 
-        bd::Button btn = static_cast<bd::Button>(*itr);
-
-        // Check if the condition for moving to the direction is satisfied
-        if (*itr == constants::RIGHT)
-        {
-            auto [childLayout, childPosX] = top->GetNextLayout(constants::RIGHT);
-            history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::RIGHT));
-        }
-        else if (*itr == constants::LEFT)
-        {
-            auto [childLayout, childPosX] = top->GetNextLayout(constants::LEFT);
-            history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::LEFT));
-        }
-        else if (*itr == constants::DOWN)
-        {
-            auto [childLayout, childPosX] = top->GetNextLayout(constants::DOWN);
-            history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::DOWN));
-        }
-        else if (*itr == constants::UP)
-        {
-            auto [childLayout, childPosX] = top->GetNextLayout(constants::UP);
-            history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::UP));
-        }
+        auto [childLayout, childPosX] = top->GetNextLayout(*itr_);
+        history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, *itr_));
 
         prevTime = curTime;
 
-        ++itr;
+        ++itr_;
     }
 
-    if (((curTime - prevTime) > 1.0) && (itr == solutionDir_.cend()))
+    if (((curTime - prevTime) > 1.0) && (itr_ == solutionDir_.cend()))
     {
         isSolved_ = true;
     }
@@ -402,16 +383,42 @@ void Board::DrawSolution() const
 
 void Board::Reset()
 {
-    // Create a new history
-    std::stack<std::shared_ptr<Node>> newHistory;
-    std::vector<int> initalLayout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
-    std::shared_ptr<Node> startNode = std::make_shared<Node>(initalLayout);
-    newHistory.push(startNode);
-
-    // Swap the old history with the new one
-    history_.swap(newHistory);
-
+    restartBtnState_ = bd::ButtonState::Unselected;
+    undoBtnState_ = bd::ButtonState::Unselected;
+    helpBtnState_ = bd::ButtonState::Unselected;
     isSolved_ = false;
+    requestedHelp_ = false;
+    moves_ = INT_MAX;
+    itr_ = solutionDir_.cbegin();
+
+    std::vector<int> initalLayout = creator::GetRandomLayout();
+    std::shared_ptr<Node> startNode = std::make_shared<Node>(initalLayout);
+    
+    std::stack<std::shared_ptr<Node>> newHistory;
+    newHistory.push(startNode);
+    std::swap(history_, newHistory);
+    
+    Solver s {*history_.top()};
+
+    s.SolvePuzzle();
+
+    optimalMoves_ = (s.GetSolutionDirection().size() - 1);
+}
+
+void Board::Restart()
+{
+    restartBtnState_ = bd::ButtonState::Unselected;
+    undoBtnState_ = bd::ButtonState::Unselected;
+    helpBtnState_ = bd::ButtonState::Unselected;
+    isSolved_ = false;
+    requestedHelp_ = false;
+    moves_ = INT_MAX;
+    itr_ = solutionDir_.cbegin();
+
+    while (history_.size() > 1)
+    {
+        history_.pop();
+    }
 }
 
 bd::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePoint)
