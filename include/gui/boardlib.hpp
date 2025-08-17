@@ -194,6 +194,10 @@ private:
     /// @brief True if the user requests for help
     bool requestedHelp_;
 
+    /// @brief The iterator that points to the solution
+    std::vector<short>::const_iterator itr_;
+
+    /// @brief The solution
     std::vector<short> solutionDir_;
 
     /// @brief The number of moves that the user makes to reach the end
