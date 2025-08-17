@@ -112,10 +112,11 @@ void RaylibAnimation::Draw() const
             DrawText(TextSubtext("raylib", 0, lettersCount_), GetScreenWidth()/2 - 44, GetScreenHeight()/2 + 48, 50, Fade(BLACK, alpha_));
 
             // Only show the subtext when the first letter of raylib comes out
+            std::string_view subTitle("made with blood, sweat, and tears");
             if (lettersCount_)
             {
-                const int subTxtWidth = MeasureText("made by blood, sweat, and tears", 30);
-                DrawText("made with blood, sweat, and tears", (GetScreenWidth() - subTxtWidth) / 2, GetScreenHeight()/2 + 150, 30, Fade(LIME, alpha_));
+                const int subTxtWidth = MeasureText(subTitle.data(), 30);
+                DrawText(subTitle.data(), (GetScreenWidth() - subTxtWidth) / 2, GetScreenHeight()/2 + 150, 30, Fade(LIME, alpha_));
             }
             break;
         }

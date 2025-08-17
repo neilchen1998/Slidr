@@ -84,6 +84,9 @@ public:
     /// @brief Resets the board
     void Reset();
 
+    /// @brief Restarts the board
+    void Restart();
+
 private:
     /// @brief Check which button is pressed
     /// @param mousePoint The vector of the mouse cursor

@@ -22,15 +22,7 @@ enum struct GameScreenState : int
 class ScreenManager
 {
 public:
-    ScreenManager()
-        : curState_(GameScreenState::LOGO),
-        screenWidth_(GetScreenWidth()),
-        screenHeight_(GetScreenHeight()),
-        raylibAnimationPtr_(std::make_unique<RaylibAnimation>()),
-        boardPtr_(std::make_unique<Board>()),
-        celebrationPtr_(std::make_unique<Celebration>())
-    {
-    }
+    ScreenManager();
 
     ~ScreenManager() = default;
 
@@ -58,6 +50,30 @@ private:
 
     /// @brief The pointer that points to the Celebration class
     std::unique_ptr<Celebration> celebrationPtr_;
+
+    /// @brief The state of the restart button
+    bd::ButtonState restartBtnState_;
+
+    /// @brief The state of the new game button
+    bd::ButtonState newGameBtnState_;
+
+    /// @brief The restart button box
+    Rectangle restartBox_;
+
+    /// @brief The new game button box
+    Rectangle newGameBox_;
+
+    /// @brief The action of the restart button
+    bool restartBtnAction_;
+
+    /// @brief The action of the new game button
+    bool newGameBtnAction_;
+
+    /// @brief The text width of the restart
+    float restartTxtWidth_;
+
+    /// @brief The text width of the new game
+    float newGameTxtWidth_;
 };
 
 #endif // INCLUDE_GUI_SCREENLIB_H_

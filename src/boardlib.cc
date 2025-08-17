@@ -8,6 +8,7 @@
 
 #include "gui/boardlib.hpp"
 #include "gui/colourlib.hpp"
+#include "gui/buttonlib.hpp"
 #include "solver/solverlib.hpp"
 #include "creator/creatorlib.hpp"
 
@@ -15,8 +16,6 @@ namespace
 {
     constexpr int counterWidth = 250;
     constexpr int counterHeight = 60;
-    constexpr float cornerRadius = 0.3f;
-    constexpr int segments = 10;
     constexpr int instructionFontSize = 20;
     constexpr int moveCounterFontSize = 25;
 }
@@ -340,8 +339,8 @@ void Board::DrawResult() const
     // Construct and draw the rectangles
     Rectangle optimalMovesRect = { rectX, optimalMovesRectY, counterWidth, counterHeight };
     Rectangle userMovesRect = { rectX, userMovesRectY, counterWidth, counterHeight };
-    DrawRectangleRounded(optimalMovesRect, cornerRadius, segments, LIGHTGRAY);
-    DrawRectangleRounded(userMovesRect, cornerRadius, segments, LIGHTGRAY);
+    DrawRectangleRounded(optimalMovesRect, gui::cornerRadius, gui::segments, LIGHTGRAY);
+    DrawRectangleRounded(userMovesRect, gui::cornerRadius, gui::segments, LIGHTGRAY);
 
     // Draw the text
     DrawText(optimalMovesText.c_str(), rectX + (counterWidth - textWidth) / 2, optimalMovesRectY + (counterHeight - moveCounterFontSize) / 2, moveCounterFontSize, DARKBLUE);
@@ -402,16 +401,43 @@ void Board::DrawSolution() const
 
 void Board::Reset()
 {
-    // Create a new history
-    std::stack<std::shared_ptr<Node>> newHistory;
-    std::vector<int> initalLayout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
-    std::shared_ptr<Node> startNode = std::make_shared<Node>(initalLayout);
-    newHistory.push(startNode);
+    restartBtnState_ = bd::ButtonState::Unselected;
+    undoBtnState_ = bd::ButtonState::Unselected;
+    helpBtnState_ = bd::ButtonState::Unselected;
+    isSolved_ = false;
+    requestedHelp_ = false;
+    moves_ = INT_MAX;
 
-    // Swap the old history with the new one
-    history_.swap(newHistory);
+    std::vector<int> initalLayout = creator::GetRandomLayout();
+    std::shared_ptr<Node> startNode = std::make_shared<Node>(initalLayout);
+    
+    std::stack<std::shared_ptr<Node>> newHistory;
+    newHistory.push(startNode);
+    std::swap(history_, newHistory);
+    
+    Solver s {*history_.top()};
+
+    s.SolvePuzzle();
+
+    optimalMoves_ = (s.GetSolutionDirection().size() - 1);
+}
+
+void Board::Restart()
+{
+    restartBtnState_ = bd::ButtonState::Unselected;
+    undoBtnState_ = bd::ButtonState::Unselected;
+    helpBtnState_ = bd::ButtonState::Unselected;
+    isSolved_ = false;
+    requestedHelp_ = false;
+    moves_ = INT_MAX;
+
+    while (history_.size() > 1)
+    {
+        history_.pop();
+    }
 
     isSolved_ = false;
+    requestedHelp_ = false;
 }
 
 bd::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePoint)
