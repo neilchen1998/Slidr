@@ -8,7 +8,7 @@ project(
     LANGUAGES C CXX
 )
 
-# set C++ standard
+# Set C++ standard
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
