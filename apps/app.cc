@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
     // Check if there is an additional argument (the total # of arguments should be 2)
     if (argc > 2)
     {
-        fmt::print("Provide the puzzle!\nThe puzzle should only contains numbers from 1 to 8 and use 'x' or 'X' to denote the empty piece.\n");
+        fmt::print("Too many arguments!Enter the puzzle pieces without spaces between them.\n");
         return EXIT_FAILURE;
     }
 
@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
         auto res = prompt::parse_string_to_layout(argv[1]);
         if (!res)
         {
-            fmt::print("Provide the puzzle!\nThe puzzle should only contains numbers from 1 to 8 and use 'x' or 'X' to denote the empty piece.\n");
+            fmt::print("The puzzle should only contains numbers from 1 to 8 and use 'x' or 'X' to denote the empty piece.\n");
             return EXIT_FAILURE;
         }
 
@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
 
-    fmt::print("Done in: {} µs\t# of iterations: {}\tTotal moves: {}\n", duration.count(), totalIters, s.GetNumOfMoves());
+    fmt::print("Solved in: {} µs\t# of iterations: {}\tTotal moves: {}\n", duration.count(), totalIters, s.GetNumOfMoves());
     s.PrintPath();
 
     fmt::print("Moves: {}\n", s.GetSolution());
