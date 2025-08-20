@@ -1,40 +1,40 @@
-# cmake requirements
+# The minimum cmake requirements
 cmake_minimum_required(VERSION 3.5...4.0)
 
 project(
     8-Puzzle
-    VERSION 0.1
+    VERSION 1.0
     DESCRIPTION "Solve 8 Puzzle problem"
     LANGUAGES C CXX
 )
 
-# set C++ standard
+# Set C++ standard
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# check if we are in the main CMakeLists
+# Check if we are in the main CMakeLists
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 
-    # ensure -std=c++xx instead of -std=g++xx for protability purposes
+    # Ensure -std=c++xx instead of -std=g++xx for protability purposes
     set(CMAKE_CXX_EXTENSIONS OFF)
 
-    # compiler flags
+    # Set compiler flags
     if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "Test" OR CMAKE_BUILD_TYPE STREQUAL "Benchmark")
-        add_compile_options(-Wall -Wextra -pedantic -Wconversion -Wsign-conversion -O3)
+        add_compile_options(-Wall -Wextra -pedantic -Wconversion -Wsign-conversion -O3 -ffast-math)
     elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
         add_compile_options(-Wall -Wextra -pedantic -g3 -fsanitize=address,undefined)
     elseif(CMAKE_BUILD_TYPE STREQUAL "Gprof")
         add_compile_options(-pg)
     endif()
 
-    # linker flags
+    # Set linker flags
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         add_link_options(-g3 -fsanitize=address,undefined)
     elseif(CMAKE_BUILD_TYPE STREQUAL "Gprof")
         add_link_options(-pg)
     endif()
 
-    # use CTest
+    # Use CTest
     # NOTE: this needs to be done in the main CMakeLists
     include(CTest)
 
@@ -62,21 +62,13 @@ FetchContent_Declare(
   GIT_TAG        11.2.0)
 FetchContent_MakeAvailable(fmt)
 
-FetchContent_Declare(
-  raylib
-  GIT_REPOSITORY https://github.com/raysan5/raylib
-  GIT_TAG        c1ab645ca298a2801097931d1079b10ff7eb9df8)
-set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(BUILD_GAMES OFF CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(raylib)
-
-# the compiled library code
+# The compiled library code
 add_subdirectory(src)
 
-# the executable code
+# The executable code
 add_subdirectory(apps)
 
-# checks if we are in the main CMakeLists
+# Check if we are in the main CMakeLists
 if((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR MODERN_CMAKE_BUILD_TESTING) AND BUILD_TESTING AND CMAKE_BUILD_TYPE STREQUAL "Test")
     add_subdirectory(tests)
 elseif((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR MODERN_CMAKE_BUILD_TESTING) AND BUILD_TESTING AND CMAKE_BUILD_TYPE STREQUAL "Benchmark")
