@@ -54,6 +54,7 @@ public:
         }
     }
 
+    /// @brief The default destructor
     ~Solver() = default;
 
     /// @brief Solves the puzzle

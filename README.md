@@ -62,7 +62,7 @@ To run the binary with a custom puzzle layout (use 1 to 8 and 'x' or 'X' for the
 To build and test:
 
 ```bash
-cmake --build build && cmake --build build --target test
+cmake --build build -DCMAKE_BUILD_TYPE=Test && cmake --build build --target test
 ```
 
 To build docs (requires Doxygen, output in `build/docs/html`):
@@ -74,7 +74,7 @@ cmake --build build --target docs
 To build and run benchmark:
 
 ```bash
-cmake --build build && ./build/bench/<name_of_benchmark>
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Benchmark && ./build/bench/<name_of_benchmark>
 ```
 
 To run the Unix performance analysis tool (tested only on Linux):
@@ -456,7 +456,7 @@ After changing the data type in our `std::priortiy_queue`, a significant perform
 This is a way to reduce a template parameter pack over a binary operator.
 A template parameter pack is a template parameter that accepts zero or more arguments.
 *hash_combine* uses fold expressions to take multiple arguments and hashes them in left order.
-For instance, 
+For instance,
 
 ```cpp
 hash_combine(h, u, v);

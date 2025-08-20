@@ -1,4 +1,7 @@
-#include <stdlib.h> // EXIT_SUCCESS
+#include <stdlib.h> // EXIT_SUCCESS, EXIT_FAILURE
+#include <vector>    // std::vector
+#include <chrono>   // std::chrono::high_resolution_clock, std::chrono::duration_cast
+#include <fmt/core.h>   // fmt::print
 
 #include "raylib.h"
 
@@ -21,24 +24,41 @@ int main(void)
 
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
-       // Update
-       manager.Update();
-
-        // Draw
-        BeginDrawing();
-
-            ClearBackground(RAYWHITE);
-            manager.Draw();
-
-        EndDrawing();
-
+        fmt::print("Too many arguments!Enter the puzzle pieces without spaces between them.\n");
+        return EXIT_FAILURE;
     }
 
-    // Unload all loaded data (textures, fonts, audio) here!
-    manager.~ScreenManager();
+    // Check if an additional input is provided
+    // otherwise an example input is used
+    std::vector<int> layout;
+    if (argc == 2)
+    {
+        auto res = prompt::parse_string_to_layout(argv[1]);
+        if (!res)
+        {
+            fmt::print("The puzzle should only contains numbers from 1 to 8 and use 'x' or 'X' to denote the empty piece.\n");
+            return EXIT_FAILURE;
+        }
 
-    // Close window and OpenGL context
-    CloseWindow();
+        layout = std::move(res.value());    // use std::move to avoid the copy
+    }
+    else
+    {
+        fmt::print("No additional argument is provided! An example puzzle layout will be used.\n");
+        layout = {6, 4, 7, 8, 5, constants::EMPTY, 3, 2, 1};
+    }
+
+    auto start = std::chrono::high_resolution_clock::now();
+    Solver s = Solver(layout);
+    auto [isSolved, totalIters] = s.SolvePuzzle();
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+
+    fmt::print("Solved in: {} µs\t# of iterations: {}\tTotal moves: {}\n", duration.count(), totalIters, s.GetNumOfMoves());
+    s.PrintPath();
+
+    fmt::print("Moves: {}\n", s.GetSolution());
 
     return EXIT_SUCCESS;
 }
