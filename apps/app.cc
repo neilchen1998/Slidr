@@ -3,28 +3,16 @@
 #include <chrono>   // std::chrono::high_resolution_clock, std::chrono::duration_cast
 #include <fmt/core.h>   // fmt::print
 
-#include "raylib.h"
+#include "solver/solverlib.hpp" // Solver
+#include "constants/constantslib.hpp"   // constants::EMPTY
+#include "prompt/promptlib.hpp" // prompt::parse_string_to_layout
 
-#include "gui/screenlib.hpp"
-
-#define TARGET_FPS 60
-
-int main(void)
+int main(int argc, char* argv[])
 {
-    const int screenWidth = 1200;
-    const int screenHeight = 1200;
-
-    InitWindow(screenWidth, screenHeight, "8 Puzzle");
-
-    // Initialize all required variables and load all required data here!
-    ScreenManager manager {};
-
-    // Set desired framerate (frames-per-second)
-    SetTargetFPS(TARGET_FPS);
-
-    while (!WindowShouldClose())    // Detect window close button or ESC key
+    // Check if there is an additional argument (the total # of arguments should be 2)
+    if (argc > 2)
     {
-        fmt::print("Too many arguments!Enter the puzzle pieces without spaces between them.\n");
+        fmt::print("Provide the puzzle!\nThe puzzle should only contains numbers from 1 to 8 and use 'x' or 'X' to denote the empty piece.\n");
         return EXIT_FAILURE;
     }
 
@@ -36,7 +24,7 @@ int main(void)
         auto res = prompt::parse_string_to_layout(argv[1]);
         if (!res)
         {
-            fmt::print("The puzzle should only contains numbers from 1 to 8 and use 'x' or 'X' to denote the empty piece.\n");
+            fmt::print("Provide the puzzle!\nThe puzzle should only contains numbers from 1 to 8 and use 'x' or 'X' to denote the empty piece.\n");
             return EXIT_FAILURE;
         }
 
@@ -55,7 +43,7 @@ int main(void)
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
 
-    fmt::print("Solved in: {} µs\t# of iterations: {}\tTotal moves: {}\n", duration.count(), totalIters, s.GetNumOfMoves());
+    fmt::print("Done in: {} µs\t# of iterations: {}\tTotal moves: {}\n", duration.count(), totalIters, s.GetNumOfMoves());
     s.PrintPath();
 
     fmt::print("Moves: {}\n", s.GetSolution());
