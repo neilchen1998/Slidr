@@ -47,19 +47,19 @@ TEST_CASE( "Basic Operations for Max Heap", "[main]" )
         --sz;
         REQUIRE(b.top() == *itr);
         REQUIRE(b.size() == sz);
-        
+
         b.pop();
         ++itr;
         --sz;
         REQUIRE(b.top() == *itr);
         REQUIRE(b.size() == sz);
-        
+
         b.pop();
         ++itr;
         --sz;
         REQUIRE(b.top() == *itr);
         REQUIRE(b.size() == sz);
-        
+
         b.pop();
         ++itr;
         --sz;
@@ -109,19 +109,19 @@ TEST_CASE( "Basic Operations for Min Heap", "[main]" )
         --sz;
         REQUIRE(b.top() == *itr);
         REQUIRE(b.size() == sz);
-        
+
         b.pop();
         ++itr;
         --sz;
         REQUIRE(b.top() == *itr);
         REQUIRE(b.size() == sz);
-        
+
         b.pop();
         ++itr;
         --sz;
         REQUIRE(b.top() == *itr);
         REQUIRE(b.size() == sz);
-        
+
         b.pop();
         ++itr;
         --sz;
@@ -187,7 +187,7 @@ TEST_CASE( "Basic Operations for Min Heap Node", "[main]" )
         b.pop();
         REQUIRE(b.top() == halfwayNode);
         REQUIRE(b.size() == N - 1);
-        
+
         b.pop();
         REQUIRE(b.top() == startNode);
         REQUIRE(b.size() == N - 2);

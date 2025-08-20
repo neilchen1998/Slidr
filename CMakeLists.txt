@@ -52,8 +52,9 @@ endif()
 include(FetchContent)
 
 # all required packages (system)
-# find_package(Boost REQUIRED)
-# find_package(Boost COMPONENTS program_options REQUIRED) # boost::program_options
+if((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR MODERN_CMAKE_BUILD_TESTING) AND BUILD_TESTING AND CMAKE_BUILD_TYPE STREQUAL "Benchmark")
+    find_package(Boost REQUIRED)
+endif()
 
 # all required packages (will be downloaded automatically)
 FetchContent_Declare(

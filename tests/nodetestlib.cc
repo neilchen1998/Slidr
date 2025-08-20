@@ -245,7 +245,7 @@ TEST_CASE( "Move", "[main]" )
         REQUIRE (middle.GetPosX() == 7);
     }
 
-    // TopLeft 
+    // TopLeft
     SECTION ( "Move Right", "[main]" )
     {
         bool ret = topLeft.Move(constants::RIGHT);
@@ -278,7 +278,7 @@ TEST_CASE( "Move", "[main]" )
         REQUIRE (topLeft.GetPosX() == 3);
     }
 
-    // TopRight 
+    // TopRight
     SECTION ( "Move Right", "[main]" )
     {
         bool ret = topRight.Move(constants::RIGHT);
@@ -311,7 +311,7 @@ TEST_CASE( "Move", "[main]" )
         REQUIRE (topRight.GetPosX() == 5);
     }
 
-    // BottomLeft 
+    // BottomLeft
     SECTION ( "Move Right", "[main]" )
     {
         bool ret = bottomLeft.Move(constants::RIGHT);
@@ -344,7 +344,7 @@ TEST_CASE( "Move", "[main]" )
         REQUIRE (bottomLeft.GetPosX() == 6);
     }
 
-    // BottomRight 
+    // BottomRight
     SECTION ( "Move Right", "[main]" )
     {
         bool ret = bottomRight.Move(constants::RIGHT);
