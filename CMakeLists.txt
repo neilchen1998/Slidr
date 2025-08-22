@@ -66,8 +66,10 @@ FetchContent_MakeAvailable(fmt)
 # The compiled library code
 add_subdirectory(src)
 
-# The executable code
-add_subdirectory(apps)
+if (BUILD_EXAMPLES)
+    # The executable code
+    add_subdirectory(apps)
+endif()
 
 # Check if we are in the main CMakeLists
 if((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR MODERN_CMAKE_BUILD_TESTING) AND BUILD_TESTING AND CMAKE_BUILD_TYPE STREQUAL "Test")
