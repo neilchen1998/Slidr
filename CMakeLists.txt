@@ -56,12 +56,17 @@ if((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR MODERN_CMAKE_BUILD_TESTING) AND 
     find_package(Boost REQUIRED)
 endif()
 
-# all required packages (will be downloaded automatically)
-FetchContent_Declare(
-  fmt
-  GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-  GIT_TAG        11.2.0)
-FetchContent_MakeAvailable(fmt)
+# Try to find the fmt library that is at least newer than 11.2.0 on the machine
+find_package(fmt CONFIG 11.0.0 QUIET)
+if (NOT fmt_FOUND)
+    message(STATUS "fmt could not be found or version is too old, downloading via FetchContent...")
+    # all required packages (will be downloaded automatically)
+    FetchContent_Declare(
+    fmt
+    GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+    GIT_TAG        11.2.0)
+    FetchContent_MakeAvailable(fmt)
+endif()
 
 # The compiled library code
 add_subdirectory(src)
