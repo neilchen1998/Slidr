@@ -12,6 +12,9 @@ add_library(solver_library INTERFACE)
 add_library(prompt_library promptlib.cc ${PROMPT_HEADER_LIST})
 add_library(container_library INTERFACE)
 
+apply_compiler_flags(node_library)
+apply_compiler_flags(prompt_library)
+
 target_include_directories(math_library INTERFACE ../include ${MATH_HEADER_LIST})
 target_include_directories(constants_library INTERFACE ../include ${CONSTANTS_HEADER_LIST})
 target_include_directories(node_library PUBLIC ../include ${NODE_HEADER_LIST})
