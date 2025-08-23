@@ -3,9 +3,9 @@ cmake_minimum_required(VERSION 3.5...4.0)
 
 project(
     8-Puzzle
-    VERSION 1.0
+    VERSION 1.1
     DESCRIPTION "Solve 8 Puzzle problem"
-    LANGUAGES C CXX
+    LANGUAGES CXX
 )
 
 # Set C++ standard
@@ -66,8 +66,11 @@ FetchContent_MakeAvailable(fmt)
 # The compiled library code
 add_subdirectory(src)
 
-# The executable code
-add_subdirectory(apps)
+# Check if we need to build the example
+if (BUILD_EXAMPLES OR CMAKE_BUILD_TYPE STREQUAL "Release")
+    # The executable code
+    add_subdirectory(apps)
+endif()
 
 # Check if we are in the main CMakeLists
 if((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR MODERN_CMAKE_BUILD_TESTING) AND BUILD_TESTING AND CMAKE_BUILD_TYPE STREQUAL "Test")
