@@ -1,9 +1,9 @@
 # The minimum cmake requirements
-cmake_minimum_required(VERSION 3.5...4.0)
+cmake_minimum_required(VERSION 3.18...4.0)
 
 project(
     8-Puzzle
-    VERSION 1.1
+    VERSION 1.2
     DESCRIPTION "Solve 8 Puzzle problem"
     LANGUAGES CXX
 )
