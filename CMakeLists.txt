@@ -24,26 +24,6 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
         set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build." FORCE)
     endif()
 
-    # Custom function that applies compiler flags based on the build type
-    function(apply_compiler_flags target_name)
-        if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "Test" OR CMAKE_BUILD_TYPE STREQUAL "Benchmark")
-            add_compile_options(-O3 -ffast-math -DNDEBUG)
-        elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-            add_compile_options(-Wall -Wextra -pedantic -Wconversion -Wsign-conversion -O0)
-        elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
-            add_compile_options(-Wall -Wextra -pedantic -g3 -fsanitize=address,undefined)
-        elseif(CMAKE_BUILD_TYPE STREQUAL "Gprof")
-            add_compile_options(-pg)
-        endif()
-
-        # Set linker flags
-        if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-            add_link_options(-g3 -fsanitize=address,undefined)
-        elseif(CMAKE_BUILD_TYPE STREQUAL "Gprof")
-            add_link_options(-pg)
-        endif()
-    endfunction()
-
     # Use CTest
     # NOTE: this needs to be done in the main CMakeLists
     include(CTest)
