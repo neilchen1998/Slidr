@@ -46,7 +46,6 @@ target_include_directories(container_library INTERFACE ../include ${CONTAINER_HE
 target_link_libraries(node_library PUBLIC math_library fmt::fmt)
 target_link_libraries(solver_library INTERFACE node_library container_library)
 
-target_compile_features(constants_library INTERFACE cxx_std_17)  # requires C++17 for inline variables
 target_compile_features(math_library INTERFACE cxx_std_20)  # requires C++20 for concept
 target_compile_features(prompt_library PUBLIC cxx_std_20)   # requires C++20 for std::span
 target_compile_features(node_library PUBLIC cxx_std_20)   # requires C++20 for std::span

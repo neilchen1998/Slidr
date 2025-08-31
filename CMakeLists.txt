@@ -9,7 +9,7 @@ project(
 )
 
 # Set C++ standard
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Check if we are in the main CMakeLists
@@ -46,11 +46,12 @@ if((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR MODERN_CMAKE_BUILD_TESTING) AND 
     find_package(Boost REQUIRED)
 endif()
 
+# all required packages (will be downloaded automatically)
+
 # Try to find the fmt library that is at least newer than 11.2.0 on the machine
 find_package(fmt CONFIG 11.0.0 QUIET)
 if (NOT fmt_FOUND)
     message(STATUS "fmt could not be found or version is too old, downloading via FetchContent...")
-    # all required packages (will be downloaded automatically)
     FetchContent_Declare(
     fmt
     GIT_REPOSITORY https://github.com/fmtlib/fmt.git
