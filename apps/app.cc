@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
     }
 
     auto start = std::chrono::high_resolution_clock::now();
-    Solver s = Solver(layout);
+    auto s = slidr::Solver(layout);
     auto [isSolved, totalIters] = s.SolvePuzzle();
 
     auto end = std::chrono::high_resolution_clock::now();

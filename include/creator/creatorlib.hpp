@@ -11,6 +11,9 @@
 
 namespace creator
 {
+    /// @brief Checks if a layout is solvable or not
+    /// @param layout The layout of a puzzle
+    /// @return TRUE if the layout is solvable
     bool Solvable(std::span<const int> layout)
     {
         int cnt = 0;
@@ -21,6 +24,8 @@ namespace creator
             {
                 int left = layout[i];
                 int right = layout[j];
+
+                // There is an inversion when the number on the left is greater than that on the right
                 if ((left != constants::EMPTY) && (right != constants::EMPTY) && (left > right))
                 {
                     ++cnt;
@@ -28,9 +33,12 @@ namespace creator
             }
         }
 
+        // A puzzle is solvable if and only if the number of inversions is an even number
         return ((cnt % 2) == 0) ? true : false;
     }
 
+    /// @brief Generates a random layout of an 8 puzzle
+    /// @return A random layout of an 8 puzzle
     std::vector<int> GetRandomLayout()
     {
         std::vector<int> layout {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
@@ -41,6 +49,7 @@ namespace creator
         {
             std::shuffle(layout.begin(), layout.end(), g);
 
+            // Early return when we have found a solvable puzzle
             if (Solvable(std::span(layout)))
             {
                 return layout;

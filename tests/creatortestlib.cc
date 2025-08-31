@@ -69,7 +69,7 @@ TEST_CASE( "GetRandomLayout Function", "[main]" )
         SECTION("", "[trivial case]")
         {
             std::vector<int> layout = creator::GetRandomLayout();
-            Solver s {layout};
+            slidr::Solver s {layout};
 
             auto [solved, _] = s.SolvePuzzle();
 
