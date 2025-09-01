@@ -42,7 +42,7 @@ target_include_directories(node_library PUBLIC ../slidr ${NODE_HEADER_LIST})
 target_include_directories(solver_library INTERFACE ../slidr ${SOLVER_HEADER_LIST})
 target_include_directories(prompt_library PUBLIC ../slidr ${PROMPT_HEADER_LIST})
 target_include_directories(container_library INTERFACE ../slidr ${CONTAINER_HEADER_LIST})
-target_include_directories(slidr INTERFACE ../slidr ${SOLVER_HEADER_LIST})
+target_include_directories(slidr INTERFACE ../slidr $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 # target_link_libraries(math_library INTERFACE Boost::boost) # if you want to use boost::hash_combine
 target_link_libraries(node_library PUBLIC math_library fmt::fmt)
