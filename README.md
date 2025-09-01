@@ -1,4 +1,4 @@
-# 8 Puzzle Solver
+# slidr (8 Puzzle Solver)
 
 This project solves the famous 8 Puzzle problem.
 
@@ -31,10 +31,10 @@ Add this to your CMakeLists.txt:
 
 ```cmake
 FetchContent_Declare(
-  fmt
-  GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-  GIT_TAG        11.2.0)
-  FetchContent_MakeAvailable(fmt)
+  slidr
+  GIT_REPOSITORY https://github.com/neilchen1998/slidr
+  GIT_TAG        v2.0)
+  FetchContent_MakeAvailable(slidr)
 ```
 
 Add this if you would like to skip building the example:
@@ -128,6 +128,35 @@ To visualize gprof:
 ```
 
 ## Example Result
+
+This is how you would use the solver:
+
+```cpp
+#include <slidr/solver/solver.hpp>
+
+auto s = slidr::Solver(layout);
+auto [isSolved, totalIters] = s.SolvePuzzle();
+
+fmt::println("Numbers of moves: {}", s.GetNumOfMoves());
+fmt::println("Solution: {}", s.GetSolution());
+s.PrintPath();
+```
+
+## Example Output
+
+Run the example file:
+
+```bash
+./build/apps/app
+```
+
+Or enter a custom layout:
+
+```bash
+./build/apps/app 1274x5836
+```
+
+NOTE: Do not leave spaces between pieces and use **x** or **X** to denote the empty piece of the puzzle.
 
 This is the default puzzle and its output:
 
