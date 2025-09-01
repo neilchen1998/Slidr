@@ -77,6 +77,8 @@ elseif((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR MODERN_CMAKE_BUILD_TESTING) 
     add_subdirectory(gprof)
 endif()
 
+add_library(Slidr::slidr ALIAS slidr)
+
 include(CMakePackageConfigHelpers)
 
 install(EXPORT SlidrTargets
