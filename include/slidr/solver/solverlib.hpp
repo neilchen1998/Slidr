@@ -12,9 +12,9 @@
 #include <algorithm>    // std::reverse
 #include <fmt/core.h>   // fmt::print
 
-#include "node/nodelib.hpp" // Node
-#include "constants/constantslib.hpp"   // constants::RIGHT, constants::LEFT, etc.s
-#include "container/bucketqueuelib.hpp" // BucketQueueBase
+#include "slidr/node/nodelib.hpp" // Node
+#include "slidr/constants/constantslib.hpp"   // constants::RIGHT, constants::LEFT, etc.s
+#include "slidr/container/bucketqueuelib.hpp" // BucketQueueBase
 
 namespace slidr
 {

@@ -6,9 +6,9 @@
 #include <span> // std::span
 #include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE
 
-#include "constants/constantslib.hpp"
-#include "math/mathlib.hpp"
-#include "node/nodelib.hpp"
+#include "slidr/constants/constantslib.hpp" // constants::EMPTY
+#include "slidr/node/nodelib.hpp"   // Node
+#include "slidr/math/mathlib.hpp" // hash_range
 
 struct Tester : Node
 {

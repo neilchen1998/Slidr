@@ -6,8 +6,8 @@
 #include <random>   // std::mt19937_64
 #include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE
 
-#include "math/mathlib.hpp"
-#include "constants/constantslib.hpp"   // constants::EMPTY
+#include "slidr/constants/constantslib.hpp"   // constants::EMPTY
+#include "slidr/math/mathlib.hpp" // hash_combine_simple, hash_range
 
 /// @brief Hashes a single arguments with an initial hash value
 /// @tparam T The argument type

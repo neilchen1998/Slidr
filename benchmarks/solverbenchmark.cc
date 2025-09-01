@@ -2,8 +2,8 @@
 #include <fstream>  // std::ofstream
 #include <nanobench.h>  // ankerl::nanobench::Bench
 
-#include "solver/solverlib.hpp" // Solver
-#include "constants/constantslib.hpp"   // constants::EMPTY
+#include "slidr/solver/solverlib.hpp" // Solver
+#include "slidr/constants/constantslib.hpp"   // constants::EMPTY
 
 using BucketMinPQ = BucketQueue<std::shared_ptr<Node>, unsigned int, std::greater<Node>>;
 using BucketMinPQ32 = BucketQueue<std::shared_ptr<Node>, unsigned int, std::greater<Node>, 32>;

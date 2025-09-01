@@ -2,7 +2,7 @@
 
 #include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE
 
-#include "constants/constantslib.hpp"
+#include "slidr/constants/constantslib.hpp"
 
 TEST_CASE( "Constants", "[main]" )
 {

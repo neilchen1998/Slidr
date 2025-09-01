@@ -6,8 +6,8 @@
 #include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE
 #include <catch2/matchers/catch_matchers_all.hpp>   // Catch::Matchers::Equals
 
-#include "constants/constantslib.hpp"
-#include "solver/solverlib.hpp"
+#include "slidr/constants/constantslib.hpp"
+#include "slidr/solver/solverlib.hpp"
 
 TEST_CASE( "Priority Queue Solver", "[main]" )
 {

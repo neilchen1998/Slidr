@@ -8,7 +8,7 @@
 #include <concepts> // std::integral
 #include <bitset> // std::bitset
 
-#include "constants/constantslib.hpp"   // constants::EMPTY, constants::EIGHT_PUZZLE_NUM, etc.
+#include "slidr/constants/constantslib.hpp"   // constants::EMPTY, constants::EIGHT_PUZZLE_NUM, etc.
 
 namespace prompt
 {

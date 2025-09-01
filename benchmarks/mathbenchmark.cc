@@ -5,8 +5,8 @@
 #include <fstream>  // std::ofstream
 #include <boost/functional/hash.hpp>    // boost::hash_combine
 
-#include "constants/constantslib.hpp"   // constants::EMPTY, etc.
-#include "math/mathlib.hpp" // hash_combine, hash_range
+#include "slidr/constants/constantslib.hpp"   // constants::EMPTY, etc.
+#include "slidr/math/mathlib.hpp" // hash_combine, hash_range
 
 template <std::integral T>
 inline std::size_t hash_vector(const std::vector<T>& vec)
