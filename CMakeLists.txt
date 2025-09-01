@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.18...4.0)
 
 project(
-    8-Puzzle
+    Slidr
     VERSION 1.2
     DESCRIPTION "Solve 8 Puzzle problem"
     LANGUAGES CXX
@@ -76,3 +76,17 @@ elseif((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR MODERN_CMAKE_BUILD_TESTING) 
 elseif((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR MODERN_CMAKE_BUILD_TESTING) AND BUILD_TESTING AND CMAKE_BUILD_TYPE STREQUAL "Gprof")
     add_subdirectory(gprof)
 endif()
+
+include(CMakePackageConfigHelpers)
+
+install(EXPORT SlidrTargets
+    FILE SlidrTargets.cmake
+    NAMESPACE Slidr::
+    DESTINATION lib/cmake/Slidr
+)
+
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/SlidrConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/SlidrConfig.cmake
+    INSTALL_DESTINATION lib/cmake/Slidr
+)
