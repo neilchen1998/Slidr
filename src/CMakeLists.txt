@@ -11,6 +11,7 @@ add_library(node_library nodelib.cc ${NODE_HEADER_LIST})
 add_library(solver_library INTERFACE)
 add_library(prompt_library promptlib.cc ${PROMPT_HEADER_LIST})
 add_library(container_library INTERFACE)
+add_library(slidr INTERFACE)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "Test" OR CMAKE_BUILD_TYPE STREQUAL "Benchmark")
     target_compile_options(node_library PUBLIC -O3 -ffast-math -DNDEBUG)
@@ -39,8 +40,9 @@ target_include_directories(math_library INTERFACE ../slidr ${MATH_HEADER_LIST})
 target_include_directories(constants_library INTERFACE ../slidr ${CONSTANTS_HEADER_LIST})
 target_include_directories(node_library PUBLIC ../slidr ${NODE_HEADER_LIST})
 target_include_directories(solver_library INTERFACE ../slidr ${SOLVER_HEADER_LIST})
-target_include_directories(prompt_library PUBLIC ../slidr)
+target_include_directories(prompt_library PUBLIC ../slidr ${PROMPT_HEADER_LIST})
 target_include_directories(container_library INTERFACE ../slidr ${CONTAINER_HEADER_LIST})
+target_include_directories(slidr INTERFACE ../slidr ${SOLVER_HEADER_LIST})
 
 # target_link_libraries(math_library INTERFACE Boost::boost) # if you want to use boost::hash_combine
 target_link_libraries(node_library PUBLIC math_library fmt::fmt)
