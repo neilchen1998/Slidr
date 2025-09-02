@@ -72,6 +72,8 @@ target_include_directories(slidr INTERFACE
     $<INSTALL_INTERFACE:include/slidr>
 )
 
+add_library(Slidr::slidr ALIAS slidr)
+
 # target_link_libraries(math_library INTERFACE Boost::boost) # if you want to use boost::hash_combine
 target_link_libraries(node_library PUBLIC math_library fmt::fmt)
 target_link_libraries(solver_library INTERFACE node_library container_library)
