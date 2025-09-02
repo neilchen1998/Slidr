@@ -11,7 +11,7 @@ add_library(container_library INTERFACE)
 add_library(solver_library INTERFACE)
 add_library(node_library nodelib.cc ${NODE_HEADER_LIST})
 add_library(prompt_library promptlib.cc ${PROMPT_HEADER_LIST})
-add_library(slidr INTERFACE)
+add_library(slidr INTERFACE)    # exposes the API
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "Test" OR CMAKE_BUILD_TYPE STREQUAL "Benchmark")
     target_compile_options(node_library PUBLIC -O3 -ffast-math -DNDEBUG)
@@ -37,8 +37,8 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Gprof")
 endif()
 
 target_include_directories(math_library INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
-    $<INSTALL_INTERFACE:include/slidr>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>   # build tree
+    $<INSTALL_INTERFACE:include/slidr>  # install tree
 )
 
 target_include_directories(constants_library INTERFACE
