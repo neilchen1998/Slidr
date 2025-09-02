@@ -77,33 +77,9 @@ add_library(Slidr::slidr ALIAS slidr)
 # target_link_libraries(math_library INTERFACE Boost::boost) # if you want to use boost::hash_combine
 target_link_libraries(node_library PUBLIC math_library fmt::fmt)
 target_link_libraries(solver_library INTERFACE node_library container_library)
-target_link_libraries(slidr INTERFACE
-    solver_library
-    math_library
-    prompt_library
-    constants_library
-)
+target_link_libraries(slidr INTERFACE solver_library prompt_library)
 
 target_compile_features(math_library INTERFACE cxx_std_20)  # requires C++20 for concept
 target_compile_features(prompt_library PUBLIC cxx_std_20)   # requires C++20 for std::span
 target_compile_features(node_library PUBLIC cxx_std_20)   # requires C++20 for std::span
 target_compile_features(container_library INTERFACE cxx_std_20)  # requires C++20 for concepts & constexpr if
-
-install(TARGETS
-    slidr
-    solver_library
-    prompt_library
-    constants_library
-    node_library
-    math_library
-    container_library
-    EXPORT SlidrTargets
-    ARCHIVE DESTINATION lib
-    LIBRARY DESTINATION lib
-    RUNTIME DESTINATION bin
-)
-
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/slidr/
-    DESTINATION include/slidr
-    FILES_MATCHING PATTERN "*.hpp"
-)
