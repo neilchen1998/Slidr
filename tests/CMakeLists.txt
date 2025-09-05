@@ -1,8 +1,12 @@
-FetchContent_Declare(
-  catch
-  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG v3.8.1)
-FetchContent_MakeAvailable(catch)
+find_package(Catch2 CONFIG 3.8.1 QUIET)
+if (NOT catch2_FOUND)
+  message(STATUS "catch2 could not be found or version is too old, downloading via FetchContent...")
+  FetchContent_Declare(
+    Catch2
+    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+    GIT_TAG v3.8.1)
+FetchContent_MakeAvailable(Catch2)
+endif()
 
 add_executable(mathtestlib mathtestlib.cc)
 add_executable(constantstestlib constantstestlib.cc)
