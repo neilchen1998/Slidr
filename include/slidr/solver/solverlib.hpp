@@ -31,14 +31,7 @@ namespace slidr
         {
             std::shared_ptr<Node> n = std::make_shared<Node>(initialLayout);
 
-            if constexpr (std::is_base_of<BucketQueueBase<std::shared_ptr<Node>, unsigned int>, PQ>::value == true)
-            {
-                pq_.emplace(n, n->GetTotalCost());
-            }
-            else
-            {
-                pq_.emplace(n);
-            }
+            pq_.emplace(n);
         }
 
         /// @brief The constructor
@@ -46,14 +39,7 @@ namespace slidr
         Solver(const Node& initialNode) : pq_(), iter_(0)
         {
             std::shared_ptr<Node> n = std::make_shared<Node>(initialNode);
-            if constexpr (std::is_base_of<BucketQueueBase<std::shared_ptr<Node>, unsigned int>, PQ>::value == true)
-            {
-                pq_.emplace(n, n->GetTotalCost());
-            }
-            else
-            {
-                pq_.emplace(n);
-            }
+            pq_.emplace(n);
         }
 
         /// @brief The default destructor
@@ -89,14 +75,7 @@ namespace slidr
                     // Check if we have seen this before
                     if (!visited_.count(curHashValue))
                     {
-                        if constexpr (std::is_base_of<BucketQueueBase<std::shared_ptr<Node>, unsigned int>, PQ>::value == true)
-                        {
-                            pq_.emplace(std::make_shared<Node>(child), child.GetTotalCost());
-                        }
-                        else
-                        {
-                            pq_.emplace(std::make_shared<Node>(child));
-                        }
+                        pq_.emplace(std::make_shared<Node>(child));
                         visited_.insert(curHashValue);
 
                         ++iter_;
