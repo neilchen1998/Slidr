@@ -41,8 +41,8 @@ template<typename T>
 concept PQLike = requires(T pq, const T const_pq, const typename T::value_type& v)
 {
     // type requirements
-    typename T::value_type;
-    typename T::const_reference;
+    typename T::value_type; // T::value_type represents the type that this priority queue stores
+    typename T::const_reference;  // const T::value_type
 
     // compound requirements
     { pq.empty() } -> std::same_as<bool>;
