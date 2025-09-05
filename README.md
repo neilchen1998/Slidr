@@ -1,4 +1,4 @@
-# slidr (8 Puzzle Solver)
+# Slidr (8 Puzzle Solver)
 
 This project solves the famous 8 Puzzle problem.
 
