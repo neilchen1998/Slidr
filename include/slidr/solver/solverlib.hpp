@@ -10,24 +10,61 @@
 #include <memory>   // std::shared_ptr, std::make_shared
 #include <type_traits>    // std::is_base_of
 #include <algorithm>    // std::reverse
+#include <concepts>     // requires
+#include <utility>      // std::pair
+
 #include <fmt/core.h>   // fmt::print
 
 #include "slidr/node/nodelib.hpp" // Node
-#include "slidr/constants/constantslib.hpp"   // constants::RIGHT, constants::LEFT, etc.s
+#include "slidr/constants/constantslib.hpp"   // constants::RIGHT, constants::LEFT, etc.
 #include "slidr/container/bucketqueuelib.hpp" // BucketQueueBase
+
+/// @brief The concept of a set
+/// @tparam T The type of the set
+/// @tparam T::value_type The element
+template<typename T>
+concept SetLike = requires(T s, const typename T::value_type& v)
+{
+    // type requirements
+    typename T::value_type;
+    typename T::iterator;
+
+    // compound requirements
+    { s.insert(v) } -> std::same_as<std::pair<typename T::iterator, bool>>;
+    { s.find(v) }  -> std::same_as<typename T::iterator>;
+};
+
+/// @brief The concept of a priority queue
+/// @tparam T The type of the set
+/// @tparam T::value_type The element
+template<typename T>
+concept PQLike = requires(T pq, const T const_pq, const typename T::value_type& v)
+{
+    // type requirements
+    typename T::value_type;
+    typename T::const_reference;
+
+    // compound requirements
+    { pq.empty() } -> std::same_as<bool>;
+    { pq.size() } -> std::convertible_to<std::size_t>;
+    { pq.push(v) } -> std::same_as<void>;   // lvalue
+    { pq.push(std::move(v)) } -> std::same_as<void>;  // rvalue
+    { pq.pop() } -> std::same_as<void>;
+    { const_pq.top() } -> std::same_as<typename T::const_reference>;
+};
 
 namespace slidr
 {
     using DefaultPQ = std::priority_queue<std::shared_ptr<Node>,  std::vector<std::shared_ptr<Node>>, NodeCmp>;
 
-    template<typename PQ = DefaultPQ>
+    template<typename PQLike = DefaultPQ, typename SetLike = std::unordered_set<std::size_t>>
     class Solver
     {
     public:
 
         /// @brief The constructor
         /// @param initialLayout the initial layout of the puzzle (vector type)
-        explicit Solver(std::vector<int> initialLayout, PQ pq = PQ()) : pq_(std::move(pq)), iter_(0)
+        explicit Solver(std::vector<int> initialLayout, PQLike pq = PQLike()) : pq_(std::move(pq)), iter_(0)
         {
             std::shared_ptr<Node> n = std::make_shared<Node>(initialLayout);
 
@@ -206,7 +243,7 @@ namespace slidr
         std::unordered_set<std::size_t> visited_;
 
         /// @brief the priority queue that stores all candidate nodes
-        PQ pq_;
+        PQLike pq_;
 
         /// @brief the current node
         /// NOTE: since top() returns a T& so this can not be replaced by a pointer

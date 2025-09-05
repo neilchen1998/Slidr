@@ -4,6 +4,7 @@
 #include <ranges>   // std::views::iota
 #include <numeric>  // std::reduce
 #include <initializer_list>  // std::reduce
+
 #include <fmt/core.h>   // fmt::print
 
 #include "slidr/math/mathlib.hpp" // hash_range
