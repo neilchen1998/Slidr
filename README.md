@@ -24,6 +24,8 @@ The requirements are:
 - Python (for gprof visualization)
 - Boost library (for benchmarking)
 - [fmt](https://github.com/fmtlib/fmt) 11.0 or better (will automatically install if not present)
+- [Catch2](https://github.com/catchorg/Catch2) 3.8 or better (will automatically install if not present)
+- [nanobench](https://github.com/martinus/nanobench.git) 4.3 or better (will automatically install if not present)
 
 ## How to Use
 
@@ -533,6 +535,41 @@ It fetches dependencies at configuration time and those dependencies will be ava
 In this project, if a version of fmt library (newer than 11.0.0) is available on the system, then the version on the system will be used. Otherwise, fmt 11.2.0 will be fetched, compiled, and be used.
 This approach is flexible for the user since it does not require to download the library.
 
+# Concepts
+
+A [concept](https://en.cppreference.com/w/cpp/language/constraints.html) is a set of requirements. This was introduced in C++20.
+Each concept is a predicate, evaluated at compile time, and becomes a part of the interface of a template where it is used as a constraint.
+A *std::priority_queue* is used as the default queue of *Solver*.
+As mentioned before, a different *Solver* with different queue, i.e., *BucketQueue*, is used for comparison.
+This is when making a concept is important since we need to make sure only queues can be used.
+
+```cpp
+template<typename T>
+concept PQLike = requires(T pq, const T const_pq, const typename T::value_type& v)
+{
+    // type requirements
+    typename T::value_type; // T::value_type represents the type that this priority queue stores
+    typename T::const_reference;  // const T::value_type
+
+    // compound requirements
+    { pq.empty() } -> std::same_as<bool>;
+    { pq.size() } -> std::convertible_to<std::size_t>;
+    { pq.push(v) } -> std::same_as<void>;   // lvalue
+    { pq.push(std::move(v)) } -> std::same_as<void>;  // rvalue
+    { pq.pop() } -> std::same_as<void>;
+    { const_pq.top() } -> std::same_as<typename T::const_reference>;
+};
+```
+
+We defined a new concept such that it fulfills the following requirements:
+* the queue has a nested type (value type)
+* the queue has a constant reference of its value type
+* the queue has *empty* expression and returns **bool**
+* the queue has *size* expression and returns something that can be convertible to **size_t**
+* the queue has *push* expression that takes an lvalue or an rvalue and returns void
+* the queue has *pop* expression that returns void
+* the queue has *top* expression that returns the constant reference of its value type
+
 ## Reference
 
 - [gprof2dot](https://pypi.org/project/gprof2dot/)
@@ -541,3 +578,4 @@ This approach is flexible for the user since it does not require to download the
 - [Gprof Tutorial](https://www.thegeekstuff.com/2012/08/gprof-tutorial/)
 - [Linear Conflict](https://cdn.aaai.org/AAAI/1996/AAAI96-178.pdf)
 - [Fold Expressions](https://en.cppreference.com/w/cpp/language/fold.html?ref=blog.yuo.be)
+- [Requires & Constraints](https://en.cppreference.com/w/cpp/language/requires.html)
