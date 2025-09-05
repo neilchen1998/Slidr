@@ -12,6 +12,7 @@ add_library(solver_library INTERFACE)
 add_library(node_library nodelib.cc ${NODE_HEADER_LIST})
 add_library(prompt_library promptlib.cc ${PROMPT_HEADER_LIST})
 add_library(slidr INTERFACE)    # exposes the API
+add_library(Slidr::slidr ALIAS slidr)   # to prevent name collisions
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "Test" OR CMAKE_BUILD_TYPE STREQUAL "Benchmark")
     target_compile_options(node_library PUBLIC -O3 -ffast-math -DNDEBUG)
@@ -71,8 +72,6 @@ target_include_directories(slidr INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
     $<INSTALL_INTERFACE:include/slidr>
 )
-
-add_library(Slidr::slidr ALIAS slidr)
 
 # target_link_libraries(math_library INTERFACE Boost::boost) # if you want to use boost::hash_combine
 target_link_libraries(node_library PUBLIC math_library fmt::fmt)
