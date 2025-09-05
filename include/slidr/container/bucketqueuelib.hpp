@@ -9,18 +9,36 @@
 #include <bitset>  // std::bitset
 #include <concepts>  // std::unsigned_integral
 
+// Forward declaration only (for the following template)
+template<typename T, typename PriorityType = std::size_t>
+struct DefaultPriorityExtractor;
+
+/// @brief The default priority extractor for bucket queue
+/// @tparam PriorityType The priority type
+template<typename PriorityType>
+struct DefaultPriorityExtractor<std::shared_ptr<Node>, PriorityType>
+{
+    /// @brief Get the priority value of the node
+    /// @param node The pointer that points to the node
+    /// @return The priority value
+    PriorityType operator()(const std::shared_ptr<Node>& node) const
+    {
+        return static_cast<PriorityType>(node->GetTotalCost());
+    }
+};
+
 /// @brief The interface (abstract class) of Bucket Queue class
 /// @tparam T The element type
 /// @tparam PriorityType The priority type
-template<typename T, std::unsigned_integral PriorityType = std::size_t>
+template<typename T, std::unsigned_integral PriorityType>
 class BucketQueueBase
 {
     virtual std::size_t size() const noexcept = 0;
     virtual bool empty() const noexcept = 0;
     virtual const T& top() const = 0;
     virtual void pop() = 0;
-    virtual void push(const T& ele, PriorityType priority) = 0;
-    virtual void push(T&& ele, PriorityType priority) = 0;
+    virtual void push(const T& ele) = 0;
+    virtual void push(T&& ele) = 0;
 };
 
 /// @brief The concrete class of Bucket Queue class
@@ -28,7 +46,12 @@ class BucketQueueBase
 /// @tparam PriorityType The priority type (default is std::size_t)
 /// @tparam Compare The compare struct (default is std::less)
 /// @tparam MaxPriorityLimit The number of buckets (default value is 64)
-template<typename T, std::unsigned_integral PriorityType = std::size_t, typename Compare = std::less<PriorityType>, std::size_t MaxPriorityLimit = 64>
+template<
+    typename T,
+    std::unsigned_integral PriorityType = std::size_t,
+    typename PriorityExtractor = DefaultPriorityExtractor<T, PriorityType>,
+    typename Compare = std::less<PriorityType>,
+    std::size_t MaxPriorityLimit = 64>
 class BucketQueue : public BucketQueueBase <T, PriorityType>
 {
     // Determine if this is a max queue
@@ -101,25 +124,27 @@ public:
     /// @brief Pushes the element into the heap with specified priority
     /// @param ele The element (const reference)
     /// @param priority The priority
-    void push(const T& ele, PriorityType priority)
+    void push(const T& ele)
     {
-        emplace(ele, priority);
+        emplace(ele);
     }
 
     /// @brief Pushes the element into the heap with specified priority
     /// @param ele The element (rvalue)
     /// @param priority The priority
-    void push(T&& ele, PriorityType priority)
+    void push(T&& ele)
     {
-        emplace(std::move(ele), priority);
+        emplace(std::move(ele));
     }
 
     /// @brief Empplaces the element into the heap with specified priority
     /// @param ele The element (rvalue)
     /// @param priority The priority
     template<typename U>
-    void emplace(U&& ele, PriorityType priority)
+    void emplace(U&& ele)
     {
+        const T priority = extractor_(ele);
+
         if (priority >= maxPriority_)
         {
             throw std::out_of_range("Priority exceeds the max limit.");
@@ -190,6 +215,8 @@ private:
 
     /// @brief The bitset that indicates which bucket is not empty (true if the bucket is not empty)
     std::bitset<MaxPriorityLimit> mask_;
+
+    PriorityExtractor extractor_;
 };
 
 #endif // INCLUDE_CONTAINER_BUCKETQUEUE_H_
