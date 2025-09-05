@@ -48,9 +48,11 @@ endif()
 
 # all required packages (will be downloaded automatically)
 
-# Try to find the fmt library that is at least newer than 11.2.0 on the machine
-find_package(fmt CONFIG 11.0.0 QUIET)
-if (NOT fmt_FOUND)
+# Try to find fmt that is at least 11.0 but the same major version
+find_package(fmt CONFIG 11.0...<12.0 QUIET)
+if (fmt_FOUND)
+  message(STATUS "Found fmt version: ${fmt_VERSION}")
+else()
     message(STATUS "fmt could not be found or version is too old, downloading via FetchContent...")
     FetchContent_Declare(
     fmt
