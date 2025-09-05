@@ -1,6 +1,7 @@
 #include <stdlib.h> // EXIT_SUCCESS, EXIT_FAILURE
 #include <vector>    // std::vector
 #include <chrono>   // std::chrono::high_resolution_clock, std::chrono::duration_cast
+
 #include <fmt/core.h>   // fmt::print
 
 #include "slidr/solver/solverlib.hpp" // Solver

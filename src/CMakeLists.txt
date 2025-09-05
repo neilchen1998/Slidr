@@ -79,6 +79,7 @@ target_link_libraries(solver_library INTERFACE node_library container_library)
 target_link_libraries(slidr INTERFACE solver_library prompt_library)
 
 target_compile_features(math_library INTERFACE cxx_std_20)  # requires C++20 for concept
+target_compile_features(solver_library INTERFACE cxx_std_20)  # requires C++20 for concept
 target_compile_features(prompt_library PUBLIC cxx_std_20)   # requires C++20 for std::span
 target_compile_features(node_library PUBLIC cxx_std_20)   # requires C++20 for std::span
 target_compile_features(container_library INTERFACE cxx_std_20)  # requires C++20 for concepts & constexpr if

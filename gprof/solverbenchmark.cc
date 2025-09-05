@@ -3,8 +3,8 @@
 #include <algorithm>    // std::ranges::equal
 #include <optional> // std::optional
 #include <chrono>   // std::chrono::high_resolution_clock, std::chrono::duration_cast
+
 #include <fmt/core.h>   // fmt::print
-#include <random>
 
 #include "slidr/solver/solverlib.hpp" // Solver
 #include "slidr/constants/constantslib.hpp"   // constants::EMPTY
@@ -17,7 +17,6 @@ int main(int argc, char* argv[])
     std::vector<int> layout2 {7, 4, 1, 5, 2, 3, 8, 6, constants::EMPTY};
     std::vector<int> layout3 {1, 2, 7, 4, constants::EMPTY, 5, 8, 3, 6};
     std::vector<int> layout4 {2, 3, 1, 4, constants::EMPTY, 8, 5, 7, 6};
-
 
     auto start = std::chrono::high_resolution_clock::now();
 
