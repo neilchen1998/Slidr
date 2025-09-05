@@ -6,9 +6,9 @@
 #include <algorithm>   // std::sort
 #include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE
 
-#include "container/bucketqueuelib.hpp" // BucketQueue
-#include "constants/constantslib.hpp"
-#include "node/nodelib.hpp"
+#include "slidr/container/bucketqueuelib.hpp" // BucketQueue
+#include "slidr/constants/constantslib.hpp" // constants::EMPTY
+#include "slidr/node/nodelib.hpp"   // Node
 
 TEST_CASE( "Basic Operations for Max Heap", "[main]" )
 {

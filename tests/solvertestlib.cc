@@ -6,8 +6,8 @@
 #include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE
 #include <catch2/matchers/catch_matchers_all.hpp>   // Catch::Matchers::Equals
 
-#include "constants/constantslib.hpp"
-#include "solver/solverlib.hpp"
+#include "slidr/constants/constantslib.hpp"
+#include "slidr/solver/solverlib.hpp"
 
 TEST_CASE( "Priority Queue Solver", "[main]" )
 {
@@ -15,7 +15,7 @@ TEST_CASE( "Priority Queue Solver", "[main]" )
     {
         // 123456780
         std::vector<int> layout {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
-        Solver s = Solver(layout);
+        slidr::Solver s {layout};
         auto [isSolved, numOfIters] = s.SolvePuzzle();
 
         REQUIRE (isSolved);
@@ -26,7 +26,7 @@ TEST_CASE( "Priority Queue Solver", "[main]" )
     {
         // 120453786
         std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
-        Solver s = Solver(layout);
+        slidr::Solver s {layout};
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
         auto solution = s.GetSolution();
@@ -40,7 +40,7 @@ TEST_CASE( "Priority Queue Solver", "[main]" )
     {
         // 536208417
         std::vector<int> layout {5, 3, 6, 2, constants::EMPTY, 8, 4, 1, 7};
-        Solver s = Solver(layout);
+        slidr::Solver s {layout};
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
         auto solution = s.GetSolution();
@@ -54,7 +54,7 @@ TEST_CASE( "Priority Queue Solver", "[main]" )
     {
         // 318652470
         std::vector<int> layout {3, 1, 8, 6, 5, 2, 4, 7, constants::EMPTY};
-        Solver s = Solver(layout);
+        slidr::Solver s {layout};
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
         auto solution = s.GetSolution();
@@ -68,7 +68,7 @@ TEST_CASE( "Priority Queue Solver", "[main]" )
     {
         // 231408576
         std::vector<int> layout {2, 3, 1, 4, constants::EMPTY, 8, 5, 7, 6};
-        Solver s = Solver(layout);
+        slidr::Solver s {layout};
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
         auto solution = s.GetSolution();
@@ -82,7 +82,7 @@ TEST_CASE( "Priority Queue Solver", "[main]" )
     {
         // 127405836
         std::vector<int> layout {1, 2, 7, 4, constants::EMPTY, 5, 8, 3, 6};
-        Solver s = Solver(layout);
+        slidr::Solver s {layout};
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
         auto solution = s.GetSolution();
@@ -96,7 +96,7 @@ TEST_CASE( "Priority Queue Solver", "[main]" )
     {
         // 867254301
         std::vector<int> layout {8, 6, 7, 2, 5, 4, 3, constants::EMPTY, 1};
-        Solver s = Solver(layout);
+        slidr::Solver s {layout};
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
         auto solution = s.GetSolution();
@@ -109,7 +109,7 @@ TEST_CASE( "Priority Queue Solver", "[main]" )
     {
         // 647850321
         std::vector<int> layout {6, 4, 7, 8, 5, constants::EMPTY, 3, 2, 1};
-        Solver s = Solver(layout);
+        slidr::Solver s {layout};
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
         auto solution = s.GetSolution();
@@ -128,7 +128,7 @@ TEST_CASE( "Bucket Queue Solver", "[main]" )
     {
         // 123456780
         std::vector<int> layout {1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY};
-        auto s = Solver<BucketMinPQ>(layout, pq);
+        auto s = slidr::Solver<BucketMinPQ>(layout, pq);
         auto [isSolved, numOfIters] = s.SolvePuzzle();
 
         REQUIRE (isSolved);
@@ -139,7 +139,7 @@ TEST_CASE( "Bucket Queue Solver", "[main]" )
     {
         // 120453786
         std::vector<int> layout {1, 2, constants::EMPTY, 4, 5, 3, 7, 8, 6};
-        auto s = Solver<BucketMinPQ>(layout, pq);
+        auto s = slidr::Solver<BucketMinPQ>(layout, pq);
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
         auto solution = s.GetSolution();
@@ -153,7 +153,7 @@ TEST_CASE( "Bucket Queue Solver", "[main]" )
     {
         // 536208417
         std::vector<int> layout {5, 3, 6, 2, constants::EMPTY, 8, 4, 1, 7};
-        auto s = Solver<BucketMinPQ>(layout, pq);
+        auto s = slidr::Solver<BucketMinPQ>(layout, pq);
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
         auto solution = s.GetSolution();
@@ -167,7 +167,7 @@ TEST_CASE( "Bucket Queue Solver", "[main]" )
     {
         // 318652470
         std::vector<int> layout {3, 1, 8, 6, 5, 2, 4, 7, constants::EMPTY};
-        auto s = Solver<BucketMinPQ>(layout, pq);
+        auto s = slidr::Solver<BucketMinPQ>(layout, pq);
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
         auto solution = s.GetSolution();
@@ -181,7 +181,7 @@ TEST_CASE( "Bucket Queue Solver", "[main]" )
     {
         // 231408576
         std::vector<int> layout {2, 3, 1, 4, constants::EMPTY, 8, 5, 7, 6};
-        auto s = Solver<BucketMinPQ>(layout, pq);
+        auto s = slidr::Solver<BucketMinPQ>(layout, pq);
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
         auto solution = s.GetSolution();
@@ -195,7 +195,7 @@ TEST_CASE( "Bucket Queue Solver", "[main]" )
     {
         // 127405836
         std::vector<int> layout {1, 2, 7, 4, constants::EMPTY, 5, 8, 3, 6};
-        auto s = Solver<BucketMinPQ>(layout, pq);
+        auto s = slidr::Solver<BucketMinPQ>(layout, pq);
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
         auto solution = s.GetSolution();
@@ -209,7 +209,7 @@ TEST_CASE( "Bucket Queue Solver", "[main]" )
     {
         // 867254301
         std::vector<int> layout {8, 6, 7, 2, 5, 4, 3, constants::EMPTY, 1};
-        auto s = Solver<BucketMinPQ>(layout, pq);
+        auto s = slidr::Solver<BucketMinPQ>(layout, pq);
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
         auto solution = s.GetSolution();
@@ -222,7 +222,7 @@ TEST_CASE( "Bucket Queue Solver", "[main]" )
     {
         // 647850321
         std::vector<int> layout {6, 4, 7, 8, 5, constants::EMPTY, 3, 2, 1};
-        auto s = Solver<BucketMinPQ>(layout, pq);
+        auto s = slidr::Solver<BucketMinPQ>(layout, pq);
         auto [isSolved, _] = s.SolvePuzzle();
         auto depth = s.GetNumOfMoves();
         auto solution = s.GetSolution();

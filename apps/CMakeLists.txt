@@ -18,4 +18,4 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Gprof")
 endif()
 
 # Link required libraries
-target_link_libraries(app PRIVATE solver_library prompt_library)
+target_link_libraries(app PRIVATE slidr)

@@ -1,16 +1,18 @@
-file(GLOB MATH_HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/math/*.hpp")
-file(GLOB CONSTANTS_HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/constants/*.hpp")
-file(GLOB NODE_HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/node/*.hpp")
-file(GLOB SOLVER_HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/solver/*.hpp")
-file(GLOB PROMPT_HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/prompt/*.hpp")
-file(GLOB CONTAINER_HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/container/*.hpp")
+file(GLOB MATH_HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/slidr/math/*.hpp")
+file(GLOB CONSTANTS_HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/slidr/constants/*.hpp")
+file(GLOB NODE_HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/slidr/node/*.hpp")
+file(GLOB SOLVER_HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/slidr/solver/*.hpp")
+file(GLOB PROMPT_HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/slidr/prompt/*.hpp")
+file(GLOB CONTAINER_HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/slidr/container/*.hpp")
 
 add_library(math_library INTERFACE)
 add_library(constants_library INTERFACE)
-add_library(node_library nodelib.cc ${NODE_HEADER_LIST})
-add_library(solver_library INTERFACE)
-add_library(prompt_library promptlib.cc ${PROMPT_HEADER_LIST})
 add_library(container_library INTERFACE)
+add_library(solver_library INTERFACE)
+add_library(node_library nodelib.cc ${NODE_HEADER_LIST})
+add_library(prompt_library promptlib.cc ${PROMPT_HEADER_LIST})
+add_library(slidr INTERFACE)    # exposes the API
+add_library(Slidr::slidr ALIAS slidr)   # to prevent name collisions
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "Test" OR CMAKE_BUILD_TYPE STREQUAL "Benchmark")
     target_compile_options(node_library PUBLIC -O3 -ffast-math -DNDEBUG)
@@ -35,16 +37,46 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Gprof")
     target_link_options(prompt_library PUBLIC -pg)
 endif()
 
-target_include_directories(math_library INTERFACE ../include ${MATH_HEADER_LIST})
-target_include_directories(constants_library INTERFACE ../include ${CONSTANTS_HEADER_LIST})
-target_include_directories(node_library PUBLIC ../include ${NODE_HEADER_LIST})
-target_include_directories(solver_library INTERFACE ../include ${SOLVER_HEADER_LIST})
-target_include_directories(prompt_library PUBLIC ../include)
-target_include_directories(container_library INTERFACE ../include ${CONTAINER_HEADER_LIST})
+target_include_directories(math_library INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>   # build tree
+    $<INSTALL_INTERFACE:include/slidr>  # install tree
+)
+
+target_include_directories(constants_library INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
+    $<INSTALL_INTERFACE:include/slidr>
+)
+
+target_include_directories(container_library INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
+    $<INSTALL_INTERFACE:include/slidr>
+)
+
+target_include_directories(node_library
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
+        $<INSTALL_INTERFACE:include/slidr>
+)
+
+target_include_directories(prompt_library PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
+    $<INSTALL_INTERFACE:include/slidr>
+)
+
+target_include_directories(solver_library INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
+    $<INSTALL_INTERFACE:include/slidr>
+)
+
+target_include_directories(slidr INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
+    $<INSTALL_INTERFACE:include/slidr>
+)
 
 # target_link_libraries(math_library INTERFACE Boost::boost) # if you want to use boost::hash_combine
 target_link_libraries(node_library PUBLIC math_library fmt::fmt)
 target_link_libraries(solver_library INTERFACE node_library container_library)
+target_link_libraries(slidr INTERFACE solver_library prompt_library)
 
 target_compile_features(math_library INTERFACE cxx_std_20)  # requires C++20 for concept
 target_compile_features(prompt_library PUBLIC cxx_std_20)   # requires C++20 for std::span

@@ -6,9 +6,9 @@
 #include <fmt/core.h>   // fmt::print
 #include <random>
 
-#include "solver/solverlib.hpp" // Solver
-#include "constants/constantslib.hpp"   // constants::EMPTY
-#include "prompt/promptlib.hpp" // prompt::parse_string_to_layout
+#include "slidr/solver/solverlib.hpp" // Solver
+#include "slidr/constants/constantslib.hpp"   // constants::EMPTY
+#include "slidr/prompt/promptlib.hpp" // prompt::parse_string_to_layout
 
 int main(int argc, char* argv[])
 {
@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 
 
     auto start = std::chrono::high_resolution_clock::now();
-    
+
     for (int i = 0; i < 100; ++i)
     {
         Solver(layout0).SolvePuzzle();

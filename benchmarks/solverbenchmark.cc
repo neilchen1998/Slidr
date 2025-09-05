@@ -2,8 +2,8 @@
 #include <fstream>  // std::ofstream
 #include <nanobench.h>  // ankerl::nanobench::Bench
 
-#include "solver/solverlib.hpp" // Solver
-#include "constants/constantslib.hpp"   // constants::EMPTY
+#include "slidr/solver/solverlib.hpp" // Solver
+#include "slidr/constants/constantslib.hpp"   // constants::EMPTY
 
 using BucketMinPQ = BucketQueue<std::shared_ptr<Node>, unsigned int, std::greater<Node>>;
 using BucketMinPQ32 = BucketQueue<std::shared_ptr<Node>, unsigned int, std::greater<Node>, 32>;
@@ -33,56 +33,56 @@ int main()
     bench.minEpochIterations(10).title("Group 1: Easy Puzzles")
         .run("Priority Queue Solver", [&]
     {
-        Solver(easy0).SolvePuzzle();
-        Solver(easy1).SolvePuzzle();
-        Solver(easy2).SolvePuzzle();
+        slidr::Solver(easy0).SolvePuzzle();
+        slidr::Solver(easy1).SolvePuzzle();
+        slidr::Solver(easy2).SolvePuzzle();
     })
         .run("Bucket Queue Solver", [&]
     {
-        Solver<BucketMinPQ>(easy0, bucket).SolvePuzzle();
-        Solver<BucketMinPQ>(easy1, bucket).SolvePuzzle();
-        Solver<BucketMinPQ>(easy2, bucket).SolvePuzzle();
+        slidr::Solver<BucketMinPQ>(easy0, bucket).SolvePuzzle();
+        slidr::Solver<BucketMinPQ>(easy1, bucket).SolvePuzzle();
+        slidr::Solver<BucketMinPQ>(easy2, bucket).SolvePuzzle();
     })
         .run("Bucket Queue Solver (32)", [&]
     {
-        Solver<BucketMinPQ32>(easy0, bucket32).SolvePuzzle();
-        Solver<BucketMinPQ32>(easy1, bucket32).SolvePuzzle();
-        Solver<BucketMinPQ32>(easy2, bucket32).SolvePuzzle();
+        slidr::Solver<BucketMinPQ32>(easy0, bucket32).SolvePuzzle();
+        slidr::Solver<BucketMinPQ32>(easy1, bucket32).SolvePuzzle();
+        slidr::Solver<BucketMinPQ32>(easy2, bucket32).SolvePuzzle();
     });
 
     bench.minEpochIterations(10).title("Group 2: Medium Puzzles")
         .run("Priority Queue Solver", [&]
     {
-        Solver(mid0).SolvePuzzle();
-        Solver(mid1).SolvePuzzle();
-        Solver(mid2).SolvePuzzle();
-        Solver(mid3).SolvePuzzle();
+        slidr::Solver(mid0).SolvePuzzle();
+        slidr::Solver(mid1).SolvePuzzle();
+        slidr::Solver(mid2).SolvePuzzle();
+        slidr::Solver(mid3).SolvePuzzle();
     })
         .run("Bucket Queue Solver", [&]
     {
-        Solver<BucketMinPQ>(mid0, bucket).SolvePuzzle();
-        Solver<BucketMinPQ>(mid1, bucket).SolvePuzzle();
-        Solver<BucketMinPQ>(mid2, bucket).SolvePuzzle();
-        Solver<BucketMinPQ>(mid3, bucket).SolvePuzzle();
+        slidr::Solver<BucketMinPQ>(mid0, bucket).SolvePuzzle();
+        slidr::Solver<BucketMinPQ>(mid1, bucket).SolvePuzzle();
+        slidr::Solver<BucketMinPQ>(mid2, bucket).SolvePuzzle();
+        slidr::Solver<BucketMinPQ>(mid3, bucket).SolvePuzzle();
     })
         .run("Bucket Queue Solver (32)", [&]
     {
-        Solver<BucketMinPQ32>(mid0, bucket32).SolvePuzzle();
-        Solver<BucketMinPQ32>(mid1, bucket32).SolvePuzzle();
-        Solver<BucketMinPQ32>(mid2, bucket32).SolvePuzzle();
-        Solver<BucketMinPQ32>(mid3, bucket32).SolvePuzzle();
+        slidr::Solver<BucketMinPQ32>(mid0, bucket32).SolvePuzzle();
+        slidr::Solver<BucketMinPQ32>(mid1, bucket32).SolvePuzzle();
+        slidr::Solver<BucketMinPQ32>(mid2, bucket32).SolvePuzzle();
+        slidr::Solver<BucketMinPQ32>(mid3, bucket32).SolvePuzzle();
     });
 
     bench.minEpochIterations(10).title("Group 3: Hard Puzzles")
         .run("Priority Queue Solver", [&]
     {
-        Solver(hard0).SolvePuzzle();
-        Solver(hard1).SolvePuzzle();
+        slidr::Solver(hard0).SolvePuzzle();
+        slidr::Solver(hard1).SolvePuzzle();
     })
         .run("Bucket Queue Solver", [&]
     {
-        Solver<BucketMinPQ>(hard0, bucket).SolvePuzzle();
-        Solver<BucketMinPQ>(hard1, bucket).SolvePuzzle();
+        slidr::Solver<BucketMinPQ>(hard0, bucket).SolvePuzzle();
+        slidr::Solver<BucketMinPQ>(hard1, bucket).SolvePuzzle();
     });
 
     // Render the results to a csv file

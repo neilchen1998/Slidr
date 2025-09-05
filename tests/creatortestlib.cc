@@ -7,9 +7,9 @@
 #include <catch2/matchers/catch_matchers_all.hpp>   // Catch::Matchers::Equals
 #include "fmt/ranges.h" // fmt::println for vectors
 
-#include "constants/constantslib.hpp"
-#include "solver/solverlib.hpp"
-#include "creator/creatorlib.hpp"
+#include "slidr/constants/constantslib.hpp"
+#include "slidr/solver/solverlib.hpp"
+#include "slidr/creator/creatorlib.hpp"
 
 TEST_CASE( "Solvable Function", "[main]" )
 {
@@ -69,7 +69,7 @@ TEST_CASE( "GetRandomLayout Function", "[main]" )
         SECTION("", "[trivial case]")
         {
             std::vector<int> layout = creator::GetRandomLayout();
-            Solver s {layout};
+            slidr::Solver s {layout};
 
             auto [solved, _] = s.SolvePuzzle();
 

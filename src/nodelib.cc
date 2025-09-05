@@ -6,9 +6,9 @@
 #include <initializer_list>  // std::reduce
 #include <fmt/core.h>   // fmt::print
 
-#include "math/mathlib.hpp" // hash_range
-#include "node/nodelib.hpp" // Node
-#include "constants/constantslib.hpp"   // constants::RIGHT, constants::LEFT, etc.
+#include "slidr/math/mathlib.hpp" // hash_range
+#include "slidr/node/nodelib.hpp" // Node
+#include "slidr/constants/constantslib.hpp"   // constants::RIGHT, constants::LEFT, etc.
 
 Node::Node()
     : state_({1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY}),

@@ -5,8 +5,8 @@
 #include <fstream>  // std::ofstream
 #include <boost/functional/hash.hpp>    // boost::hash_combine
 
-#include "constants/constantslib.hpp"   // constants::EMPTY, etc.
-#include "math/mathlib.hpp" // hash_combine, hash_range
+#include "slidr/constants/constantslib.hpp"   // constants::EMPTY, etc.
+#include "slidr/math/mathlib.hpp" // hash_combine, hash_range
 
 template <std::integral T>
 inline std::size_t hash_vector(const std::vector<T>& vec)
@@ -52,12 +52,12 @@ int main()
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrib(1, constants::EMPTY);
-    
+
     // Generate 3 values
     std::size_t h = distrib(gen);
     std::size_t u = distrib(gen);
     std::size_t v = distrib(gen);
-    
+
     // Generate the vector
     constexpr std::size_t N {constants::EIGHT_PUZZLE_NUM};
     std::vector<int> vec(N);

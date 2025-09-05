@@ -7,7 +7,7 @@
 #include <fstream>  // std::ofstream
 #include <nanobench.h>  // ankerl::nanobench::Bench
 
-#include "constants/constantslib.hpp"   // constants::EIGHT_PUZZLE_SIZE
+#include "slidr/constants/constantslib.hpp"   // constants::EIGHT_PUZZLE_SIZE
 
 int GetManhattanDistance(std::span<int> s)
 {
@@ -40,12 +40,12 @@ int GetManhattanDistanceAccumulate(std::span<int> s)
         [&](int acc, int i) {
             if (s[i] == constants::EMPTY)
             return acc;
-            
+
             int curRow = (s[i] - 1) / constants::EIGHT_PUZZLE_SIZE;
             int curCol = (s[i] - 1) % constants::EIGHT_PUZZLE_SIZE;
             int goalRow = i / constants::EIGHT_PUZZLE_SIZE;
             int goalCol = i % constants::EIGHT_PUZZLE_SIZE;
-            
+
             return acc + std::abs(goalRow - curRow) + std::abs(goalCol - curCol);
         }
     );

@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.18...4.0)
 
 project(
-    8-Puzzle
+    Slidr
     VERSION 1.2
     DESCRIPTION "Solve 8 Puzzle problem"
     LANGUAGES CXX
