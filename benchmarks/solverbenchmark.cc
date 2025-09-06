@@ -30,7 +30,7 @@ int main()
     std::vector<int> hard0 {8, 6, 7, 2, 5, 4, 3, constants::EMPTY, 1};  // 31
     std::vector<int> hard1 {6, 4, 7, 8, 5, constants::EMPTY, 3, 2, 1};  // 31
 
-    bench.minEpochIterations(10).title("Group 1: Easy Puzzles")
+    bench.minEpochIterations(150).title("Group 1: Easy Puzzles")
         .run("Priority Queue Solver", [&]
     {
         slidr::Solver(easy0).SolvePuzzle();
@@ -45,12 +45,12 @@ int main()
     })
         .run("Bucket Queue Solver (32)", [&]
     {
-        slidr::Solver<BucketMinPQ32>(easy0, bucket32).SolvePuzzle();
-        slidr::Solver<BucketMinPQ32>(easy1, bucket32).SolvePuzzle();
-        slidr::Solver<BucketMinPQ32>(easy2, bucket32).SolvePuzzle();
+        slidr::Solver<BucketMinPQ32, std::unordered_set<std::size_t>>(easy0, bucket32).SolvePuzzle();
+        slidr::Solver<BucketMinPQ32, std::unordered_set<std::size_t>>(easy1, bucket32).SolvePuzzle();
+        slidr::Solver<BucketMinPQ32, std::unordered_set<std::size_t>>(easy2, bucket32).SolvePuzzle();
     });
 
-    bench.minEpochIterations(10).title("Group 2: Medium Puzzles")
+    bench.minEpochIterations(150).title("Group 2: Medium Puzzles")
         .run("Priority Queue Solver", [&]
     {
         slidr::Solver(mid0).SolvePuzzle();
@@ -73,7 +73,7 @@ int main()
         slidr::Solver<BucketMinPQ32>(mid3, bucket32).SolvePuzzle();
     });
 
-    bench.minEpochIterations(10).title("Group 3: Hard Puzzles")
+    bench.minEpochIterations(150).title("Group 3: Hard Puzzles")
         .run("Priority Queue Solver", [&]
     {
         slidr::Solver(hard0).SolvePuzzle();
