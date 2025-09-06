@@ -1,9 +1,14 @@
+#include <iterator>
 #define CATCH_CONFIG_MAIN
 
 #include <string_view>    // std::string_view
 #include <vector>    // std::vector
 #include <functional>    // std::greater
 #include <algorithm>   // std::sort
+#include <queue>    // std::priority_queue
+#include <limits> // std::numeric_limits
+#include <random>   // std::random_device
+
 #include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE
 
 #include "slidr/container/bucketqueuelib.hpp" // BucketQueue
@@ -12,187 +17,255 @@
 
 TEST_CASE( "Basic Operations for Max Heap", "[main]" )
 {
-    auto b = BucketQueue<std::string, unsigned short>();
+    auto bq = BucketQueue<int, std::size_t> {};
+    std::priority_queue pq(std::less<std::size_t>{}, std::vector<int>{});
 
-    std::vector<std::string> elements {"low", "medium low",
-        "medium", "high", "highest"};
+    const std::size_t N = 12;
 
-    const std::size_t N = elements.size();
+    const int min_size_t = 0;
+    const int max_size_t = 64 - 1;
 
-    auto itr = elements.crbegin();
+    // Generate the seed, the generator, and the distribution
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distrib(min_size_t, max_size_t);
 
-    unsigned short priority = 1;
-    for (auto e : elements)
+    // Generate the vector
+    for (std::size_t i = 0; i < (N - 2); ++i)
     {
-        b.push(e, priority);
+        const std::size_t val = distrib(gen);
 
-        priority += 2;
+        // Push the random number into the queues
+        bq.push(val);
+        pq.push(val);
     }
+
+    // Push the min value and the max value
+    pq.push(min_size_t);
+    pq.push(max_size_t);
+    bq.push(min_size_t);
+    bq.push(max_size_t);
 
     SECTION("Push", "[some_details]")
     {
-        REQUIRE(b.size() == N);
+        REQUIRE(bq.size() == pq.size());
     }
 
     SECTION("Top", "[some_details]")
     {
-        REQUIRE(b.top() == *itr);
+        REQUIRE(bq.top() == pq.top());
     }
 
     SECTION("Pop", "[some_details]")
     {
-        std::size_t sz = N;
-        b.pop();
-        ++itr;
-        --sz;
-        REQUIRE(b.top() == *itr);
-        REQUIRE(b.size() == sz);
+        for (std::size_t i = 0; i < N; ++i)
+        {
+            REQUIRE(bq.top() == pq.top());
+            bq.pop();
+            pq.pop();
+        }
 
-        b.pop();
-        ++itr;
-        --sz;
-        REQUIRE(b.top() == *itr);
-        REQUIRE(b.size() == sz);
-
-        b.pop();
-        ++itr;
-        --sz;
-        REQUIRE(b.top() == *itr);
-        REQUIRE(b.size() == sz);
-
-        b.pop();
-        ++itr;
-        --sz;
-        REQUIRE(b.top() == *itr);
-        REQUIRE(b.size() == sz);
-
-        b.pop();
-        --sz;
-        REQUIRE(b.size() == sz);
+        REQUIRE(bq.empty());
     }
 }
 
 TEST_CASE( "Basic Operations for Min Heap", "[main]" )
 {
-    auto b = BucketQueue<std::string, unsigned short, std::greater<unsigned short>()>();
+    auto bq = BucketQueue<int, unsigned short, std::greater<unsigned short>> {};
+    std::priority_queue pq(std::greater<std::size_t>{}, std::vector<std::size_t>{});
 
-    std::vector<std::string> elements {"highest", "high",
-        "medium", "medium low", "low"};
+    const std::size_t N = 12;
 
-    const std::size_t N = elements.size();
+    const int min_size_t = 0;
+    const int max_size_t = 64 - 1;
 
-    auto itr = elements.cbegin();
+    // Generate the seed, the generator, and the distribution
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distrib(min_size_t, max_size_t);
 
-    unsigned short priority = 1;
-    for (auto e : elements)
+    // Generate the vector
+    for (std::size_t i = 0; i < (N - 2); ++i)
     {
-        b.push(e, priority);
+        const std::size_t val = distrib(gen);
 
-        priority += 2;
+        // Push the random number into the queues
+        bq.push(val);
+        pq.push(val);
     }
+
+    // Push the min value and the max value
+    pq.push(min_size_t);
+    pq.push(max_size_t);
+    bq.push(min_size_t);
+    bq.push(max_size_t);
 
     SECTION("Push", "[some_details]")
     {
-        REQUIRE(b.size() == N);
+        REQUIRE(bq.size() == pq.size());
     }
 
     SECTION("Top", "[some_details]")
     {
-        REQUIRE(b.top() == *itr);
+        REQUIRE(bq.top() == pq.top());
     }
 
     SECTION("Pop", "[some_details]")
     {
-        std::size_t sz = N;
-        b.pop();
-        ++itr;
-        --sz;
-        REQUIRE(b.top() == *itr);
-        REQUIRE(b.size() == sz);
+        for (std::size_t i = 0; i < N; ++i)
+        {
+            REQUIRE(bq.top() == pq.top());
+            bq.pop();
+            pq.pop();
+        }
 
-        b.pop();
-        ++itr;
-        --sz;
-        REQUIRE(b.top() == *itr);
-        REQUIRE(b.size() == sz);
-
-        b.pop();
-        ++itr;
-        --sz;
-        REQUIRE(b.top() == *itr);
-        REQUIRE(b.size() == sz);
-
-        b.pop();
-        ++itr;
-        --sz;
-        REQUIRE(b.top() == *itr);
-        REQUIRE(b.size() == sz);
-
-        b.pop();
-        --sz;
-        REQUIRE(b.size() == sz);
+        REQUIRE(bq.empty());
     }
 }
 
-TEST_CASE( "Same Priority", "[main]" )
+TEST_CASE( "Basic Operations for Max Heap (32)", "[main]" )
 {
-    auto b = BucketQueue<std::string, unsigned short, std::greater<unsigned short>()>();
+    auto bq = BucketQueue<int, std::size_t, std::less<std::size_t>, 32> {};
+    std::priority_queue pq(std::less<std::size_t>{}, std::vector<int>{});
 
-    std::vector<std::string> samePriorityElements {"medium1", "medium2"};
+    const std::size_t N = 12;
 
-    b.push(samePriorityElements.front(), 5);
-    b.push(samePriorityElements.back(), 5);
+    const int min_size_t = 0;
+    const int max_size_t = 32 - 1;
+
+    // Generate the seed, the generator, and the distribution
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distrib(min_size_t, max_size_t);
+
+    // Generate the vector
+    for (std::size_t i = 0; i < (N - 2); ++i)
+    {
+        const std::size_t val = distrib(gen);
+
+        // Push the random number into the queues
+        bq.push(val);
+        pq.push(val);
+    }
+
+    // Push the min value and the max value
+    pq.push(min_size_t);
+    pq.push(max_size_t);
+    bq.push(min_size_t);
+    bq.push(max_size_t);
+
+    SECTION("Push", "[some_details]")
+    {
+        REQUIRE(bq.size() == pq.size());
+    }
 
     SECTION("Top", "[some_details]")
     {
-        REQUIRE(b.size() == samePriorityElements.size());
-        REQUIRE(b.top() == samePriorityElements.back());
+        REQUIRE(bq.top() == pq.top());
     }
 
-    SECTION("Second Top", "[some_details]")
+    SECTION("Pop", "[some_details]")
     {
-        b.pop();
-        samePriorityElements.pop_back();
-        REQUIRE(b.size() == samePriorityElements.size());
-        REQUIRE(b.top() == samePriorityElements.back());
+        for (std::size_t i = 0; i < N; ++i)
+        {
+            REQUIRE(bq.top() == pq.top());
+            bq.pop();
+            pq.pop();
+        }
+
+        REQUIRE(bq.empty());
+    }
+}
+
+TEST_CASE( "Basic Operations for Min Heap (32)", "[main]" )
+{
+    auto bq = BucketQueue<int, unsigned short, std::greater<unsigned short>> {};
+    std::priority_queue pq(std::greater<std::size_t>{}, std::vector<std::size_t>{});
+
+    const std::size_t N = 12;
+
+    const int min_size_t = 0;
+    const int max_size_t = 32 - 1;
+
+    // Generate the seed, the generator, and the distribution
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distrib(min_size_t, max_size_t);
+
+    // Generate the vector
+    for (std::size_t i = 0; i < (N - 2); ++i)
+    {
+        const std::size_t val = distrib(gen);
+
+        // Push the random number into the queues
+        bq.push(val);
+        pq.push(val);
+    }
+
+    // Push the min value and the max value
+    pq.push(min_size_t);
+    pq.push(max_size_t);
+    bq.push(min_size_t);
+    bq.push(max_size_t);
+
+    SECTION("Push", "[some_details]")
+    {
+        REQUIRE(bq.size() == pq.size());
+    }
+
+    SECTION("Top", "[some_details]")
+    {
+        REQUIRE(bq.top() == pq.top());
+    }
+
+    SECTION("Pop", "[some_details]")
+    {
+        for (std::size_t i = 0; i < N; ++i)
+        {
+            REQUIRE(bq.top() == pq.top());
+            bq.pop();
+            pq.pop();
+        }
+
+        REQUIRE(bq.empty());
     }
 }
 
 TEST_CASE( "Basic Operations for Min Heap Node", "[main]" )
 {
-
-    auto b = BucketQueue<Node, unsigned short, std::greater<Node>()>();
+    auto bq = BucketQueue<Node, unsigned int, std::greater<Node>> {};
     constexpr std::size_t N = 3;
 
     Node startNode({8, 4, 2, 1, constants::EMPTY, 5, 6, 7, 3});
     Node halfwayNode({4, 1, 2, 7, 5, 3, 8, 6, constants::EMPTY});
     Node finishedNode({1, 2, 3, 4, 5, 6, 7, 8, constants::EMPTY});
 
-    b.push(startNode, startNode.GetTotalCost());
-    b.push(halfwayNode, halfwayNode.GetTotalCost());
-    b.push(finishedNode, finishedNode.GetTotalCost());
+    bq.push(startNode);
+    bq.push(halfwayNode);
+    bq.push(finishedNode);
 
     SECTION("Size", "[some_details]")
     {
-        REQUIRE(b.size() == N);
+        REQUIRE(bq.size() == N);
     }
 
     SECTION("Top", "[some_details]")
     {
-        REQUIRE(b.top() == finishedNode);
+        REQUIRE(bq.top() == finishedNode);
     }
 
     SECTION("Pop", "[some_details]")
     {
-        b.pop();
-        REQUIRE(b.top() == halfwayNode);
-        REQUIRE(b.size() == N - 1);
+        bq.pop();
+        REQUIRE(bq.top() == halfwayNode);
+        REQUIRE(bq.size() == N - 1);
 
-        b.pop();
-        REQUIRE(b.top() == startNode);
-        REQUIRE(b.size() == N - 2);
+        bq.pop();
+        REQUIRE(bq.top() == startNode);
+        REQUIRE(bq.size() == N - 2);
 
-        b.pop();
-        REQUIRE(b.size() == 0);
+        bq.pop();
+        REQUIRE(bq.size() == 0);
+        REQUIRE(bq.empty());
     }
 }

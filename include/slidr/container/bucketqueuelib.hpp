@@ -9,9 +9,31 @@
 #include <bitset>  // std::bitset
 #include <concepts>  // std::unsigned_integral
 
-// Forward declaration only (for the following template)
-template<typename T, typename PriorityType = std::size_t>
-struct DefaultPriorityExtractor;
+#include "slidr/node/nodelib.hpp"
+
+// The default
+template<typename T, typename PriorityType>
+struct DefaultPriorityExtractor
+{
+    PriorityType operator()(const T& v) const
+    {
+        return static_cast<PriorityType>(v);
+    }
+};
+
+/// @brief The default priority extractor for bucket queue
+/// @tparam PriorityType The priority type
+template<typename PriorityType>
+struct DefaultPriorityExtractor<Node, PriorityType>
+{
+    /// @brief Get the priority value of the node
+    /// @param node The pointer that points to the node
+    /// @return The priority value
+    PriorityType operator()(const Node& node) const
+    {
+        return static_cast<PriorityType>(node.GetTotalCost());
+    }
+};
 
 /// @brief The default priority extractor for bucket queue
 /// @tparam PriorityType The priority type
@@ -30,7 +52,7 @@ struct DefaultPriorityExtractor<std::shared_ptr<Node>, PriorityType>
 /// @brief The interface (abstract class) of Bucket Queue class
 /// @tparam T The element type
 /// @tparam PriorityType The priority type
-template<typename T, std::unsigned_integral PriorityType>
+template<typename T, std::unsigned_integral PriorityType = std::size_t>
 class BucketQueueBase
 {
     virtual std::size_t size() const noexcept = 0;
@@ -49,9 +71,9 @@ class BucketQueueBase
 template<
     typename T,
     std::unsigned_integral PriorityType = std::size_t,
-    typename PriorityExtractor = DefaultPriorityExtractor<T, PriorityType>,
     typename Compare = std::less<PriorityType>,
-    std::size_t MaxPriorityLimit = 64>
+    std::size_t MaxPriorityLimit = 64,
+    typename PriorityExtractor = DefaultPriorityExtractor<T, PriorityType>>
 class BucketQueue : public BucketQueueBase <T, PriorityType>
 {
     // Determine if this is a max queue
@@ -143,7 +165,7 @@ public:
     template<typename U>
     void emplace(U&& ele)
     {
-        const T priority = extractor_(ele);
+        const std::size_t priority = extractor_(ele);
 
         if (priority >= maxPriority_)
         {
