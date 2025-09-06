@@ -51,7 +51,7 @@ endif()
 # Try to find fmt that is at least 11.0 but the same major version
 find_package(fmt CONFIG 11.0...<12.0 QUIET)
 if (fmt_FOUND)
-  message(STATUS "Found fmt version: ${fmt_VERSION}")
+    message(STATUS "Found fmt version: ${fmt_VERSION}")
 else()
     message(STATUS "fmt could not be found or version is too old, downloading via FetchContent...")
     FetchContent_Declare(
@@ -59,6 +59,22 @@ else()
     GIT_REPOSITORY https://github.com/fmtlib/fmt.git
     GIT_TAG        11.2.0)
     FetchContent_MakeAvailable(fmt)
+endif()
+
+# Check if abseil needs to be installed
+set(MIN_ABSL_VERSION "20250512.1")
+find_package(absl CONFIG QUIET)
+if(NOT absl_FOUND OR absl_VERSION VERSION_LESS MIN_ABSL_VERSION)
+    message(STATUS "Abseil not found or version older than ${MIN_ABSL_VERSION}, fetching via FetchContent...")
+    include(FetchContent)
+    FetchContent_Declare(
+    absl
+    GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
+    GIT_TAG v${MIN_ABSL_VERSION}
+  )
+    FetchContent_MakeAvailable(absl)
+else()
+    message(STATUS "Found Abseil version ${absl_VERSION} which meets minimum ${MIN_ABSL_VERSION}")
 endif()
 
 # The compiled library code

@@ -75,7 +75,7 @@ target_include_directories(slidr INTERFACE
 
 # target_link_libraries(math_library INTERFACE Boost::boost) # if you want to use boost::hash_combine
 target_link_libraries(node_library PUBLIC math_library fmt::fmt)
-target_link_libraries(solver_library INTERFACE node_library container_library)
+target_link_libraries(solver_library INTERFACE node_library container_library absl::flat_hash_set)
 target_link_libraries(slidr INTERFACE solver_library prompt_library)
 
 target_compile_features(math_library INTERFACE cxx_std_20)  # requires C++20 for concept

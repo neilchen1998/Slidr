@@ -14,6 +14,7 @@
 #include <utility>      // std::pair
 
 #include <fmt/core.h>   // fmt::print
+#include "absl/container/flat_hash_set.h"   // absl::flat_hash_set
 
 #include "slidr/node/nodelib.hpp" // Node
 #include "slidr/constants/constantslib.hpp"   // constants::RIGHT, constants::LEFT, etc.
@@ -57,7 +58,7 @@ namespace slidr
 {
     using DefaultPQ = std::priority_queue<std::shared_ptr<Node>,  std::vector<std::shared_ptr<Node>>, NodeCmp>;
 
-    template<typename PQLike = DefaultPQ, typename SetLike = std::unordered_set<std::size_t>>
+    template<typename PQLike = DefaultPQ, typename SetLike = absl::flat_hash_set<std::size_t>>
     class Solver
     {
     public:
@@ -240,7 +241,7 @@ namespace slidr
     private:
 
         /// @brief the cache that stores all visited nodes
-        std::unordered_set<std::size_t> visited_;
+        SetLike visited_;
 
         /// @brief the priority queue that stores all candidate nodes
         PQLike pq_;
