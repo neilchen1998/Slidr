@@ -1,6 +1,10 @@
+#include <cstddef>
+#include <unordered_set>
 #include <vector>   // std::vector
 #include <fstream>  // std::ofstream
-#include <nanobench.h>  // ankerl::nanobench::Bench
+#include <unordered_set>    // std::unordered_set
+
+#include "nanobench.h"  // ankerl::nanobench::Bench
 
 #include "slidr/solver/solverlib.hpp" // Solver
 #include "slidr/constants/constantslib.hpp"   // constants::EMPTY
@@ -30,8 +34,14 @@ int main()
     std::vector<int> hard0 {8, 6, 7, 2, 5, 4, 3, constants::EMPTY, 1};  // 31
     std::vector<int> hard1 {6, 4, 7, 8, 5, constants::EMPTY, 3, 2, 1};  // 31
 
-    bench.minEpochIterations(150).title("Group 1: Easy Puzzles")
-        .run("Priority Queue Solver", [&]
+    bench.minEpochIterations(500).title("Group 1: Easy Puzzles")
+        .run("Priority Queue Solver (std::unordered_set)", [&]
+    {
+        slidr::Solver<slidr::DefaultPQ, std::unordered_set<std::size_t>>(easy0).SolvePuzzle();
+        slidr::Solver<slidr::DefaultPQ, std::unordered_set<std::size_t>>(easy1).SolvePuzzle();
+        slidr::Solver<slidr::DefaultPQ, std::unordered_set<std::size_t>>(easy2).SolvePuzzle();
+    })
+        .run("Priority Queue Solver (flat_hash_set)", [&]
     {
         slidr::Solver(easy0).SolvePuzzle();
         slidr::Solver(easy1).SolvePuzzle();
@@ -50,8 +60,15 @@ int main()
         slidr::Solver<BucketMinPQ32, std::unordered_set<std::size_t>>(easy2, bucket32).SolvePuzzle();
     });
 
-    bench.minEpochIterations(150).title("Group 2: Medium Puzzles")
+    bench.minEpochIterations(80).title("Group 2: Medium Puzzles")
         .run("Priority Queue Solver", [&]
+    {
+        slidr::Solver<slidr::DefaultPQ, std::unordered_set<std::size_t>>(mid0).SolvePuzzle();
+        slidr::Solver<slidr::DefaultPQ, std::unordered_set<std::size_t>>(mid1).SolvePuzzle();
+        slidr::Solver<slidr::DefaultPQ, std::unordered_set<std::size_t>>(mid2).SolvePuzzle();
+        slidr::Solver<slidr::DefaultPQ, std::unordered_set<std::size_t>>(mid3).SolvePuzzle();
+    })
+        .run("Priority Queue Solver (flat_hash_set)", [&]
     {
         slidr::Solver(mid0).SolvePuzzle();
         slidr::Solver(mid1).SolvePuzzle();
@@ -73,8 +90,13 @@ int main()
         slidr::Solver<BucketMinPQ32>(mid3, bucket32).SolvePuzzle();
     });
 
-    bench.minEpochIterations(150).title("Group 3: Hard Puzzles")
+    bench.minEpochIterations(30).title("Group 3: Hard Puzzles")
         .run("Priority Queue Solver", [&]
+    {
+        slidr::Solver<slidr::DefaultPQ, std::unordered_set<std::size_t>>(hard0).SolvePuzzle();
+        slidr::Solver<slidr::DefaultPQ, std::unordered_set<std::size_t>>(hard1).SolvePuzzle();
+    })
+        .run("Priority Queue Solver (flat_hash_set)", [&]
     {
         slidr::Solver(hard0).SolvePuzzle();
         slidr::Solver(hard1).SolvePuzzle();

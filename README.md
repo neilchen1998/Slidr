@@ -575,6 +575,42 @@ We defined a new concept such that it fulfills the following requirements:
 * the queue has *pop* expression that returns void
 * the queue has *top* expression that returns the constant reference of its value type
 
+# Flat Hash set
+
+*slidr::Solver* uses a hash set to record what nodes it has visited.
+[abseil](https://github.com/abseil/abseil-cpp) offers *absl::flat_hash_set*.
+This is also called a *Swiss Table*, it stores elements within a contiguous array.
+It offers better cache locality compared to *std::unordered_set*, which is beneficial for lookup operations.
+In our case, lookups are performed thousands of times especially if the puzzle is hard.
+In the first group (easy), using *absl::flat_hash_set* results in 102.7% improvement.
+In the second (medium) and third (hard) group, switching to *absl::flat_hash_set* gains around 106% and 107.8%, respectively.
+
+## Group 1: Easy Puzzles
+
+|               ns/op |                op/s |    err% |     total | Group 1: Easy Puzzles
+|--------------------:|--------------------:|--------:|----------:|:----------------------
+|           44,974.51 |           22,234.82 |    0.6% |      0.28 | `Priority Queue Solver`
+|           43,784.68 |           22,839.04 |    0.2% |      0.26 | `Priority Queue Solver (flat_hash_set)`
+|           80,331.08 |           12,448.48 |    0.6% |      0.48 | `Bucket Queue Solver`
+|           82,591.90 |           12,107.72 |    0.7% |      0.49 | `Bucket Queue Solver (32)`
+
+## Group 2: Medium Puzzles
+
+|               ns/op |                op/s |    err% |     total | Group 2: Medium Puzzles
+|--------------------:|--------------------:|--------:|----------:|:------------------------
+|        1,082,656.50 |              923.65 |    0.3% |      1.04 | `Priority Queue Solver`
+|        1,021,647.87 |              978.81 |    0.3% |      0.98 | `Priority Queue Solver (flat_hash_set)`
+|        1,296,488.02 |              771.31 |    0.8% |      1.27 | `Bucket Queue Solver`
+|        1,287,686.52 |              776.59 |    0.2% |      1.23 | `Bucket Queue Solver (32)`
+
+## Group 3: Hard Puzzles
+
+|               ns/op |                op/s |    err% |     total | Group 3: Hard Puzzles
+|--------------------:|--------------------:|--------:|----------:|:----------------------
+|        3,412,984.37 |              293.00 |    1.0% |      1.24 | `Priority Queue Solver`
+|        3,165,287.88 |              315.93 |    0.2% |      1.15 | `Priority Queue Solver (flat_hash_set)`
+|        3,390,451.40 |              294.95 |    0.9% |      1.23 | `Bucket Queue Solver`
+
 ## Reference
 
 - [gprof2dot](https://pypi.org/project/gprof2dot/)
@@ -584,3 +620,4 @@ We defined a new concept such that it fulfills the following requirements:
 - [Linear Conflict](https://cdn.aaai.org/AAAI/1996/AAAI96-178.pdf)
 - [Fold Expressions](https://en.cppreference.com/w/cpp/language/fold.html?ref=blog.yuo.be)
 - [Requires & Constraints](https://en.cppreference.com/w/cpp/language/requires.html)
+- [Abseil's Swiss Tables](https://abseil.io/docs/cpp/guides/container)
