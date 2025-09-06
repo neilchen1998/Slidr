@@ -398,26 +398,31 @@ Those are divided into three categories: **easy**, **medium**, and **hard**.
 **easy** takes less than 20 steps to solve, **medium** takes between 20 and 30, and **hard** takes 31 steps (which is the most steps possible).
 The result is shown in the following table:
 
-| Group 1: Easy Puzzles      | op/s     |
-| :------------------------- | :------- |
-| Priority Queue Solver      | 5,567.37 |
-| Bucket Queue Solver        | 4,130.10 |
-| Bucket Queue Solver (32)   | 4,088.10 |
+#### Group 1: Easy Puzzles
 
-| Group 2: Medium Puzzles      | op/s   |
-| :------------------------- | :----- |
-| Priority Queue Solver      | 334.56 |
-| Bucket Queue Solver        | 424.59 |
-| Bucket Queue Solver (32)   | 426.45 |
+|               ns/op |                op/s |    err% |     total | Group 1: Easy Puzzles
+|--------------------:|--------------------:|--------:|----------:|:----------------------
+|           44,935.60 |           22,254.07 |    0.3% |      0.08 | `Priority Queue Solver`
+|           80,091.72 |           12,485.69 |    0.9% |      0.14 | `Bucket Queue Solver`
+|           79,752.33 |           12,538.82 |    0.3% |      0.14 | `Bucket Queue Solver (32)`
 
-| Group 3: Hard Puzzles      | op/s   |
-| :------------------------- | :----- |
-| Priority Queue Solver      | 123.22 |
-| Bucket Queue Solver        | 139.41 |
+#### Group 2: Medium Puzzles
 
-We can see that *bucket queue* wins in both the second group and the third group.
-This result aligns with the characteristic of *bucket queue* as you saw earlier.
-The *bucket queue* with 32 buckets performs similar to that with 64 buckets.
+|               ns/op |                op/s |    err% |     total | Group 2: Medium Puzzles
+|--------------------:|--------------------:|--------:|----------:|:------------------------
+|        1,091,326.69 |              916.32 |    0.8% |      1.95 | `Priority Queue Solver`
+|        1,308,747.56 |              764.09 |    0.5% |      2.35 | `Bucket Queue Solver`
+|        1,314,774.23 |              760.59 |    0.5% |      2.36 | `Bucket Queue Solver (32)`
+
+#### Group 3: Hard Puzzles
+
+|               ns/op |                op/s |    err% |     total | Group 3: Hard Puzzles
+|--------------------:|--------------------:|--------:|----------:|:----------------------
+|        3,451,364.99 |              289.74 |    0.6% |      6.17 | `Priority Queue Solver`
+|        3,397,622.16 |              294.32 |    0.4% |      6.09 | `Bucket Queue Solver`
+
+We can see that *bucket queue* wins the third group but loses in the first and the second group.
+The *bucket queue* with 32 buckets performs similar to that with 64 buckets in the first and the second group.
 However, it fails to solve the third category of puzzles due those puzzles have *f* value greater than 32.
 
 ### Linear Conflict
