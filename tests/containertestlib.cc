@@ -8,7 +8,7 @@
 #include <limits> // std::numeric_limits
 #include <random>   // std::random_device
 
-#include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE
+#include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE, INFO
 
 #include "slidr/container/bucketqueuelib.hpp" // BucketQueue
 #include "slidr/constants/constantslib.hpp" // constants::EMPTY
@@ -24,7 +24,7 @@ TEST_CASE( "Push Behaviour of Bucket Queue", "[main]" )
     {
         for (size_t i = 0; i < N; i++)
         {
-            INFO("Current value of i is: " << i);
+            INFO("Current value of i is: " << i);   // only shows if the following requirement fails
             REQUIRE_NOTHROW(bq.push(i));
         }
     }
@@ -108,6 +108,7 @@ TEST_CASE( "Basic Operations for Max Heap", "[main]" )
     {
         for (std::size_t i = 0; i < N; ++i)
         {
+            INFO("Current value of i is: " << i);   // only shows if the following requirement fails
             REQUIRE(bq.top() == pq.top());
             bq.pop();
             pq.pop();
@@ -157,6 +158,7 @@ TEST_CASE( "Basic Operations for Min Heap", "[main]" )
     {
         for (std::size_t i = 0; i < N; ++i)
         {
+            INFO("Current value of i is: " << i);   // only shows if the following requirement fails
             REQUIRE(bq.top() == pq.top());
             bq.pop();
             pq.pop();
@@ -206,6 +208,7 @@ TEST_CASE( "Basic Operations for Max Heap (32)", "[main]" )
     {
         for (std::size_t i = 0; i < N; ++i)
         {
+            INFO("Current value of i is: " << i);   // only shows if the following requirement fails
             REQUIRE(bq.top() == pq.top());
             bq.pop();
             pq.pop();
@@ -255,6 +258,7 @@ TEST_CASE( "Basic Operations for Min Heap (32)", "[main]" )
     {
         for (std::size_t i = 0; i < N; ++i)
         {
+            INFO("Current value of i is: " << i);   // only shows if the following requirement fails
             REQUIRE(bq.top() == pq.top());
             bq.pop();
             pq.pop();
