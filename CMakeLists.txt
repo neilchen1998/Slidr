@@ -70,7 +70,7 @@ if(NOT absl_FOUND OR absl_VERSION VERSION_LESS MIN_ABSL_VERSION)
     FetchContent_Declare(
     absl
     GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
-    GIT_TAG v${MIN_ABSL_VERSION}
+    GIT_TAG ${MIN_ABSL_VERSION}
   )
     FetchContent_MakeAvailable(absl)
 else()
