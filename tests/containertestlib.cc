@@ -15,6 +15,58 @@
 #include "slidr/node/nodelib.hpp"   // Node
 #include "slidr/math/mathlib.hpp" // GetUniformIntDist
 
+TEST_CASE( "Push Behaviour of Bucket Queue", "[main]" )
+{
+    constexpr int N = 64;
+    auto bq = BucketQueue<int, std::size_t> {};
+
+    SECTION("No Throw (Value Within Range)", "[some_details]")
+    {
+        for (size_t i = 0; i < N; i++)
+        {
+            INFO("Current value of i is: " << i);
+            REQUIRE_NOTHROW(bq.push(i));
+        }
+    }
+
+    SECTION("Throw (Value Too Small)", "[some_details]")
+    {
+        REQUIRE_THROWS(bq.push(-1));
+    }
+
+    SECTION("Throw (Value Too Large)", "[some_details]")
+    {
+        REQUIRE_THROWS(bq.push(N));
+        REQUIRE_THROWS(bq.push(N + 10));
+    }
+}
+
+TEST_CASE( "Push Behaviour of Bucket Queue (32)", "[main]" )
+{
+    constexpr int N = 32;
+    auto bq = BucketQueue<int, std::size_t, std::greater<unsigned short>, N> {};
+
+    SECTION("No Throw (Value Within Range)", "[some_details]")
+    {
+        for (size_t i = 0; i < N; i++)
+        {
+            INFO("Current value of i is: " << i);
+            REQUIRE_NOTHROW(bq.push(i));
+        }
+    }
+
+    SECTION("Throw (Value Too Small)", "[some_details]")
+    {
+        REQUIRE_THROWS(bq.push(-1));
+    }
+
+    SECTION("Throw (Value Too Large)", "[some_details]")
+    {
+        REQUIRE_THROWS(bq.push(N));
+        REQUIRE_THROWS(bq.push(N + 10));
+    }
+}
+
 TEST_CASE( "Basic Operations for Max Heap", "[main]" )
 {
     auto bq = BucketQueue<int, std::size_t> {};
