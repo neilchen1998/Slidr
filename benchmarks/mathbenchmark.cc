@@ -6,7 +6,7 @@
 #include <boost/functional/hash.hpp>    // boost::hash_combine
 
 #include "slidr/constants/constantslib.hpp"   // constants::EMPTY, etc.
-#include "slidr/math/mathlib.hpp" // hash_combine, hash_range
+#include "slidr/math/mathlib.hpp" // hash_combine, hash_range, GetUniformIntDist
 
 template <std::integral T>
 inline std::size_t hash_vector(const std::vector<T>& vec)
@@ -48,15 +48,10 @@ int main()
     std::ofstream file("./build/benchmarks/math-results.csv");
     ankerl::nanobench::Bench bench;
 
-    // Generate the seed, the generator, and the distribution
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> distrib(1, constants::EMPTY);
-
     // Generate 3 values
-    std::size_t h = distrib(gen);
-    std::size_t u = distrib(gen);
-    std::size_t v = distrib(gen);
+    std::size_t h = GetUniformIntDist(1, constants::EMPTY);
+    std::size_t u = GetUniformIntDist(1, constants::EMPTY);
+    std::size_t v = GetUniformIntDist(1, constants::EMPTY);
 
     // Generate the vector
     constexpr std::size_t N {constants::EIGHT_PUZZLE_NUM};
