@@ -1,4 +1,3 @@
-#include <iterator>
 #define CATCH_CONFIG_MAIN
 
 #include <string_view>    // std::string_view
@@ -14,26 +13,23 @@
 #include "slidr/container/bucketqueuelib.hpp" // BucketQueue
 #include "slidr/constants/constantslib.hpp" // constants::EMPTY
 #include "slidr/node/nodelib.hpp"   // Node
+#include "slidr/math/mathlib.hpp" // GetUniformIntDist
 
 TEST_CASE( "Basic Operations for Max Heap", "[main]" )
 {
     auto bq = BucketQueue<int, std::size_t> {};
     std::priority_queue pq(std::less<std::size_t>{}, std::vector<int>{});
 
-    const std::size_t N = 12;
+    constexpr std::size_t N = 12;
 
-    const int min_size_t = 0;
-    const int max_size_t = 64 - 1;
-
-    // Generate the seed, the generator, and the distribution
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> distrib(min_size_t, max_size_t);
+    // the min. and the max. value
+    constexpr int min_size_t = 0;
+    constexpr int max_size_t = 64 - 1;
 
     // Generate the vector
     for (std::size_t i = 0; i < (N - 2); ++i)
     {
-        const std::size_t val = distrib(gen);
+        const int val = GetUniformIntDist(min_size_t, max_size_t);
 
         // Push the random number into the queues
         bq.push(val);
@@ -76,18 +72,13 @@ TEST_CASE( "Basic Operations for Min Heap", "[main]" )
 
     const std::size_t N = 12;
 
-    const int min_size_t = 0;
-    const int max_size_t = 64 - 1;
-
-    // Generate the seed, the generator, and the distribution
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> distrib(min_size_t, max_size_t);
+    constexpr int min_size_t = 0;
+    constexpr int max_size_t = 64 - 1;
 
     // Generate the vector
     for (std::size_t i = 0; i < (N - 2); ++i)
     {
-        const std::size_t val = distrib(gen);
+        const int val = GetUniformIntDist(min_size_t, max_size_t);
 
         // Push the random number into the queues
         bq.push(val);
@@ -130,18 +121,13 @@ TEST_CASE( "Basic Operations for Max Heap (32)", "[main]" )
 
     const std::size_t N = 12;
 
-    const int min_size_t = 0;
-    const int max_size_t = 32 - 1;
-
-    // Generate the seed, the generator, and the distribution
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> distrib(min_size_t, max_size_t);
+    constexpr int min_size_t = 0;
+    constexpr int max_size_t = 32 - 1;
 
     // Generate the vector
     for (std::size_t i = 0; i < (N - 2); ++i)
     {
-        const std::size_t val = distrib(gen);
+        const int val = GetUniformIntDist(min_size_t, max_size_t);
 
         // Push the random number into the queues
         bq.push(val);
@@ -184,18 +170,13 @@ TEST_CASE( "Basic Operations for Min Heap (32)", "[main]" )
 
     const std::size_t N = 12;
 
-    const int min_size_t = 0;
-    const int max_size_t = 32 - 1;
-
-    // Generate the seed, the generator, and the distribution
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> distrib(min_size_t, max_size_t);
+    constexpr int min_size_t = 0;
+    constexpr int max_size_t = 32 - 1;
 
     // Generate the vector
     for (std::size_t i = 0; i < (N - 2); ++i)
     {
-        const std::size_t val = distrib(gen);
+        const int val = GetUniformIntDist(min_size_t, max_size_t);
 
         // Push the random number into the queues
         bq.push(val);

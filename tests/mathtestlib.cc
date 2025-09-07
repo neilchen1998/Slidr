@@ -7,7 +7,7 @@
 #include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE
 
 #include "slidr/constants/constantslib.hpp"   // constants::EMPTY
-#include "slidr/math/mathlib.hpp" // hash_combine_simple, hash_range
+#include "slidr/math/mathlib.hpp" // hash_combine_simple, hash_range, GetUniformIntDist
 
 /// @brief Hashes a single arguments with an initial hash value
 /// @tparam T The argument type
@@ -21,16 +21,14 @@ inline void hash_combine_simple(std::size_t& seed, const T& u)
 
 TEST_CASE( "Hash Combine", "[main]" )
 {
-    std::mt19937_64 gen(12);
-    std::uniform_int_distribution<> distrib(1, constants::EMPTY);
-
-    std::size_t h0 = distrib(gen), h1 = h0;
-    const std::size_t v = distrib(gen);
-    const std::size_t u = distrib(gen);
-    const std::size_t w = distrib(gen);
-    const std::size_t x = distrib(gen);
-    const std::size_t y = distrib(gen);
-    const std::size_t z = distrib(gen);
+    std::size_t h0 = GetUniformIntDist(1, constants::EMPTY);
+    std::size_t h1 = h0;
+    const std::size_t v = GetUniformIntDist(1, constants::EMPTY);
+    const std::size_t u = GetUniformIntDist(1, constants::EMPTY);
+    const std::size_t w = GetUniformIntDist(1, constants::EMPTY);
+    const std::size_t x = GetUniformIntDist(1, constants::EMPTY);
+    const std::size_t y = GetUniformIntDist(1, constants::EMPTY);
+    const std::size_t z = GetUniformIntDist(1, constants::EMPTY);
 
     SECTION ( "Two parameters", "[main]" )
     {
