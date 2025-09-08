@@ -15,6 +15,43 @@
 #include "slidr/node/nodelib.hpp"   // Node
 #include "slidr/math/mathlib.hpp" // GetUniformIntDist
 
+TEST_CASE( "Pop Behaviour of Bucket Queue", "[main]" )
+{
+    auto bq = BucketQueue<int, std::size_t> {};
+
+    SECTION("Throw", "empty queue")
+    {
+        REQUIRE(bq.empty());
+        REQUIRE(bq.size() == 0);
+        REQUIRE_THROWS(bq.pop());
+    }
+
+    SECTION("No Throw", "not empty queue")
+    {
+        bq.push(0);
+        REQUIRE_FALSE(bq.empty());
+        REQUIRE_NOTHROW(bq.pop());
+    }
+}
+
+TEST_CASE( "Top Behaviour of Bucket Queue", "[main]" )
+{
+    auto bq = BucketQueue<int, std::size_t> {};
+
+    SECTION("Throw", "does not have a top element")
+    {
+        REQUIRE(bq.empty());
+        REQUIRE(bq.size() == 0);
+        REQUIRE_THROWS(bq.top());
+    }
+
+    SECTION("No Throw", "has a top element")
+    {
+        bq.push(0);
+        REQUIRE_NOTHROW(bq.top());
+    }
+}
+
 TEST_CASE( "Push Behaviour of Bucket Queue", "[main]" )
 {
     constexpr int N = 64;
