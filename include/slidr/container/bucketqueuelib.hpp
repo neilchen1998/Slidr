@@ -130,7 +130,7 @@ public:
     {
         if (empty())
         {
-            throw std::runtime_error("Cannot call top() on an empty bucket queue.");
+            throw std::runtime_error("Cannot call pop() on an empty bucket queue.");
         }
 
         buckets_[bestPriority_].pop_back();
