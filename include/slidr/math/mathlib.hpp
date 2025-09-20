@@ -61,7 +61,7 @@ inline int GetUniformIntDist(int low, int high)
 /// @param low The lower bound
 /// @param high The upper bound
 /// @return A float
-inline int GetNormalFloatDist(float low, float high)
+inline float GetNormalFloatDist(float low, float high)
 {
     std::normal_distribution distrib {low, high};
     return distrib(gen);
