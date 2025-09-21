@@ -263,7 +263,9 @@ void Node::CalculateManhattanDistance()
 
 void Node::CalculateLinearConflict()
 {
-    // Column-wise comparison
+    linearConflict_ = 0;
+
+    // Row-wise comparison
     for (int row = 0; row < constants::EIGHT_PUZZLE_SIZE; ++row)
     {
         for (int col1 = 0; col1 < constants::EIGHT_PUZZLE_SIZE; ++col1)

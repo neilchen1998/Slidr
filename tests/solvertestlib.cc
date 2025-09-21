@@ -117,6 +117,19 @@ TEST_CASE( "Priority Queue Solver", "[main]" )
         REQUIRE (isSolved);
         REQUIRE (depth == 31);
     }
+
+    SECTION("Puzzle 8", "[general case]")
+    {
+        // 81427426
+        std::vector<int> layout {8, 1, 4, 3, 7, 5, 2, 6, constants::EMPTY};
+        auto s = slidr::Solver(layout);
+        auto [isSolved, _] = s.SolvePuzzle();
+        auto depth = s.GetNumOfMoves();
+        auto solution = s.GetSolution();
+
+        REQUIRE (isSolved);
+        REQUIRE (depth == 24);
+    }
 }
 
 TEST_CASE( "Bucket Queue Solver", "[main]" )
