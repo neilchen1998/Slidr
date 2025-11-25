@@ -58,12 +58,22 @@ inline int GetUniformIntDist(int low, int high)
 }
 
 /// @brief Get an integer from a normal distribution
+/// @param mean The mean (μ)
+/// @param stddev The standard deviation (σ)
+/// @return A float
+inline float GetNormalFloatDist(float mean, float stddev)
+{
+    std::normal_distribution distrib{mean, stddev};
+    return distrib(gen);
+}
+
+/// @brief Get a float from a uniform distribution
 /// @param low The lower bound
 /// @param high The upper bound
 /// @return A float
-inline float GetNormalFloatDist(float low, float high)
+inline float GetUniformFloatDist(float low, float high)
 {
-    std::normal_distribution distrib {low, high};
+    std::uniform_real_distribution<> distrib{low, high};
     return distrib(gen);
 }
 
