@@ -1,3 +1,4 @@
+#include <numeric>
 #define CATCH_CONFIG_MAIN
 
 #include <vector>   // std::vector
@@ -5,6 +6,14 @@
 #include <algorithm> // std::shuffle
 #include <random>   // std::mt19937_64
 #include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE
+#include <catch2/catch_approx.hpp>
+
+#include <boost/accumulators/accumulators.hpp>
+#include <boost/accumulators/statistics/stats.hpp>
+#include <boost/accumulators/statistics/sum.hpp>
+#include <boost/accumulators/statistics/variance.hpp> // Variance is used to derive standard deviation
+#include <boost/bind/bind.hpp>
+#include <cmath>
 
 #include "slidr/constants/constantslib.hpp"   // constants::EMPTY
 #include "slidr/math/mathlib.hpp" // hash_combine_simple, hash_range, GetUniformIntDist
@@ -103,5 +112,37 @@ TEST_CASE( "Hash Range Function", "[main]" )
         REQUIRE (hash3 == hash3);
         REQUIRE (hash4 == hash4);
         REQUIRE (hash2 == hash3);
+    }
+}
+
+TEST_CASE( "Normal Distribution Function", "[main]" )
+{
+    using namespace boost::accumulators;
+    using namespace boost::placeholders;
+
+    constexpr float trueMean = 1.0;
+    constexpr float trueStddev = 2.0;
+    std::array<float, 1'000> samples;
+    for (auto& sample : samples)
+    {
+        sample = GetNormalFloatDist(trueMean, trueStddev);
+    }
+
+    // Get the sum and the variance
+    accumulator_set<float, stats<tag::sum, tag::variance>> acc;
+    std::for_each(samples.begin(), samples.end(), boost::bind<void>(boost::ref(acc), _1));
+
+    // Get the mean and the standard deviation
+    double mu = sum(acc) / samples.size();
+    double sigma = std::sqrt(variance(acc));
+
+    SECTION ( "Mean", "[main]" )
+    {
+        REQUIRE (Catch::Approx(mu).margin(0.1 * mu) == trueMean);
+    }
+
+    SECTION ( "Standard Deviation", "[main]" )
+    {
+        REQUIRE (Catch::Approx(sigma).margin(0.05 * sigma) == trueStddev);
     }
 }
