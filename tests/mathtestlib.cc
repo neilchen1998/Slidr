@@ -1,21 +1,24 @@
-#include <cstddef>
-#include <numeric>
 #define CATCH_CONFIG_MAIN
 
+#include <cstddef>
+#include <numeric>
 #include <vector>   // std::vector
 #include <span> // std::span
 #include <algorithm> // std::shuffle
 #include <random>   // std::mt19937_64
+#include <cmath>    // std::sqrt
 #include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE
-#include <catch2/catch_approx.hpp>
+#include <catch2/catch_approx.hpp>  // Catch::Approx
 #include <catch2/generators/catch_generators.hpp>   // GENERATE
+
+#ifdef DEBUG
+#include <fmt/core.h>
+#endif
 
 #include <boost/accumulators/accumulators.hpp>
 #include <boost/accumulators/statistics/stats.hpp>
 #include <boost/accumulators/statistics/sum.hpp>
 #include <boost/accumulators/statistics/variance.hpp> // Variance is used to derive standard deviation
-#include <boost/bind/bind.hpp>
-#include <cmath>
 
 #include "slidr/constants/constantslib.hpp"   // constants::EMPTY
 #include "slidr/math/mathlib.hpp" // hash_combine_simple, hash_range, GetUniformIntDist
@@ -126,6 +129,7 @@ TEST_CASE( "Normal Distribution Function", "[main]" )
         float mean;
         float stddev;
     };
+
     constexpr size_t N = 1'000;
 
     // Create two sets of normal distributions
@@ -135,24 +139,26 @@ TEST_CASE( "Normal Distribution Function", "[main]" )
     // Get the parameters
     const float trueMean = curves.mean;
     const float trueStddev = curves.stddev;
+
+    // Generate samples
     std::array<float, N> samples;
     for (auto& sample : samples)
     {
         sample = GetNormalFloatDist(trueMean, trueStddev);
     }
 
-    // Get the sum and the variance
+    // Calculate the sum and the variance
     accumulator_set<float, stats<tag::sum, tag::variance>> acc;
     std::for_each(samples.cbegin(), samples.cend(), [&](float sample)
     {
         acc(sample);
     });
 
-    // Get the mean and the standard deviation
+    // Calculate the mean and the standard deviation
     double mu = sum(acc) / N;
     double sigma = std::sqrt(variance(acc));
 
-    // Calculate the standard error of the mean (SEM) and the standard error of the standard deviation
+    // Calculate the standard error of the mean (SEM) and the standard error of the standard deviation (SES)
     const float SEM = trueStddev / std::sqrt(N);
     const float SES = trueStddev / std::sqrt(2.0f * N);
 
@@ -165,6 +171,72 @@ TEST_CASE( "Normal Distribution Function", "[main]" )
     SECTION ( "Standard Deviation", "[main]" )
     {
         // 3 times the SES should cover 99% of the cases
+        REQUIRE (Catch::Approx(sigma).margin(3 * SES) == trueStddev);
+    }
+}
+
+TEST_CASE( "Uniform Real Distribution Function", "[main]" )
+{
+    using namespace boost::accumulators;
+
+    struct UniformRealDistribution
+    {
+        float min;
+        float max;
+    };
+
+    constexpr size_t N = 1'000;
+
+    // Create two sets of normal distributions
+    // This test cases will be run twice, each time with different means and standard deviations
+    auto dists = GENERATE(UniformRealDistribution{-2.5f, 1.0f}, UniformRealDistribution{-15.2f, -2.7f}, UniformRealDistribution{5.4f, 6.7f});
+
+    // Get the parameters
+    const float min = dists.min;
+    const float max = dists.max;
+    const float trueMean = 0.5 * (max + min);
+    const float trueStddev = std::sqrt(1 / 12.0f) * (max - min);
+
+    // Generate samples
+    std::array<float, N> samples;
+    for (auto& sample : samples)
+    {
+        sample = GetUniformFloatDist(min, max);
+    }
+
+    // Calculate the sum and the variance
+    accumulator_set<float, stats<tag::sum, tag::variance>> acc;
+    std::for_each(samples.cbegin(), samples.cend(), [&](float sample)
+    {
+        acc(sample);
+    });
+
+    // Calculate the mean and the standard deviation
+    double mu = sum(acc) / N;
+    double sigma = std::sqrt(variance(acc));
+
+    // Calculate the standard error of the mean (SEM) and the standard error of the standard deviation (SES)
+    // NOTE: since there is no standard way of calculating those values for uniform distributions, we can use the law of big number
+    // therefore these of a uniform distribution can be approximated to those of a standard distribution
+    const float SEM = trueStddev / std::sqrt(N);
+    const float SES = trueStddev / std::sqrt(2.0f * N);
+
+    SECTION ( "Bounds", "[main]" )
+    {
+        for (const auto& sample : samples)
+        {
+            REQUIRE (sample >= min);
+            REQUIRE (sample <= max);
+        }
+    }
+
+    SECTION ( "Distribution", "[main]" )
+    {
+        #ifdef DEBUG
+        const std::string info = fmt::format("min: {:.3f}\tmax:{:.3f}\tmu:{:.3f}\tsigma:{:.3f}\tSEM:{:.3f}\tSES:{:.3f}", min, max, mu, sigma, SEM, SES);
+        INFO(info);
+        #endif
+        REQUIRE (Catch::Approx(mu).margin(3 * SEM) == trueMean);
         REQUIRE (Catch::Approx(sigma).margin(3 * SES) == trueStddev);
     }
 }
