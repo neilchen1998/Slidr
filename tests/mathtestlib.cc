@@ -8,6 +8,7 @@
 #include <random>   // std::mt19937_64
 #include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE
 #include <catch2/catch_approx.hpp>
+#include <catch2/generators/catch_generators.hpp>   // GENERATE
 
 #include <boost/accumulators/accumulators.hpp>
 #include <boost/accumulators/statistics/stats.hpp>
@@ -119,11 +120,21 @@ TEST_CASE( "Hash Range Function", "[main]" )
 TEST_CASE( "Normal Distribution Function", "[main]" )
 {
     using namespace boost::accumulators;
-    using namespace boost::placeholders;
 
-    constexpr float trueMean = 1.0;
-    constexpr float trueStddev = 2.0;
+    struct NormalDistributionParams
+    {
+        float mean;
+        float stddev;
+    };
     constexpr size_t N = 1'000;
+
+    // Create two sets of normal distributions
+    // This test cases will be run twice, each time with different means and standard deviations
+    auto curves = GENERATE(NormalDistributionParams{0.0f, 1.0f}, NormalDistributionParams{1.5f, 10.0f});
+
+    // Get the parameters
+    const float trueMean = curves.mean;
+    const float trueStddev = curves.stddev;
     std::array<float, N> samples;
     for (auto& sample : samples)
     {
