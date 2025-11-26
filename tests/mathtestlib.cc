@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <numeric>
 #define CATCH_CONFIG_MAIN
 
@@ -122,7 +123,8 @@ TEST_CASE( "Normal Distribution Function", "[main]" )
 
     constexpr float trueMean = 1.0;
     constexpr float trueStddev = 2.0;
-    std::array<float, 1'000> samples;
+    constexpr size_t N = 1'000;
+    std::array<float, N> samples;
     for (auto& sample : samples)
     {
         sample = GetNormalFloatDist(trueMean, trueStddev);
@@ -130,19 +132,28 @@ TEST_CASE( "Normal Distribution Function", "[main]" )
 
     // Get the sum and the variance
     accumulator_set<float, stats<tag::sum, tag::variance>> acc;
-    std::for_each(samples.begin(), samples.end(), boost::bind<void>(boost::ref(acc), _1));
+    std::for_each(samples.cbegin(), samples.cend(), [&](float sample)
+    {
+        acc(sample);
+    });
 
     // Get the mean and the standard deviation
-    double mu = sum(acc) / samples.size();
+    double mu = sum(acc) / N;
     double sigma = std::sqrt(variance(acc));
+
+    // Calculate the standard error of the mean (SEM) and the standard error of the standard deviation
+    const float SEM = trueStddev / std::sqrt(N);
+    const float SES = trueStddev / std::sqrt(2.0f * N);
 
     SECTION ( "Mean", "[main]" )
     {
-        REQUIRE (Catch::Approx(mu).margin(0.1 * mu) == trueMean);
+        // 3 times the SEM should cover 99% of the cases
+        REQUIRE (Catch::Approx(mu).margin(3 * SEM) == trueMean);
     }
 
     SECTION ( "Standard Deviation", "[main]" )
     {
-        REQUIRE (Catch::Approx(sigma).margin(0.05 * sigma) == trueStddev);
+        // 3 times the SES should cover 99% of the cases
+        REQUIRE (Catch::Approx(sigma).margin(3 * SES) == trueStddev);
     }
 }
