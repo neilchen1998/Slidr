@@ -4,7 +4,7 @@
 #include <numeric>
 #include <vector>   // std::vector
 #include <span> // std::span
-#include <algorithm> // std::shuffle
+#include <algorithm> // std::shuffle, std::for_each
 #include <random>   // std::mt19937_64
 #include <cmath>    // std::sqrt
 #include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE
@@ -15,10 +15,9 @@
 #include <fmt/core.h>
 #endif
 
-#include <boost/accumulators/accumulators.hpp>
+#include <boost/accumulators/accumulators.hpp>  // boost::accumulators::accumulator_set
 #include <boost/accumulators/statistics/stats.hpp>
-#include <boost/accumulators/statistics/sum.hpp>
-#include <boost/accumulators/statistics/variance.hpp> // Variance is used to derive standard deviation
+#include <boost/accumulators/statistics/variance.hpp>   // sum, variance
 
 #include "slidr/constants/constantslib.hpp"   // constants::EMPTY
 #include "slidr/math/mathlib.hpp" // hash_combine_simple, hash_range, GetUniformIntDist
@@ -160,7 +159,7 @@ TEST_CASE( "Normal Distribution Function", "[main]" )
 
     // Calculate the standard error of the mean (SEM) and the standard error of the standard deviation (SES)
     const float SEM = trueStddev / std::sqrt(N);
-    const float SES = trueStddev / std::sqrt(2.0f * N);
+    const float SES = trueStddev / std::sqrt(2.0f * N); // NOTE: this formula needs citation
 
     SECTION ( "Mean", "[main]" )
     {
@@ -219,7 +218,7 @@ TEST_CASE( "Uniform Real Distribution Function", "[main]" )
     // NOTE: since there is no standard way of calculating those values for uniform distributions, we can use the law of big number
     // therefore these of a uniform distribution can be approximated to those of a standard distribution
     const float SEM = trueStddev / std::sqrt(N);
-    const float SES = trueStddev / std::sqrt(2.0f * N);
+    const float SES = trueStddev / std::sqrt(2.0f * N); // NOTE: this formula needs citation
 
     SECTION ( "Bounds", "[main]" )
     {
