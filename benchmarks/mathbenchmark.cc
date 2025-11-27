@@ -1,5 +1,4 @@
 #include <vector>   // std::vector
-#include <random>   // std::mt19937
 #include <span> // std::span
 #include <nanobench.h>  // ankerl::nanobench::Bench
 #include <fstream>  // std::ofstream
@@ -49,16 +48,16 @@ int main()
     ankerl::nanobench::Bench bench;
 
     // Generate 3 values
-    std::size_t h = GetUniformIntDist(1, constants::EMPTY);
-    std::size_t u = GetUniformIntDist(1, constants::EMPTY);
-    std::size_t v = GetUniformIntDist(1, constants::EMPTY);
+    std::size_t h = GetUniformIntDist(0, constants::EMPTY);
+    std::size_t u = GetUniformIntDist(0, constants::EMPTY);
+    std::size_t v = GetUniformIntDist(0, constants::EMPTY);
 
     // Generate the vector
-    constexpr std::size_t N {constants::EIGHT_PUZZLE_NUM};
+    constexpr std::size_t N{constants::EIGHT_PUZZLE_NUM};
     std::vector<int> vec(N);
     for (auto& v : vec)
     {
-        v = distrib(gen);
+        v = GetUniformIntDist(0, constants::EMPTY);
     }
 
     bench.title("Hash & Combine Two Values")
