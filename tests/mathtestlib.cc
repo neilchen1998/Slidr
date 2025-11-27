@@ -240,6 +240,20 @@ TEST_CASE( "Uniform Integer Distribution Function", "[main]" )
     }
 }
 
+TEST_CASE( "Uniform Integer Distribution Function", "[error]" )
+{
+    // Expect this to throw an invalid argument error
+    REQUIRE_THROWS_AS(GetUniformIntDist(50, 7), std::invalid_argument);
+    REQUIRE_THROWS_AS(GetUniformIntDist(-63, -74), std::invalid_argument);
+    REQUIRE_THROWS_AS(GetUniformIntDist(32, -49), std::invalid_argument);
+
+    // Do not expect this to throw when two arguments are equal
+    REQUIRE_NOTHROW(GetUniformIntDist(50, 50));
+    REQUIRE_NOTHROW(GetUniformIntDist(-10, -10));
+    REQUIRE_NOTHROW(GetUniformIntDist(0, 0));
+    REQUIRE_NOTHROW(GetUniformIntDist(-23, 99));
+}
+
 TEST_CASE( "Uniform Real Distribution Function", "[main]" )
 {
     using namespace boost::accumulators;
@@ -304,4 +318,18 @@ TEST_CASE( "Uniform Real Distribution Function", "[main]" )
         REQUIRE (Catch::Approx(mu).margin(3 * SEM) == trueMean);
         REQUIRE (Catch::Approx(sigma).margin(3 * SES) == trueStddev);
     }
+}
+
+TEST_CASE( "Uniform Real Distribution Function", "[error]" )
+{
+    // Expect this to throw an invalid argument error
+    REQUIRE_THROWS_AS(GetUniformFloatDist(50.2, 7.9), std::invalid_argument);
+    REQUIRE_THROWS_AS(GetUniformFloatDist(-6.3, -7.4), std::invalid_argument);
+    REQUIRE_THROWS_AS(GetUniformFloatDist(3.2, -4.9), std::invalid_argument);
+
+    // Do not expect this to throw when two arguments are equal
+    REQUIRE_NOTHROW(GetUniformFloatDist(5.0, 5.0));
+    REQUIRE_NOTHROW(GetUniformFloatDist(-1.0, -1.0));
+    REQUIRE_NOTHROW(GetUniformFloatDist(0.1, 0.1));
+    REQUIRE_NOTHROW(GetUniformFloatDist(-2.3, 9.9));
 }
