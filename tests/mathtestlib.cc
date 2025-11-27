@@ -1,10 +1,23 @@
 #define CATCH_CONFIG_MAIN
 
+#include <cstddef>
+#include <numeric>
 #include <vector>   // std::vector
 #include <span> // std::span
-#include <algorithm> // std::shuffle
+#include <algorithm> // std::shuffle, std::for_each
 #include <random>   // std::mt19937_64
+#include <cmath>    // std::sqrt
 #include <catch2/catch_test_macros.hpp> // TEST_CASE, SECTION, REQUIRE
+#include <catch2/catch_approx.hpp>  // Catch::Approx
+#include <catch2/generators/catch_generators.hpp>   // GENERATE
+
+#ifdef DEBUG
+#include <fmt/core.h>
+#endif
+
+#include <boost/accumulators/accumulators.hpp>  // boost::accumulators::accumulator_set
+#include <boost/accumulators/statistics/stats.hpp>
+#include <boost/accumulators/statistics/variance.hpp>   // sum, variance
 
 #include "slidr/constants/constantslib.hpp"   // constants::EMPTY
 #include "slidr/math/mathlib.hpp" // hash_combine_simple, hash_range, GetUniformIntDist
@@ -104,4 +117,219 @@ TEST_CASE( "Hash Range Function", "[main]" )
         REQUIRE (hash4 == hash4);
         REQUIRE (hash2 == hash3);
     }
+}
+
+TEST_CASE( "Normal Distribution Function", "[main]" )
+{
+    using namespace boost::accumulators;
+
+    struct NormalDistributionParams
+    {
+        float mean;
+        float stddev;
+    };
+
+    constexpr size_t N = 1'000;
+
+    // Create two sets of normal distributions
+    // This test cases will be run twice, each time with different means and standard deviations
+    auto curves = GENERATE(NormalDistributionParams{0.0f, 1.0f}, NormalDistributionParams{1.5f, 10.0f});
+
+    // Get the parameters
+    const float trueMean = curves.mean;
+    const float trueStddev = curves.stddev;
+
+    // Generate samples
+    std::array<float, N> samples;
+    for (auto& sample : samples)
+    {
+        sample = GetNormalFloatDist(trueMean, trueStddev);
+    }
+
+    // Calculate the sum and the variance
+    accumulator_set<float, stats<tag::sum, tag::variance>> acc;
+    std::for_each(samples.cbegin(), samples.cend(), [&](float sample)
+    {
+        acc(sample);
+    });
+
+    // Calculate the mean and the standard deviation
+    double mu = sum(acc) / N;
+    double sigma = std::sqrt(variance(acc));
+
+    // Calculate the standard error of the mean (SEM) and the standard error of the standard deviation (SES)
+    const float SEM = trueStddev / std::sqrt(N);
+    const float SES = trueStddev / std::sqrt(2.0f * N); // NOTE: this formula needs citation
+
+    SECTION ( "Mean", "[main]" )
+    {
+        // 3 times the SEM should cover 99% of the cases
+        REQUIRE (Catch::Approx(mu).margin(3 * SEM) == trueMean);
+    }
+
+    SECTION ( "Standard Deviation", "[main]" )
+    {
+        // 3 times the SES should cover 99% of the cases
+        REQUIRE (Catch::Approx(sigma).margin(3 * SES) == trueStddev);
+    }
+}
+
+TEST_CASE( "Uniform Integer Distribution Function", "[main]" )
+{
+    using namespace boost::accumulators;
+
+    struct UniformIntDistribution
+    {
+        int min;
+        int max;
+    };
+
+    constexpr size_t N = 1'000;
+
+    // Create two sets of uniform integer distributions
+    // This test cases will be run twice, each time with different means and standard deviations
+    auto dists = GENERATE(UniformIntDistribution{1, 2}, UniformIntDistribution{-15, -3}, UniformIntDistribution{5, 7});
+
+    // Get the parameters
+    const int min = dists.min;
+    const int max = dists.max;
+    const float trueMean = 0.5f * (max + min);
+    const float trueStddev = std::sqrt((std::pow((max - min) + 1, 2) - 1) / 12.0);
+
+    // Generate samples
+    std::array<int, N> samples;
+    for (int& sample : samples)
+    {
+        sample = GetUniformIntDist(min, max);
+    }
+
+    // Calculate the mean and the variance
+    accumulator_set<float, stats<tag::mean, tag::variance>> acc;
+    std::for_each(samples.cbegin(), samples.cend(), [&](int sample)
+    {
+        acc(sample);
+    });
+
+    // Calculate the mean and the standard deviation
+    float mu = mean(acc);
+    float sigma = std::sqrt(variance(acc));
+
+    // Calculate the standard error of the mean (SEM) and the standard error of the standard deviation (SES)
+    // NOTE: since there is no standard way of calculating those values for uniform distributions, we can use the law of big number
+    // therefore these of a uniform distribution can be approximated to those of a standard distribution
+    const float SEM = trueStddev / std::sqrt(N);
+    const float SES = trueStddev / std::sqrt(2 * N); // NOTE: this formula needs citation
+
+    SECTION ( "Bounds", "[main]" )
+    {
+        for (const auto& sample : samples)
+        {
+            REQUIRE (sample >= min);
+            REQUIRE (sample <= max);
+        }
+    }
+
+    SECTION ( "Distribution", "[main]" )
+    {
+        #ifdef DEBUG
+        const std::string info = fmt::format("min: {}\tmax:{}\tmu:{:.3f}\tsigma:{:.3f}\tSEM:{:.3f}\tSES:{:.3f}", min, max, mu, sigma, SEM, SES);
+        INFO(info);
+        #endif
+        REQUIRE (Catch::Approx(mu).margin(3 * SEM) == trueMean);
+        REQUIRE (Catch::Approx(sigma).margin(3 * SES) == trueStddev);
+    }
+}
+
+TEST_CASE( "Uniform Integer Distribution Function", "[error]" )
+{
+    // Expect this to throw an invalid argument error
+    REQUIRE_THROWS_AS(GetUniformIntDist(50, 7), std::invalid_argument);
+    REQUIRE_THROWS_AS(GetUniformIntDist(-63, -74), std::invalid_argument);
+    REQUIRE_THROWS_AS(GetUniformIntDist(32, -49), std::invalid_argument);
+
+    // Do not expect this to throw when two arguments are equal
+    REQUIRE_NOTHROW(GetUniformIntDist(50, 50));
+    REQUIRE_NOTHROW(GetUniformIntDist(-10, -10));
+    REQUIRE_NOTHROW(GetUniformIntDist(0, 0));
+    REQUIRE_NOTHROW(GetUniformIntDist(-23, 99));
+}
+
+TEST_CASE( "Uniform Real Distribution Function", "[main]" )
+{
+    using namespace boost::accumulators;
+
+    struct UniformRealDistribution
+    {
+        float min;
+        float max;
+    };
+
+    constexpr size_t N = 1'000;
+
+    // Create two sets of normal distributions
+    // This test cases will be run twice, each time with different means and standard deviations
+    auto dists = GENERATE(UniformRealDistribution{-2.5f, 1.0f}, UniformRealDistribution{-15.2f, -2.7f}, UniformRealDistribution{5.4f, 6.7f});
+
+    // Get the parameters
+    const float min = dists.min;
+    const float max = dists.max;
+    const float trueMean = 0.5 * (max + min);
+    const float trueStddev = std::sqrt(1 / 12.0f) * (max - min);
+
+    // Generate samples
+    std::array<float, N> samples;
+    for (auto& sample : samples)
+    {
+        sample = GetUniformFloatDist(min, max);
+    }
+
+    // Calculate the sum and the variance
+    accumulator_set<float, stats<tag::sum, tag::variance>> acc;
+    std::for_each(samples.cbegin(), samples.cend(), [&](float sample)
+    {
+        acc(sample);
+    });
+
+    // Calculate the mean and the standard deviation
+    double mu = sum(acc) / N;
+    double sigma = std::sqrt(variance(acc));
+
+    // Calculate the standard error of the mean (SEM) and the standard error of the standard deviation (SES)
+    // NOTE: since there is no standard way of calculating those values for uniform distributions, we can use the law of big number
+    // therefore these of a uniform distribution can be approximated to those of a standard distribution
+    const float SEM = trueStddev / std::sqrt(N);
+    const float SES = trueStddev / std::sqrt(2.0f * N); // NOTE: this formula needs citation
+
+    SECTION ( "Bounds", "[main]" )
+    {
+        for (const auto& sample : samples)
+        {
+            REQUIRE (sample >= min);
+            REQUIRE (sample <= max);
+        }
+    }
+
+    SECTION ( "Distribution", "[main]" )
+    {
+        #ifdef DEBUG
+        const std::string info = fmt::format("min: {:.3f}\tmax:{:.3f}\tmu:{:.3f}\tsigma:{:.3f}\tSEM:{:.3f}\tSES:{:.3f}", min, max, mu, sigma, SEM, SES);
+        INFO(info);
+        #endif
+        REQUIRE (Catch::Approx(mu).margin(3 * SEM) == trueMean);
+        REQUIRE (Catch::Approx(sigma).margin(3 * SES) == trueStddev);
+    }
+}
+
+TEST_CASE( "Uniform Real Distribution Function", "[error]" )
+{
+    // Expect this to throw an invalid argument error
+    REQUIRE_THROWS_AS(GetUniformFloatDist(50.2, 7.9), std::invalid_argument);
+    REQUIRE_THROWS_AS(GetUniformFloatDist(-6.3, -7.4), std::invalid_argument);
+    REQUIRE_THROWS_AS(GetUniformFloatDist(3.2, -4.9), std::invalid_argument);
+
+    // Do not expect this to throw when two arguments are equal
+    REQUIRE_NOTHROW(GetUniformFloatDist(5.0, 5.0));
+    REQUIRE_NOTHROW(GetUniformFloatDist(-1.0, -1.0));
+    REQUIRE_NOTHROW(GetUniformFloatDist(0.1, 0.1));
+    REQUIRE_NOTHROW(GetUniformFloatDist(-2.3, 9.9));
 }

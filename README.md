@@ -534,14 +534,14 @@ hash_combine(h, v);
 This is extremely useful since we need to hash the value and the position of the current puzzle.
 Hence, we only need to write all the arguments that we need in a single line of code instead of two lines.
 
-# FetchContent
+### FetchContent
 
 **FetchContent** is used to managed external dependencies.
 It fetches dependencies at configuration time and those dependencies will be available at compilation time.
 In this project, if a version of fmt library (newer than 11.0.0) is available on the system, then the version on the system will be used. Otherwise, fmt 11.2.0 will be fetched, compiled, and be used.
 This approach is flexible for the user since it does not require to download the library.
 
-# Concepts
+### Concepts
 
 A [concept](https://en.cppreference.com/w/cpp/language/constraints.html) is a set of requirements. This was introduced in C++20.
 Each concept is a predicate, evaluated at compile time, and becomes a part of the interface of a template where it is used as a constraint.
@@ -576,7 +576,7 @@ We defined a new concept such that it fulfills the following requirements:
 * the queue has *pop* expression that returns void
 * the queue has *top* expression that returns the constant reference of its value type
 
-# Flat Hash set
+### Flat Hash set
 
 *slidr::Solver* uses a hash set to record what nodes it has visited.
 [abseil](https://github.com/abseil/abseil-cpp) offers *absl::flat_hash_set*.
@@ -586,7 +586,7 @@ In our case, lookups are performed thousands of times especially if the puzzle i
 In the first group (easy), using *absl::flat_hash_set* results in 102.7% improvement.
 In the second (medium) and third (hard) group, switching to *absl::flat_hash_set* gains around 106% and 107.8%, respectively.
 
-## Group 1: Easy Puzzles
+#### Group 1: Easy Puzzles
 
 |               ns/op |                op/s |    err% |     total | Group 1: Easy Puzzles
 |--------------------:|--------------------:|--------:|----------:|:----------------------
@@ -595,7 +595,7 @@ In the second (medium) and third (hard) group, switching to *absl::flat_hash_set
 |           80,331.08 |           12,448.48 |    0.6% |      0.48 | `Bucket Queue Solver`
 |           82,591.90 |           12,107.72 |    0.7% |      0.49 | `Bucket Queue Solver (32)`
 
-## Group 2: Medium Puzzles
+#### Group 2: Medium Puzzles
 
 |               ns/op |                op/s |    err% |     total | Group 2: Medium Puzzles
 |--------------------:|--------------------:|--------:|----------:|:------------------------
@@ -604,13 +604,56 @@ In the second (medium) and third (hard) group, switching to *absl::flat_hash_set
 |        1,296,488.02 |              771.31 |    0.8% |      1.27 | `Bucket Queue Solver`
 |        1,287,686.52 |              776.59 |    0.2% |      1.23 | `Bucket Queue Solver (32)`
 
-## Group 3: Hard Puzzles
+#### Group 3: Hard Puzzles
 
 |               ns/op |                op/s |    err% |     total | Group 3: Hard Puzzles
 |--------------------:|--------------------:|--------:|----------:|:----------------------
 |        3,412,984.37 |              293.00 |    1.0% |      1.24 | `Priority Queue Solver`
 |        3,165,287.88 |              315.93 |    0.2% |      1.15 | `Priority Queue Solver (flat_hash_set)`
 |        3,390,451.40 |              294.95 |    0.9% |      1.23 | `Bucket Queue Solver`
+
+### Mean and Standard Deviation
+
+The mean formula is $x_1 + x_2 + ... + x_n$.
+The standard deviation formula is $\sqrt{1 / N * \Sigma_{i=1}^{n} (x_i - \mu) ^ 2}$.
+We can utilize the **boost library** to calculate the mean and the variance of samples as follows:
+
+```cpp
+#include <algorithm>
+#include <boost/accumulators/accumulators.hpp>
+#include <boost/accumulators/statistics/stats.hpp>
+#include <boost/accumulators/statistics/variance.hpp>
+using namespace boost::accumulators;
+accumulator_set<float, stats<tag::sum, tag::variance>> acc;
+std::for_each(samples.cbegin(), samples.cend(), [&](float sample)
+{
+  acc(sample);
+});
+```
+
+This is easier and cleaner to calculate the mean and the variance.
+However, if we want to calculate the standard deviation, we need to take the square root of the variance.
+
+### Standard Error of the Mean
+
+The standard error (SEM) measures the accuracy of several means.
+It tells how well the estimation of the true mean is.
+We can calculate the value with this formula: $\sigma / \sqrt{n}$
+
+### Continuous Uniform Distribution
+
+All random variable are between a minimum value and a maximum value and they have the same probability.
+The probability density function is $f(x) = 1 / (b - a)$.
+The mean function is $(b - a) / 2$.
+The standard deviation is $(b - a) / \sqrt{12}$.
+There is no a non-trivial formula for the standard error of mean and the standard error of standard deviation.
+However, with the help of the law of large number, we can approximate these two values with those of a normal distribution.
+
+### Discrete Uniform Distribution
+
+Each whole number $n$ between two number is equally likely to be observed.
+The mean function is $(b - a) / 2$.
+The standard deviation is $((b - a + 1)^2 - 1) / \sqrt{12}$.
 
 ## Reference
 
@@ -622,3 +665,5 @@ In the second (medium) and third (hard) group, switching to *absl::flat_hash_set
 - [Fold Expressions](https://en.cppreference.com/w/cpp/language/fold.html?ref=blog.yuo.be)
 - [Requires & Constraints](https://en.cppreference.com/w/cpp/language/requires.html)
 - [Abseil's Swiss Tables](https://abseil.io/docs/cpp/guides/container)
+- [Law of Large Numbers](https://en.wikipedia.org/wiki/Law_of_large_numbers)
+- [Standard Errors](https://dept.stat.lsa.umich.edu/~kshedden/introds/topics/standard_errors/)

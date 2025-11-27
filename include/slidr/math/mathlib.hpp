@@ -7,6 +7,7 @@
 #include <concepts> // std::integral
 // #include <boost/functional/hash.hpp> // if you want to use boost::hash_combine
 #include <random>   // std::random_device, std::mt19937, std::uniform_int_distribution, std::normal_distribution
+#include <fmt/core.h>   // fmt::format
 
 static std::random_device rd;
 static std::mt19937 gen {rd()};
@@ -53,6 +54,12 @@ inline std::size_t hash_range(std::span<T> s)
 /// @return An integer
 inline int GetUniformIntDist(int low, int high)
 {
+    if (low > high)
+    {
+        const std::string e = fmt::format("Error: 'low' argument ({}) needs to be smaller than 'high' argument ({}).", low, high);
+        throw std::invalid_argument(e);
+    }
+
     std::uniform_int_distribution<> distrib(low, high);
     return distrib(gen);
 }
@@ -73,6 +80,12 @@ inline float GetNormalFloatDist(float mean, float stddev)
 /// @return A float
 inline float GetUniformFloatDist(float low, float high)
 {
+    if (low > high)
+    {
+        const std::string e = fmt::format("Error: 'low' argument ({}) needs to be smaller than 'high' argument ({}).", low, high);
+        throw std::invalid_argument(e);
+    }
+
     std::uniform_real_distribution<> distrib{low, high};
     return distrib(gen);
 }

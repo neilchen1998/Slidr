@@ -19,7 +19,7 @@ add_executable(prompttestlib prompttestlib.cc)
 add_executable(containertestlib containertestlib.cc)
 add_executable(creatortestlib creatortestlib.cc)
 
-target_link_libraries(mathtestlib PRIVATE Catch2::Catch2WithMain math_library)
+target_link_libraries(mathtestlib PRIVATE Catch2::Catch2WithMain math_library fmt::fmt)
 target_link_libraries(constantstestlib PRIVATE Catch2::Catch2WithMain constants_library)
 target_link_libraries(nodetestlib PRIVATE Catch2::Catch2WithMain node_library)
 target_link_libraries(solvertestlib PRIVATE Catch2::Catch2WithMain solver_library)
