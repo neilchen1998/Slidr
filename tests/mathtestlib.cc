@@ -174,6 +174,72 @@ TEST_CASE( "Normal Distribution Function", "[main]" )
     }
 }
 
+TEST_CASE( "Uniform Integer Distribution Function", "[main]" )
+{
+    using namespace boost::accumulators;
+
+    struct UniformIntDistribution
+    {
+        int min;
+        int max;
+    };
+
+    constexpr size_t N = 1'000;
+
+    // Create two sets of uniform integer distributions
+    // This test cases will be run twice, each time with different means and standard deviations
+    auto dists = GENERATE(UniformIntDistribution{1, 2}, UniformIntDistribution{-15, -3}, UniformIntDistribution{5, 7});
+
+    // Get the parameters
+    const int min = dists.min;
+    const int max = dists.max;
+    const float trueMean = 0.5f * (max + min);
+    const float trueStddev = std::sqrt((std::pow((max - min) + 1, 2) - 1) / 12.0);
+
+    // Generate samples
+    std::array<int, N> samples;
+    for (int& sample : samples)
+    {
+        sample = GetUniformIntDist(min, max);
+    }
+
+    // Calculate the mean and the variance
+    accumulator_set<float, stats<tag::mean, tag::variance>> acc;
+    std::for_each(samples.cbegin(), samples.cend(), [&](int sample)
+    {
+        acc(sample);
+    });
+
+    // Calculate the mean and the standard deviation
+    float mu = mean(acc);
+    float sigma = std::sqrt(variance(acc));
+
+    // Calculate the standard error of the mean (SEM) and the standard error of the standard deviation (SES)
+    // NOTE: since there is no standard way of calculating those values for uniform distributions, we can use the law of big number
+    // therefore these of a uniform distribution can be approximated to those of a standard distribution
+    const float SEM = trueStddev / std::sqrt(N);
+    const float SES = trueStddev / std::sqrt(2 * N); // NOTE: this formula needs citation
+
+    SECTION ( "Bounds", "[main]" )
+    {
+        for (const auto& sample : samples)
+        {
+            REQUIRE (sample >= min);
+            REQUIRE (sample <= max);
+        }
+    }
+
+    SECTION ( "Distribution", "[main]" )
+    {
+        #ifdef DEBUG
+        const std::string info = fmt::format("min: {}\tmax:{}\tmu:{:.3f}\tsigma:{:.3f}\tSEM:{:.3f}\tSES:{:.3f}", min, max, mu, sigma, SEM, SES);
+        INFO(info);
+        #endif
+        REQUIRE (Catch::Approx(mu).margin(3 * SEM) == trueMean);
+        REQUIRE (Catch::Approx(sigma).margin(3 * SES) == trueStddev);
+    }
+}
+
 TEST_CASE( "Uniform Real Distribution Function", "[main]" )
 {
     using namespace boost::accumulators;

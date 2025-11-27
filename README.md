@@ -640,7 +640,7 @@ The standard error (SEM) measures the accuracy of several means.
 It tells how well the estimation of the true mean is.
 We can calculate the value with this formula: $\sigma / \sqrt{n}$
 
-### Uniform Distribution
+### Continuous Uniform Distribution
 
 All random variable are between a minimum value and a maximum value and they have the same probability.
 The probability density function is $f(x) = 1 / (b - a)$.
@@ -648,6 +648,12 @@ The mean function is $(b - a) / 2$.
 The standard deviation is $(b - a) / \sqrt{12}$.
 There is no a non-trivial formula for the standard error of mean and the standard error of standard deviation.
 However, with the help of the law of large number, we can approximate these two values with those of a normal distribution.
+
+### Discrete Uniform Distribution
+
+Each whole number $n$ between two number is equally likely to be observed.
+The mean function is $(b - a) / 2$.
+The standard deviation is $((b - a + 1)^2 - 1) / \sqrt{12}$.
 
 ## Reference
 
